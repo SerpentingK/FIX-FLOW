@@ -110,7 +110,7 @@ export default {
           <input v-model="session.pasw" type="password" placeholder="Contraseña" />
         </div>
         <a href="#">¿Olvidaste tu contraseña?</a>
-        <button type="submit"class="button">INICIAR SESION</button>
+        <button type="submit" class="button">INICIAR SESION</button>
       </form>
     </div>
     <div class="container-form">
@@ -166,13 +166,16 @@ export default {
 }
 
 .container {
-  border: 2px solid rgb(255, 255, 255);
+  border: 3px solid rgb(255, 255, 255);
+  background-color: rgb(71, 71, 71);
+  color: white;
   overflow: hidden;
   border-radius: 20px;
   width: 800px;
   height: 500px;
   display: flex;
   position: relative;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.479);
 }
 
 .container-form {
@@ -202,6 +205,7 @@ export default {
 
 .social-networks ion-icon {
   border: 1px solid white;
+  color: gray;
   border-radius: 6px;
   padding: 8px;
   cursor: pointer;
@@ -231,9 +235,12 @@ export default {
   height: 100%;
   background-color: inherit;
 }
+.container-input ion-icon{
+  color: gray;
+}
 
 .container-form a {
-  color: black;
+  color: rgb(255, 255, 255);
   font-size: 14px;
   margin-bottom: 20px;
   margin-top: 5px;
@@ -247,7 +254,7 @@ export default {
   border-radius: 10px;
   cursor: pointer;
   margin-top: 10px;
-  background-color: rgb(3, 43, 10);
+  background-color: var(--baseOrange);
   color: white;
 }
 
@@ -268,7 +275,7 @@ export default {
   position: absolute;
   width: 50%;
   height: 100%;
-  background-color: rgb(3, 43, 10);
+  background-color: var(--baseOrange);
   display: flex;
   align-items: center;
   transform: translateX(100%);

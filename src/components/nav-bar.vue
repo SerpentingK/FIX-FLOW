@@ -32,7 +32,7 @@ const isActive = (path) => route.path.startsWith(path);
 
 <style scoped>
 nav {
-  background-color: rgb(216, 75, 23);
+  background-color: var(--baseOrange);
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -69,7 +69,7 @@ nav {
   overflow: hidden;
   z-index: 1;
   transition: color .3s ease-in;
-  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.611);
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.611);
   border: 1px solid transparent;
 }
 
@@ -85,7 +85,7 @@ nav {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgb(216, 75, 23);
+  background-color: var(--baseOrange);
   transition: .5s ease;
   display: block;
   z-index: -1;

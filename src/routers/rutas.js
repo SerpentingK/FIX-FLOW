@@ -8,6 +8,11 @@ import check_list from "@/components/check_list.vue";
 
 const routes=[
     {
+        path:'/',
+        redirect:'/users'
+
+    },
+    {
         path:'/users',
         name: 'usuarios',
         component: users
