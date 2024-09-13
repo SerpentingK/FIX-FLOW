@@ -34,8 +34,8 @@ section{
 }
 .logo-fixed {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: -10px;
+  bottom: -10px;
   z-index: -1;
   opacity: 0.7;
 }

@@ -41,6 +41,7 @@ const routes = [
   {
     path: "/spareParts",
     name: "repuestos",
+    redirect: "/spareParts/list-spare",
     component: spareParts,
     children: [
       {

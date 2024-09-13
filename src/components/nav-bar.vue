@@ -38,7 +38,7 @@ const isActive = (path) => route.path.startsWith(path);
     <router-link
       to="/spareparts"
       class="router"
-      :class="{ active: isActive('/spareparts') }"
+      :class="{ active: isActive('/spareParts') }"
       >Repuestos</router-link
     >
     <button @click="goBack" :disabled="!canGoBack" class="back-button">
