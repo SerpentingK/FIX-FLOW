@@ -226,6 +226,7 @@ export default {
   gap: 8px;
   padding: 0px 15px;
   background-color: #eeeeee;
+  border-radius: 5px;
 }
 
 .container-input input {

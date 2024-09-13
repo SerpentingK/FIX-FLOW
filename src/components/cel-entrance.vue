@@ -15,10 +15,10 @@ import celForm from './cel-form.vue';
                 <input type="text" id="in-client-phone">
             </label>
             <label for="in-cel-num" class="in-container">
-                <span>Cels:  </span>
+                <span>N. Dispositivos:  </span>
                 <input type="number" id="in-cel-num" min="1" max="5">
             </label>
-            <celForm v-for="i in 10" :key="i"></celForm>
+            <celForm v-for="i in 3" :key="i"></celForm>
         </form>
         <section class="cells-container">
             a
@@ -36,7 +36,7 @@ import celForm from './cel-form.vue';
     height: 90%;
     width: 90%;
     padding: 10px;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 80% 20%;
     grid-template-rows: 15% 85%;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
