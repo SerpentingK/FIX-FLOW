@@ -3,7 +3,6 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute(); // Obtiene la ruta actual
-const router = useRouter(); // Obtiene el objeto router
 
 // Comprobamos si hay historial para regresar
 const canGoBack = ref(window.history.length > 1);
