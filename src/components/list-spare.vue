@@ -24,7 +24,7 @@ const optionsSp = ref(["Pantallas", "Pachas", "Baterias"]);
   </div>
   <div class="containerlist">
     <ul>
-      <parts  > </parts>
+      <parts v-for="(i in 4) in items" :key="index"   ></parts>
     </ul>
   </div>
 </template>
