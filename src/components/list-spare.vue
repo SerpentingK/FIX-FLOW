@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import parts from "./parts.vue";
 
 const optionsSp = ref(["Pantallas", "Pachas", "Baterias"]);
 </script>
@@ -20,6 +21,11 @@ const optionsSp = ref(["Pantallas", "Pachas", "Baterias"]);
       </div>
       <button type="submit">Buscar</button>
     </form>
+  </div>
+  <div class="containerlist">
+    <ul>
+      <parts  > </parts>
+    </ul>
   </div>
 </template>
 
