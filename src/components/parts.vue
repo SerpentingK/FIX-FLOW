@@ -1,10 +1,10 @@
 <script setup>
 defineProps({
-    Category:{
+    category:{
         type: String,
         required: true
     },
-    ref_phone:{
+    phone_name:{
         type: String,
         required: true
     },
@@ -17,8 +17,8 @@ defineProps({
 
 <template>
     <li>
-        <div class="category">{{Category}}</div>
-        <div>{{ref_phone}}</div>
+        <div class="category">{{category}}</div>
+        <div>{{phone_name}}</div>
         <div>{{quantity}}</div>
     </li>
 </template>
@@ -29,15 +29,15 @@ li{
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    background-color: rgb(54, 54, 54);
+    background-color: var(--baseGray);
     margin-top: 25px;
     padding: 20px 40px;
     color: white;
     border-radius: 30px;
-    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.676);
+    box-shadow: var(--baseShadow);
 }
 .category{
-    background-color: rgb(216, 75, 23);
+    background-color: var(--baseOrange);
     padding: 10px 20px;
     border-radius: 35px;
 }

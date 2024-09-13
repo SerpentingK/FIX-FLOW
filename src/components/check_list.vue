@@ -62,9 +62,14 @@ const options = ref(["N. Factura", "Cliente", "Fecha"]);
     padding: 0 20px;
 }
 .search-form button{
-    background-color: rgb(216, 75, 23);
+    background-color: var(--baseOrange);
     padding: 0 20px;
     border-radius: 5px;
     color: white;
+    transition: all .3s ease;;
+    border: 2px solid transparent;
+}
+.search-form button:hover{
+    border: 2px solid white;
 }
 </style>
