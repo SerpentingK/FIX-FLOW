@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, ref } from "vue"; // Importado para usar propiedades computadas
+import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
 
@@ -20,12 +20,30 @@ const isActive = (path) => route.path.startsWith(path);
 
 <template>
   <nav>
-    <router-link to="/users" class="router" :class="{ 'active': isActive('/users') }">Usuario</router-link>
-    <router-link to="/tec" class="router" :class="{ 'active': isActive('/tec') }">Tecnicos</router-link>
-    <router-link to="/phones" class="router" :class="{ 'active': isActive('/phones') }">Celulares</router-link>
-    <router-link to="/spareparts" class="router" :class="{ 'active': isActive('/spareparts') }">Repuestos</router-link>
-    <button @click="goBack" :disabled="!canGoBack" class="back-button"><ion-icon
-        name="arrow-back-circle-outline"></ion-icon></button>
+    <router-link
+      to="/users"
+      class="router"
+      :class="{ active: isActive('/users') }"
+      >Usuario</router-link
+    >
+    <router-link to="/tec" class="router" :class="{ active: isActive('/tec') }"
+      >Tecnicos</router-link
+    >
+    <router-link
+      to="/phones"
+      class="router"
+      :class="{ active: isActive('/phones') }"
+      >Celulares</router-link
+    >
+    <router-link
+      to="/spareparts"
+      class="router"
+      :class="{ active: isActive('/spareparts') }"
+      >Repuestos</router-link
+    >
+    <button @click="goBack" :disabled="!canGoBack" class="back-button">
+      <ion-icon name="arrow-back-circle-outline"></ion-icon>
+    </button>
   </nav>
 </template>
 
@@ -74,7 +92,7 @@ nav {
   left: 10px;
   overflow: hidden;
   z-index: 1;
-  transition: color .3s ease-in;
+  transition: color 0.3s ease-in;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.611);
   border: 1px solid transparent;
 }
@@ -84,7 +102,7 @@ nav {
 }
 
 .back-button::before {
-  content: '';
+  content: "";
   width: 0;
   height: 3em;
   border-radius: 30em;
@@ -92,7 +110,7 @@ nav {
   top: 0;
   left: 0;
   background-color: var(--baseOrange);
-  transition: .5s ease;
+  transition: 0.5s ease;
   display: block;
   z-index: -1;
 }
