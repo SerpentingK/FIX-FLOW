@@ -1,7 +1,7 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --baseOrange: rgb(216, 75, 23);
-  --baseGray: rgb(54, 54, 54);
+  --baseOrange: #d84b17;
+  --baseGray: #363636;
 }
 
 /* semantic color variables for this project */
@@ -44,7 +44,6 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
   transition:
     color 0.5s,
     background-color 0.5s;

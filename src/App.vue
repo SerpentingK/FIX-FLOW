@@ -1,15 +1,16 @@
 <script setup>
-import principal from "./components/nav-bar.vue";
+import navBar from "./components/nav-bar.vue";
+import logo from "./components/logo.vue";
 </script>
 
 <template>
   <section class="body">
-    <principal></principal>
+    <navBar></navBar>
     <section>
       <router-view></router-view>
     </section>
-    
   </section>
+  <logo class="logo-fixed"></logo>
 </template>
 
 <style scoped>
@@ -30,5 +31,12 @@ section{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.logo-fixed {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: -1;
+  opacity: 0.7;
 }
 </style>

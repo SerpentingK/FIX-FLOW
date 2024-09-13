@@ -167,7 +167,7 @@ export default {
 
 .container {
   border: 3px solid rgb(255, 255, 255);
-  background-color: rgb(71, 71, 71);
+  background-color: var(--baseGray);
   color: white;
   overflow: hidden;
   border-radius: 20px;

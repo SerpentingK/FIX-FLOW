@@ -31,28 +31,35 @@ const isActive = (path) => route.path.startsWith(path);
 
 <style scoped>
 nav {
-  background-color: var(--baseOrange);
+  background-color: rgba(255, 255, 255, 0.4); /* Color blanco con transparencia */
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px); /* Efecto de difuminado */
+  border-radius: 5px; /* Bordes redondeados opcionales */
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.219);
 }
 
 .router {
-  color: white;
+  color: rgba(0, 0, 0, 0.596);
   padding: 20px;
   text-decoration: none;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  transition: all .3s ease;
+  transition: all .3s ease, border-radius .5s ease, box-shadow .5s ease;
 }
 
 .router.active {
-  background-color: white;
-  color: black;
+  background-color: var(--baseOrange);
+  color: white;
   transform: translateX(15px);
-  border: 1px solid rgba(0, 0, 0, 0.537);
+  border: 1px solid white;
+  border-radius: 10px;
   box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.418);
 }
 
