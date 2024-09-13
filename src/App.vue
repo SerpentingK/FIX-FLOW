@@ -17,7 +17,6 @@ import principal from "./components/nav-bar.vue";
   font-family: "Roboto Mono", monospace;
 }
 .body{
-  background-color: rgba(114, 79, 13, 0.747);
   display: grid;
   grid-template-columns: 10% 90%;
   grid-template-rows: 100%;

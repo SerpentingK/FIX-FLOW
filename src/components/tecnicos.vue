@@ -17,36 +17,8 @@
             </form>
         </div>
         <div class="container-sec">
-            <nav id="tec-nav">
-                <router-link to="/users" class="router">
-                    <span class="icon-container">
-                        <ion-icon name="list-outline"></ion-icon>
-                    </span>
-                    <span>Lista de <br> tecnicos</span>
-                </router-link>
-
-                <router-link to="/update" class="router">
-                    <span class="icon-container">
-                        <ion-icon name="arrow-up-outline"></ion-icon>
-                    </span>
-                    <span>Actualizar <br> tecnicos</span>
-                </router-link>
-
-                <router-link to="/delete" class="router">
-                    <span class="icon-container">
-                        <ion-icon name="close-outline"></ion-icon>
-                    </span>
-                    <span>Eliminar <br> tecnicos</span>
-                </router-link>
-
-                <router-link to="/add" class="router">
-                    <span class="icon-container">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                    </span>
-                    <span>Añadir <br> tecnicos</span>
-                </router-link>
-
-            </nav>
+            
+            
         </div>
     </section>
 </template>
@@ -112,7 +84,7 @@
     border-radius: 25px;
     cursor: pointer;
     margin-top: 10px;
-    background-color: rgb(3, 43, 10);
+    background-color: var(--baseOrange);
     color: white;
 }
 
