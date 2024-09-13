@@ -14,7 +14,7 @@ import principal from "./components/nav-bar.vue";
 
 <style scoped>
 *{
-  font-family: "Roboto Mono", monospace;
+  font-family: "SUSE", sans-serif;
 }
 .body{
   display: grid;
