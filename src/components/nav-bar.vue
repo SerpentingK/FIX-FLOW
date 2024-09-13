@@ -3,7 +3,7 @@ import { computed, ref } from "vue"; // Importado para usar propiedades computad
 import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
-const router = useRouter(); // Obtiene el objeto router
+
 
 // Comprobamos si hay historial para regresar
 const canGoBack = ref(window.history.length > 1);
