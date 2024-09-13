@@ -175,7 +175,7 @@ export default {
   height: 500px;
   display: flex;
   position: relative;
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.479);
+  box-shadow: var(--baseShadow);
 }
 
 .container-form {
