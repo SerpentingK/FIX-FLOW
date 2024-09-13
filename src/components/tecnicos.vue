@@ -84,7 +84,7 @@
     border-radius: 25px;
     cursor: pointer;
     margin-top: 10px;
-    background-color: rgb(3, 43, 10);
+    background-color: var(--baseOrange);
     color: white;
 }
 

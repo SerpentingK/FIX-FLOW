@@ -3,10 +3,15 @@ import tecnicos from "@/components/tecnicos.vue"
 import users from "@/components/users.vue"
 import phones from "@/components/phones.vue";
 import spareParts from "@/components/spare-parts.vue";
-import celForm from "@/components/cel-form.vue";
+import celForm from "@/components/cel-entrance.vue";
 import check_list from "@/components/check_list.vue";
 
 const routes=[
+    {
+        path:'/',
+        redirect:'/users'
+
+    },
     {
         path:'/users',
         name: 'usuarios',
@@ -20,6 +25,7 @@ const routes=[
     {
         path:'/phones',
         name: 'phones',
+        redirect: '/phones/cel-form', 
         component: phones,
         children:[
             {
