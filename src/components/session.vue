@@ -7,7 +7,10 @@ const loggedCompany = inject('loggedCompany', ref(null))
 <template>
     <section class="container">
         <h2>SESION INICIADA</h2>
-        <span>{{loggedCompany}}</span>
+        <div class="company-container">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <span>{{loggedCompany}}</span>
+        </div>
         <div class="op-container">
             <router-link to="/" class="op-router">Actualizar contraseña</router-link>
             <div>|</div>
@@ -46,16 +49,23 @@ const loggedCompany = inject('loggedCompany', ref(null))
     -webkit-text-fill-color: transparent;/* Sombra arriba a la izquierda */
 
 }
-.container span{
+.company-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     font-size: 25px;
     font-weight: bolder;
     font-family: var(--secFont);
     text-transform: uppercase;
     letter-spacing: 2px;
     background-color: var(--baseGray);
-    padding: 5px 40px;
+    padding: 5px 30px;
     border-radius: 20px;
     color: var(--secGray);
+}
+.company-container ion-icon{
+    font-size: 250px;
+    color: var(--baseOrange);
 }
 .logout-btn{
     display: flex;

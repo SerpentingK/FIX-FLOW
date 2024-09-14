@@ -7,10 +7,12 @@ defineProps({
 })
 </script>
 <template>
-    <router-link to="/session" class="router">
-        <ion-icon name="person-circle-outline"></ion-icon>
-        <span>{{ loggedCompany }}</span>
-    </router-link>
+    <transition name="fade">
+        <router-link to="/session" class="router">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <span>{{ loggedCompany }}</span>
+        </router-link>
+    </transition>
 </template>
 
 <style scoped>
