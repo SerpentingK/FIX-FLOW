@@ -3,6 +3,7 @@ import { ref, provide, watch, onMounted } from 'vue';
 import navBar from './components/nav-bar.vue';
 import logo from './components/logo.vue';
 import { useRouter, useRoute } from 'vue-router';
+import company from './components/company.vue';
 
 // Definir una referencia global para la empresa que ha iniciado sesión
 const loggedCompany = ref(null);
@@ -37,7 +38,7 @@ watch(
 <template>
   <section class="body">
     <navBar></navBar>
-    <div class="company-name" v-if="loggedCompany != null">{{ loggedCompany }}</div>
+    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`"></company>
     <section>
       <router-view></router-view>
     </section>
@@ -73,16 +74,5 @@ section {
   bottom: -10px;
   z-index: -1;
   opacity: 0.7;
-}
-.company-name{
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  background-color: white;
-  padding: 8px 30px;
-  width: 240px;
-  border-radius: 30px;
-  box-shadow: var(--baseShadow);
-  font-size: 18px;
 }
 </style>
