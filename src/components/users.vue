@@ -33,7 +33,7 @@ export default {
     const msg = ref("");
 
     // Inyectar la variable global
-    const loggedCompany = inject('loggedCompany');
+    const loggedCompany = inject('loggedCompany', ref(null));
 
     const startSession = async () => {
       try {

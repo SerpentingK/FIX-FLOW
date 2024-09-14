@@ -1,13 +1,37 @@
 <script setup>
-import { ref, provide } from 'vue';
+import { ref, provide, watch, onMounted } from 'vue';
 import navBar from './components/nav-bar.vue';
 import logo from './components/logo.vue';
+import { useRouter, useRoute } from 'vue-router';
 
 // Definir una referencia global para la empresa que ha iniciado sesión
 const loggedCompany = ref(null);
 
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
+
+
+// Instancias de router y route
+const router = useRouter();
+const route = useRoute();
+
+// Función para manejar la redirección
+const handleRedirection = () => {
+  if (route.path === '/users' && loggedCompany.value !== null) {
+    router.push('/session'); // Redirigir a /session si loggedCompany es diferente de null
+  }
+};
+// Ejecutar la función al montar el componente
+onMounted(() => {
+  handleRedirection();
+});
+// Verificar cualquier cambio en la ruta
+watch(
+  () => route.path,
+  (newPath) => {
+    handleRedirection();
+  }
+);
 </script>
 
 <template>
@@ -23,7 +47,7 @@ provide('loggedCompany', loggedCompany);
 
 <style scoped>
 * {
-  font-family: "SUSE", sans-serif;
+  font-family: var(--baseFont);
 }
 
 .body {

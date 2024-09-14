@@ -7,6 +7,7 @@ import celForm from "@/components/cel-entrance.vue";
 import check_list from "@/components/check_list.vue";
 import listSpare from "@/components/spare-list.vue";
 import spareCategories from "@/components/spare-categories.vue";
+import session from "@/components/session.vue";
 
 const routes = [
   {
@@ -16,7 +17,12 @@ const routes = [
   {
     path: "/users",
     name: "usuarios",
-    component: users,
+    component: users
+  },
+  {
+    path: "/session",
+    name: "session",
+    component: session
   },
   {
     path: "/tec",

@@ -2,7 +2,12 @@
 :root {
   --baseOrange: #d84b17;
   --baseGray: #363636;
+  --secGray: #adadad;
   --baseShadow: 0 0 10px 4px rgba(0, 0, 0, 0.676);
+  --secShadow: 0 0 10px 2px rgba(0, 0, 0, 0.801);
+  --baseFont:"SUSE", sans-serif;
+  --titleFont:'Poppins', sans-serif;
+  --secFont: 'Roboto', sans-serif;
 }
 
 /* semantic color variables for this project */
