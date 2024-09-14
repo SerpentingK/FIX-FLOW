@@ -1,11 +1,12 @@
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter();
     const container = ref(null);
-
     const toggle = () => {
       if (container.value.classList.contains("toggle")) {
         container.value.classList.remove("toggle");
@@ -25,29 +26,36 @@ export default {
     });
 
     const session = ref({
-      company_user:"",
-      pasw:""
-    })
+      company_user: "",
+      pasw: ""
+    });
 
     const msg = ref("");
 
-    const startSession = async () =>{
-      try{
+    // Inyectar la variable global
+    const loggedCompany = inject('loggedCompany');
+
+    const startSession = async () => {
+      try {
         const answer = await axios.get(
           `http://127.0.0.1:8000/startSession/${session.value.company_user}/${session.value.pasw}`
         );
-        msg.value = answer.data.msg
+        msg.value = answer.data.msg;
 
-      }catch(error){
+        // Asignar la empresa que inició sesión a la variable global
+        loggedCompany.value = session.value.company_user;
+        // Redirigir a /tec si el inicio de sesión es exitoso
+        router.push('/tec');
+      } catch (error) {
         if (error.response && error.response.data) {
-          alert(`Error al iniciar sesion: ${error.response.data.detail}`);
-          console.error('Error al iniciar sesion ', error.response.data);
+          alert(`Error al iniciar sesión: ${error.response.data.detail}`);
+          console.error('Error al iniciar sesión', error.response.data);
         } else {
           alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
-          console.error(error)
+          console.error(error);
         }
       }
-    }
+    };
 
     const postCompany = async () => {
       try {
@@ -67,13 +75,13 @@ export default {
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al registrar empresa: ${error.response.data.detail}`);
-          console.error('Error al registrar empresa ', error.response.data);
+          console.error('Error al registrar empresa', error.response.data);
         } else {
           alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
-          console.error(error)
+          console.error(error);
         }
       }
-    }
+    };
 
     return {
       company,
@@ -85,7 +93,7 @@ export default {
       container
     };
   }
-}
+};
 </script>
 
 
