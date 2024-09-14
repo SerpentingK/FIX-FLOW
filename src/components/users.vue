@@ -45,7 +45,7 @@ export default {
         // Asignar la empresa que inició sesión a la variable global
         loggedCompany.value = session.value.company_user;
         // Redirigir a /tec si el inicio de sesión es exitoso
-        router.push('/tec');
+        router.push('/workers');
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al iniciar sesión: ${error.response.data.detail}`);
@@ -102,12 +102,6 @@ export default {
     <div class="container-form">
       <form class="sign-in" @submit.prevent="startSession">
         <h2>Iniciar Sesión</h2>
-        <div class="social-networks">
-          <ion-icon name="logo-tiktok"></ion-icon>
-          <ion-icon name="logo-whatsapp"></ion-icon>
-          <ion-icon name="logo-twitter"></ion-icon>
-          <ion-icon name="logo-instagram"></ion-icon>
-        </div>
         <span>Use su usuario y su contraseña</span>
         <div class="container-input">
           <ion-icon name="person-outline"></ion-icon>
@@ -124,12 +118,6 @@ export default {
     <div class="container-form">
       <form class="sign-up" @submit.prevent="postCompany">
         <h2>Registrarse</h2>
-        <div class="social-networks">
-          <ion-icon name="logo-tiktok"></ion-icon>
-          <ion-icon name="logo-whatsapp"></ion-icon>
-          <ion-icon name="logo-twitter"></ion-icon>
-          <ion-icon name="logo-instagram"></ion-icon>
-        </div>
         <span>Use su correo electronico para el registro</span>
         <div class="container-input">
           <ion-icon name="mail-outline"></ion-icon>
@@ -203,20 +191,6 @@ export default {
 .container-form h2 {
   font-size: 30px;
   margin-bottom: 20px;
-}
-
-.social-networks {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.social-networks ion-icon {
-  border: 1px solid white;
-  color: gray;
-  border-radius: 6px;
-  padding: 8px;
-  cursor: pointer;
 }
 
 .container-form span {

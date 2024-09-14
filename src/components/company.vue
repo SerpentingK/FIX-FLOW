@@ -1,4 +1,10 @@
 <script setup>
+
+import { useRoute } from 'vue-router'; // Importado para obtener la ruta actual
+
+const route = useRoute(); // Obtiene la ruta actual
+const isActive = (path) => route.path === path;// Función para verificar si el enlace es el activo
+
 defineProps({
     loggedCompany: {
         type: String,
@@ -8,7 +14,7 @@ defineProps({
 </script>
 <template>
     <transition name="fade">
-        <router-link to="/session" class="router">
+        <router-link to="/session" class="router" :class="{'active': isActive('/session')}">
             <ion-icon name="person-circle-outline"></ion-icon>
             <span>{{ loggedCompany }}</span>
         </router-link>
@@ -34,6 +40,13 @@ defineProps({
     line-height: 1.6;
     border: 1px solid #999999;
     transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.router.active{
+    background-color: var(--baseOrange);
+}
+.router.active *{
+    color: white;
+    z-index: 1;
 }
 
 .router::before {

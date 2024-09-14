@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import tecnicos from "@/components/tecnicos.vue";
+import workers from "@/components/workers.vue";
 import users from "@/components/users.vue";
 import phones from "@/components/phones.vue";
 import spareParts from "@/components/spare-parts.vue";
@@ -8,6 +8,7 @@ import check_list from "@/components/check_list.vue";
 import listSpare from "@/components/spare-list.vue";
 import spareCategories from "@/components/spare-categories.vue";
 import session from "@/components/session.vue";
+import workersList from "@/components/workers-list.vue";
 
 const routes = [
   {
@@ -25,9 +26,14 @@ const routes = [
     component: session
   },
   {
-    path: "/tec",
-    name: "tecnicos",
-    component: tecnicos,
+    path: "/workers",
+    name: "workers",
+    component: workers,
+  },
+  {
+    path: "/workers-list",
+    name: "workers-list",
+    component: workersList
   },
   {
     path: "/phones",

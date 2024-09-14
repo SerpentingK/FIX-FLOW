@@ -1,12 +1,12 @@
 <script setup>
-import { computed, ref } from "vue"; // Importado para usar propiedades computadas
+import { computed, ref, inject } from "vue"; // Importado para usar propiedades computadas
 import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
 
 // Comprobamos si hay historial para regresar
 const canGoBack = ref(window.history.length > 1);
-
+const loggedCompany = inject('loggedCompany', ref(null))
 // Función para ir a la página anterior
 const goBack = () => {
   if (canGoBack.value) {
@@ -20,27 +20,13 @@ const isActive = (path) => route.path.startsWith(path);
 
 <template>
   <nav>
-    <router-link
-      to="/users"
-      class="router"
-      :class="{ active: isActive('/users') }"
-      >Usuario</router-link
-    >
-    <router-link to="/tec" class="router" :class="{ active: isActive('/tec') }"
-      >Tecnicos</router-link
-    >
-    <router-link
-      to="/phones"
-      class="router"
-      :class="{ active: isActive('/phones') }"
-      >Celulares</router-link
-    >
-    <router-link
-      to="/spareparts"
-      class="router"
-      :class="{ active: isActive('/spareParts') }"
-      >Repuestos</router-link
-    >
+    <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
+    <router-link to="/workers" class="router" :class="{ active: isActive('/workers') }" 
+      v-if="loggedCompany != null">Tecnicos</router-link>
+    <router-link to="/phones" class="router" :class="{ active: isActive('/phones') }"
+      v-if="loggedCompany != null">Celulares</router-link>
+    <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
+      v-if="loggedCompany != null">Repuestos</router-link>
     <button @click="goBack" :disabled="!canGoBack" class="back-button">
       <ion-icon name="arrow-back-circle-outline"></ion-icon>
     </button>
@@ -49,10 +35,13 @@ const isActive = (path) => route.path.startsWith(path);
 
 <style scoped>
 nav {
-  background-color: rgba(255, 255, 255, 0.4); /* Color blanco con transparencia */
+  background-color: rgba(255, 255, 255, 0.4);
+  /* Color blanco con transparencia */
   -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px); /* Efecto de difuminado */
-  border-radius: 5px; /* Bordes redondeados opcionales */
+  backdrop-filter: blur(5px);
+  /* Efecto de difuminado */
+  border-radius: 5px;
+  /* Bordes redondeados opcionales */
   padding: 20px;
   display: flex;
   flex-direction: column;
