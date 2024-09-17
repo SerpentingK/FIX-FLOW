@@ -1,41 +1,35 @@
 <script setup></script>
 <template>
     <section id="container">
-        <div class="container-sec">
-            <form id="tec-form">
-                <h2>Ingrese para empezar turno</h2>
-                <span>Ingrese su usuario y clave</span>
-                <div class="container-input">
-                    <ion-icon name="person-outline"></ion-icon>
-                    <input type="text" placeholder="Usuario" />
-                </div>
-                <div class="container-input">
-                    <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input type="password" placeholder="Clave" />
-                </div>
-                <button class="button">INICIAR SESION</button>
-            </form>
-        </div>
-        <div class="container-sec">
-            
-            
-        </div>
+        <form id="tec-form">
+            <h2>Ingrese para empezar turno</h2>
+            <span>Ingrese su usuario y clave</span>
+            <div class="container-input">
+                <ion-icon name="person-outline"></ion-icon>
+                <input type="text" placeholder="Usuario" />
+            </div>
+            <div class="container-input">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                <input type="password" placeholder="Clave" />
+            </div>
+            <button class="button">INICIAR SESION</button>
+        </form>
+        <router-link to="/workers-list" class="edit-btn">
+            <ion-icon name="create-outline"></ion-icon>
+            <div> Editar trabajadores</div>
+        </router-link>
     </section>
 </template>
 <style scoped>
 #container {
     background-color: rgb(255, 255, 255);
     position: relative;
-    width: 62%;
+    padding: 20px 50px;
+    box-shadow: var(--baseShadow);
     height: 500px;
     border-radius: 10px;
     display: flex;
     overflow: hidden;
-}
-
-.container-sec {
-    width: 100%;
-    height: 100%;
 }
 
 #tec-form {
@@ -47,12 +41,12 @@
 }
 
 #tec-form h2 {
-    font-size: 20px;
+    font-size: 30px;
     margin-bottom: 20px;
 }
 
 #tec-form span {
-    font-size: 10px;
+    font-size: 20px;
     margin-bottom: 15px;
 }
 
@@ -147,5 +141,23 @@
     100% {
         transform: translateY(0) rotate(360deg);
     }
+}
+
+.edit-btn{
+    background-color: var(--baseOrange);
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 30px;
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    justify-content: center;
+    gap: 10px;
+}
+.edit-btn *{
+    font-size: 25px;
+    color:white;
 }
 </style>

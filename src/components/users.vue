@@ -1,11 +1,12 @@
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter();
     const container = ref(null);
-
     const toggle = () => {
       if (container.value.classList.contains("toggle")) {
         container.value.classList.remove("toggle");
@@ -25,29 +26,36 @@ export default {
     });
 
     const session = ref({
-      company_user:"",
-      pasw:""
-    })
+      company_user: "",
+      pasw: ""
+    });
 
     const msg = ref("");
 
-    const startSession = async () =>{
-      try{
+    // Inyectar la variable global
+    const loggedCompany = inject('loggedCompany', ref(null));
+
+    const startSession = async () => {
+      try {
         const answer = await axios.get(
           `http://127.0.0.1:8000/startSession/${session.value.company_user}/${session.value.pasw}`
         );
-        msg.value = answer.data.msg
+        msg.value = answer.data.msg;
 
-      }catch(error){
+        // Asignar la empresa que inició sesión a la variable global
+        loggedCompany.value = session.value.company_user;
+        // Redirigir a /tec si el inicio de sesión es exitoso
+        router.push('/workers');
+      } catch (error) {
         if (error.response && error.response.data) {
-          alert(`Error al iniciar sesion: ${error.response.data.detail}`);
-          console.error('Error al iniciar sesion ', error.response.data);
+          alert(`Error al iniciar sesión: ${error.response.data.detail}`);
+          console.error('Error al iniciar sesión', error.response.data);
         } else {
           alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
-          console.error(error)
+          console.error(error);
         }
       }
-    }
+    };
 
     const postCompany = async () => {
       try {
@@ -67,13 +75,13 @@ export default {
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al registrar empresa: ${error.response.data.detail}`);
-          console.error('Error al registrar empresa ', error.response.data);
+          console.error('Error al registrar empresa', error.response.data);
         } else {
           alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
-          console.error(error)
+          console.error(error);
         }
       }
-    }
+    };
 
     return {
       company,
@@ -85,7 +93,7 @@ export default {
       container
     };
   }
-}
+};
 </script>
 
 
@@ -94,12 +102,6 @@ export default {
     <div class="container-form">
       <form class="sign-in" @submit.prevent="startSession">
         <h2>Iniciar Sesión</h2>
-        <div class="social-networks">
-          <ion-icon name="logo-tiktok"></ion-icon>
-          <ion-icon name="logo-whatsapp"></ion-icon>
-          <ion-icon name="logo-twitter"></ion-icon>
-          <ion-icon name="logo-instagram"></ion-icon>
-        </div>
         <span>Use su usuario y su contraseña</span>
         <div class="container-input">
           <ion-icon name="person-outline"></ion-icon>
@@ -116,12 +118,6 @@ export default {
     <div class="container-form">
       <form class="sign-up" @submit.prevent="postCompany">
         <h2>Registrarse</h2>
-        <div class="social-networks">
-          <ion-icon name="logo-tiktok"></ion-icon>
-          <ion-icon name="logo-whatsapp"></ion-icon>
-          <ion-icon name="logo-twitter"></ion-icon>
-          <ion-icon name="logo-instagram"></ion-icon>
-        </div>
         <span>Use su correo electronico para el registro</span>
         <div class="container-input">
           <ion-icon name="mail-outline"></ion-icon>
@@ -167,7 +163,7 @@ export default {
 
 .container {
   border: 3px solid rgb(255, 255, 255);
-  background-color: rgb(71, 71, 71);
+  background-color: var(--baseGray);
   color: white;
   overflow: hidden;
   border-radius: 20px;
@@ -175,7 +171,7 @@ export default {
   height: 500px;
   display: flex;
   position: relative;
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.479);
+  box-shadow: var(--baseShadow);
 }
 
 .container-form {
@@ -197,20 +193,6 @@ export default {
   margin-bottom: 20px;
 }
 
-.social-networks {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.social-networks ion-icon {
-  border: 1px solid white;
-  color: gray;
-  border-radius: 6px;
-  padding: 8px;
-  cursor: pointer;
-}
-
 .container-form span {
   font-size: 12px;
   margin-bottom: 15px;
@@ -226,6 +208,7 @@ export default {
   gap: 8px;
   padding: 0px 15px;
   background-color: #eeeeee;
+  border-radius: 5px;
 }
 
 .container-input input {

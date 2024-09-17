@@ -1,13 +1,12 @@
 <script setup>
-import { computed, ref } from "vue"; // Importado para usar propiedades computadas
+import { computed, ref, inject } from "vue"; // Importado para usar propiedades computadas
 import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
 
-
 // Comprobamos si hay historial para regresar
 const canGoBack = ref(window.history.length > 1);
-
+const loggedCompany = inject('loggedCompany', ref(null))
 // Función para ir a la página anterior
 const goBack = () => {
   if (canGoBack.value) {
@@ -21,27 +20,13 @@ const isActive = (path) => route.path.startsWith(path);
 
 <template>
   <nav>
-    <router-link
-      to="/users"
-      class="router"
-      :class="{ active: isActive('/users') }"
-      >Usuario</router-link
-    >
-    <router-link to="/tec" class="router" :class="{ active: isActive('/tec') }"
-      >Tecnicos</router-link
-    >
-    <router-link
-      to="/phones"
-      class="router"
-      :class="{ active: isActive('/phones') }"
-      >Celulares</router-link
-    >
-    <router-link
-      to="/spareparts"
-      class="router"
-      :class="{ active: isActive('/spareparts') }"
-      >Repuestos</router-link
-    >
+    <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
+    <router-link to="/workers" class="router" :class="{ active: isActive('/workers') }" 
+      v-if="loggedCompany != null">Tecnicos</router-link>
+    <router-link to="/phones" class="router" :class="{ active: isActive('/phones') }"
+      v-if="loggedCompany != null">Celulares</router-link>
+    <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
+      v-if="loggedCompany != null">Repuestos</router-link>
     <button @click="goBack" :disabled="!canGoBack" class="back-button">
       <ion-icon name="arrow-back-circle-outline"></ion-icon>
     </button>
@@ -50,29 +35,38 @@ const isActive = (path) => route.path.startsWith(path);
 
 <style scoped>
 nav {
-  background-color: var(--baseOrange);
+  background-color: rgba(255, 255, 255, 0.4);
+  /* Color blanco con transparencia */
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  /* Efecto de difuminado */
+  border-radius: 5px;
+  /* Bordes redondeados opcionales */
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.219);
 }
 
 .router {
-  color: white;
+  color: rgba(0, 0, 0, 0.596);
   padding: 20px;
   text-decoration: none;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  transition: all 0.3s ease;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  transition: all .3s ease, border-radius .5s ease, box-shadow .5s ease;
 }
 
 .router.active {
-  background-color: white;
-  color: black;
+  background-color: var(--baseOrange);
+  color: white;
   transform: translateX(15px);
-  border: 1px solid rgba(0, 0, 0, 0.537);
+  border: 1px solid white;
+  border-radius: 10px;
   box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.418);
 }
 

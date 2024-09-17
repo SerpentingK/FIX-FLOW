@@ -1,6 +1,13 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --baseOrange: rgb(216, 75, 23);
+  --baseOrange: #d84b17;
+  --baseGray: #363636;
+  --secGray: #adadad;
+  --baseShadow: 0 0 10px 4px rgba(0, 0, 0, 0.676);
+  --secShadow: 0 0 10px 2px rgba(0, 0, 0, 0.801);
+  --baseFont:"SUSE", sans-serif;
+  --titleFont:'Poppins', sans-serif;
+  --secFont: 'Roboto', sans-serif;
 }
 
 /* semantic color variables for this project */
@@ -43,7 +50,6 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
   transition:
     color 0.5s,
     background-color 0.5s;

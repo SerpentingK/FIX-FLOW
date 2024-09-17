@@ -45,7 +45,7 @@ const options = ref(["N. Factura", "Cliente", "Fecha"]);
     padding: 20px 50px;
     margin-top: 20px;
     border-radius: 40px;
-    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.676);
+    box-shadow: var(--baseShadow);
 }
 .search-form{
     display: flex;
@@ -53,17 +53,23 @@ const options = ref(["N. Factura", "Cliente", "Fecha"]);
 }
 .search-form select{
     background-color: white;
-    padding: 5px 10px; 
+    padding: 5px 30px; 
     border-radius: 5px;
 }
 .search-form input{
     background-color: white;
     border-radius: 5px;
+    padding: 0 20px;
 }
 .search-form button{
-    background-color: rgb(216, 75, 23);
+    background-color: var(--baseOrange);
     padding: 0 20px;
     border-radius: 5px;
     color: white;
+    transition: all .3s ease;;
+    border: 2px solid transparent;
+}
+.search-form button:hover{
+    border: 2px solid white;
 }
 </style>

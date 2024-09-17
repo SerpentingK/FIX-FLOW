@@ -11,16 +11,12 @@ const isActive = (path) => route.path === path;// Función para verificar si el 
                 to="/spareParts/list-spare" 
                 class="router"
                 :class="{'active': isActive('/spareParts/list-spare')}" 
-            >
-                Repuestos
-            </router-link>
+            >Repuestos</router-link>
             <router-link 
-                to="/spareParts" 
+                to="/spareParts/spare-categories" 
                 class="router" 
-                :class="{ 'active': isActive('/spareParts') }"
-            >
-                Categorias
-            </router-link>
+                :class="{ 'active': isActive('/spareParts/spare-categories') }"
+            >Categorias</router-link>
         </nav>
         <router-view class="info-container"></router-view>
     </section>
