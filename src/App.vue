@@ -1,9 +1,9 @@
 <script setup>
 import { ref, provide, watch, onMounted } from 'vue';
-import navBar from './components/nav-bar.vue';
-import logo from './components/logo.vue';
+import navBar from './components/main/nav-bar.vue';
+import logo from './components/main/logo.vue';
 import { useRouter, useRoute } from 'vue-router';
-import company from './components/company.vue';
+import company from './components/main/company.vue';
 
 // Definir una referencia global para la empresa que ha iniciado sesión
 const loggedCompany = ref(null);
