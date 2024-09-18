@@ -2,17 +2,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-URL_DB="mysql+mysqlconnector://root:2004@localhost:3306/tjt"
+DB_URL = "mysql+mysqlconnector://root:0000@localhost:3306/fixflow"
 
-create = create_engine(URL_DB)
+create = create_engine(DB_URL)
 
-local_session = sessionmaker(autocommit=False, autoflush=False, bind=create)
+sessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=create)
 
-base= declarative_base()
+base = declarative_base()
 
 def get_db():
-    connection=local_session()
+    connection = sessionLocal()
     try:
-        yield connection 
+        yield connection
     finally:
-        connection.close 
+        connection.close()

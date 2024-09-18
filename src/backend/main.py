@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+import bcrypt
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from model import base, TableCompany
-from connection import create, get_db, base
-from schema import Company as com
+from connection import create, get_db
+from model import base,companyRegistration
+from schema import company, status, companylogin as cl
 from fastapi.middleware.cors import CORSMiddleware
 import re
 
@@ -14,62 +15,37 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
 base.metadata.create_all(bind=create)
 
-EMAIL_REGEX = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+regex_mail = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
-current_company = None
+def is_valid_mail(mail:str) -> bool:
+    return re.match(regex_mail,mail) is not None
 
-@app.post("/postCompany", response_model=com)
-async def PostCompany(company_model:com, db:Session=Depends(get_db)):
-    
-    if not re.match(EMAIL_REGEX, company_model.mail):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Fromato del correo electronico no valido."
-        )
-    
-    existing_company = db.query(TableCompany).filter(
-        (TableCompany.company_user == company_model.company_user)|
-        (TableCompany.mail == company_model.mail)
-    ).first()
-    
-    if existing_company:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Empresa ya registrada con emil o username"
-        )
-        
-        
-    new_company = TableCompany(**company_model.dict())
-    db.add(new_company)
+@app.post("/insertCompany", response_model=status)
+async def insertCompany(company:company, db:Session=Depends(get_db)):
+    if not is_valid_mail(company.mail):
+        raise HTTPException(status_code=401,detail="Correo no valido")
+    name_company = db.query(companyRegistration).filter(companyRegistration.company_user==company.company_user).first()
+    if name_company:
+        raise HTTPException(status_code=401,detail="compañia ya existente")
+    encriptacion = bcrypt.hashpw(company.password.encode("utf-8"), bcrypt.gensalt())
+    data = companyRegistration(
+        company_user=company.company_user,
+        mail=company.mail,
+        password=encriptacion.decode('utf-8')
+    )
+    db.add(data)
     db.commit()
-    db.refresh(new_company)
-    return new_company
+    db.refresh(data)
+    return status(status="La compañia a sido registrada correctamente")
 
-@app.get("/startSession/{company_user}/{pasw}")
-async def GetCompany(company_user: str, pasw: str, db: Session = Depends(get_db)):
-    existing_company_user = db.query(TableCompany).filter(
-        TableCompany.company_user == company_user
-    ).first()
-    
-    print(f"usuario ingresada: {company_user}")
-    print(f"Contraseña almacenada: {pasw}")
-    
-    if not existing_company_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Nombre de usuario no registrado"
-        )
-    
-    
-    
-    if existing_company_user.pasw == pasw:
-        global current_company
-        current_company = company_user  # Guardar el usuario en la variable global
-        return {"message": f"Inicio de sesión exitoso para {company_user}"}
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Contraseña incorrecta"
-        )
+@app.post("/loginCompany", response_model=status)
+async def logincompany(company_user:cl, db:Session=Depends(get_db)):
+    db_company = db.query(companyRegistration).filter(companyRegistration.company_user == company_user.company_user).first()
+    if db_company is None:
+        raise HTTPException(status_code=400, detail="Compañia no existe")
+    if not bcrypt.checkpw(company_user.password.encode('utf-8'), db_company.password.encode('utf-8')):
+        raise HTTPException(status_code=401, detail="Contraseña Incorrecta")
+    return status(status="Inicio de sesion exitoso")
