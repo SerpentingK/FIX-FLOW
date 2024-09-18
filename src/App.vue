@@ -7,9 +7,11 @@ import company from './components/company.vue';
 
 // Definir una referencia global para la empresa que ha iniciado sesión
 const loggedCompany = ref(null);
+const workersCount = ref(0);
 
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
+provide('workersCount', workersCount)
 
 
 // Instancias de router y route

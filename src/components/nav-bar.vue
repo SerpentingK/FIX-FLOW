@@ -22,7 +22,7 @@ const isActive = (path) => route.path.startsWith(path);
 <template>
   <nav>
     <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
-    <router-link to="/workers" class="router" :class="{ active: isActive('/workers') }" 
+    <router-link to="/workers/login-worker" class="router" :class="{ active: isActive('/workers') }" 
       v-if="loggedCompany != null">Colaboradores</router-link>
     <router-link to="/phones" class="router" :class="{ active: isActive('/phones') }"
       v-if="loggedCompany != null">Celulares</router-link>
