@@ -20,6 +20,8 @@ const route = useRoute();
 const handleRedirection = () => {
   if (route.path === '/users' && loggedCompany.value !== null) {
     router.push('/session'); // Redirigir a /session si loggedCompany es diferente de null
+  }else if(route.path !== '/users' && loggedCompany.value === null ){
+    router.push('/users');
   }
 };
 // Ejecutar la función al montar el componente

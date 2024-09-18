@@ -4,9 +4,10 @@ import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
 
+const loggedCompany = inject('loggedCompany', ref(null))
+
 // Comprobamos si hay historial para regresar
 const canGoBack = ref(window.history.length > 1);
-const loggedCompany = inject('loggedCompany', ref(null))
 // Función para ir a la página anterior
 const goBack = () => {
   if (canGoBack.value) {
@@ -22,7 +23,7 @@ const isActive = (path) => route.path.startsWith(path);
   <nav>
     <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
     <router-link to="/workers" class="router" :class="{ active: isActive('/workers') }" 
-      v-if="loggedCompany != null">Tecnicos</router-link>
+      v-if="loggedCompany != null">Colaboradores</router-link>
     <router-link to="/phones" class="router" :class="{ active: isActive('/phones') }"
       v-if="loggedCompany != null">Celulares</router-link>
     <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
