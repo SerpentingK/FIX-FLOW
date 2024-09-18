@@ -1,7 +1,7 @@
 <script>
-import { ref, onMounted, inject } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, inject } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
@@ -22,34 +22,36 @@ export default {
     const company = ref({
       company_user: "",
       mail: "",
-      pasw: ""
+      password: "",
     });
 
     const session = ref({
       company_user: "",
-      pasw: ""
+      password: "",
     });
 
     const msg = ref("");
 
     // Inyectar la variable global
-    const loggedCompany = inject('loggedCompany', ref(null));
+    const loggedCompany = inject("loggedCompany", ref(null));
 
     const startSession = async () => {
       try {
-        const answer = await axios.get(
-          `http://127.0.0.1:8000/startSession/${session.value.company_user}/${session.value.pasw}`
+        const answer = await axios.post(
+          `http://127.0.0.1:8000/loginCompany`, {
+            company_user: session.value.company_user,
+            password: session.value.password
+          }
         );
         msg.value = answer.data.msg;
-
         // Asignar la empresa que inició sesión a la variable global
         loggedCompany.value = session.value.company_user;
         // Redirigir a /tec si el inicio de sesión es exitoso
-        router.push('/workers');
+        router.push("/workers");
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al iniciar sesión: ${error.response.data.detail}`);
-          console.error('Error al iniciar sesión', error.response.data);
+          console.error("Error al iniciar sesión", error.response.data);
         } else {
           alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
           console.error(error);
@@ -59,23 +61,23 @@ export default {
 
     const postCompany = async () => {
       try {
+        console.log("Datos a enviar:", company.value);
         const answer = await axios.post(
-          "http://127.0.0.1:8000/postCompany",
+          "http://127.0.0.1:8000/insertCompany",
           company.value
         );
         msg.value = answer.data.msg;
         company.value = {
           company_user: "",
           mail: "",
-          pasw: ""
+          password: "",
         };
 
         toggle();
-
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al registrar empresa: ${error.response.data.detail}`);
-          console.error('Error al registrar empresa', error.response.data);
+          console.error("Error al registrar empresa", error.response.data);
         } else {
           alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
           console.error(error);
@@ -90,12 +92,11 @@ export default {
       session,
       msg,
       toggle,
-      container
+      container,
     };
-  }
+  },
 };
 </script>
-
 
 <template>
   <div class="container">
@@ -105,11 +106,19 @@ export default {
         <span>Use su usuario y su contraseña</span>
         <div class="container-input">
           <ion-icon name="person-outline"></ion-icon>
-          <input v-model="session.company_user" type="text" placeholder="Usuario" />
+          <input
+            v-model="session.company_user"
+            type="text"
+            placeholder="Usuario"
+          />
         </div>
         <div class="container-input">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input v-model="session.pasw" type="password" placeholder="Contraseña" />
+          <input
+            v-model="session.password"
+            type="password"
+            placeholder="Contraseña"
+          />
         </div>
         <a href="#">¿Olvidaste tu contraseña?</a>
         <button type="submit" class="button">INICIAR SESION</button>
@@ -121,15 +130,27 @@ export default {
         <span>Use su correo electronico para el registro</span>
         <div class="container-input">
           <ion-icon name="mail-outline"></ion-icon>
-          <input v-model="company.mail" type="text" placeholder="Correo Electronico" />
+          <input
+            v-model="company.mail"
+            type="text"
+            placeholder="Correo Electronico"
+          />
         </div>
         <div class="container-input">
           <ion-icon name="person-outline"></ion-icon>
-          <input v-model="company.company_user" type="text" placeholder="Usuario" />
+          <input
+            v-model="company.company_user"
+            type="text"
+            placeholder="Usuario"
+          />
         </div>
         <div class="container-input">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input v-model="company.pasw" type="password" placeholder="Contraseña" />
+          <input
+            v-model="company.password"
+            type="password"
+            placeholder="Contraseña"
+          />
         </div>
         <button type="submit" class="button">REGISTRO</button>
       </form>
@@ -218,7 +239,7 @@ export default {
   height: 100%;
   background-color: inherit;
 }
-.container-input ion-icon{
+.container-input ion-icon {
   color: gray;
 }
 
@@ -262,7 +283,7 @@ export default {
   display: flex;
   align-items: center;
   transform: translateX(100%);
-  transition: transform 0.6s ease-in-out, border-radius .4s ease-in;
+  transition: transform 0.6s ease-in-out, border-radius 0.4s ease-in;
   overflow: hidden;
   border-radius: 0 0 0 50%;
 }
