@@ -3,15 +3,19 @@ import { ref, provide, watch, onMounted } from 'vue';
 import navBar from './components/main/nav-bar.vue';
 import logo from './components/main/logo.vue';
 import { useRouter, useRoute } from 'vue-router';
-import company from './components/main/company.vue';
+import company from './components/companies/company.vue';
 
 // Definir una referencia global para la empresa que ha iniciado sesión
 const loggedCompany = ref(null);
 const workersCount = ref(0);
+const loggedWorker = ref(null);
+const workerRole= "ADMINISTRADOR";//"COLABORADOR"
 
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
-provide('workersCount', workersCount)
+provide('workersCount', workersCount);
+provide('loggedWorker', loggedWorker);
+provide('workerRole', workerRole);
 
 
 // Instancias de router y route
@@ -24,6 +28,8 @@ const handleRedirection = () => {
     router.push('/session'); // Redirigir a /session si loggedCompany es diferente de null
   }else if(route.path !== '/users' && loggedCompany.value === null ){
     router.push('/users');
+  }else if (route.path === '/workers/login-worker' && workersCount.value === 0){
+    router.push('/workers/new-worker')
   }
 };
 // Ejecutar la función al montar el componente
@@ -42,7 +48,7 @@ watch(
 <template>
   <section class="body">
     <navBar></navBar>
-    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`"></company>
+    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`"  :logged-worker="`${loggedWorker}`"></company>
     <section>
       <router-view></router-view>
     </section>

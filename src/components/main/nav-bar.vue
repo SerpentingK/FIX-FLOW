@@ -5,6 +5,7 @@ import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 const route = useRoute(); // Obtiene la ruta actual
 
 const loggedCompany = inject('loggedCompany', ref(null))
+const loggedWorker = inject("loggedWorker", ref(null))
 
 // Comprobamos si hay historial para regresar
 const canGoBack = ref(window.history.length > 1);
@@ -25,9 +26,9 @@ const isActive = (path) => route.path.startsWith(path);
     <router-link to="/workers/login-worker" class="router" :class="{ active: isActive('/workers') }" 
       v-if="loggedCompany != null">Colaboradores</router-link>
     <router-link to="/phones" class="router" :class="{ active: isActive('/phones') }"
-      v-if="loggedCompany != null">Celulares</router-link>
+      v-if="loggedCompany != null && loggedWorker != null">Celulares</router-link>
     <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
-      v-if="loggedCompany != null">Repuestos</router-link>
+      v-if="loggedCompany != null && loggedWorker != null">Repuestos</router-link>
     <button @click="goBack" :disabled="!canGoBack" class="back-button">
       <ion-icon name="arrow-back-circle-outline"></ion-icon>
     </button>
