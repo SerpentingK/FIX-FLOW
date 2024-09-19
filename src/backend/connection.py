@@ -4,7 +4,6 @@ from sqlalchemy.orm import sessionmaker
 
 DB_URL = "mysql+mysqlconnector://root:2004@localhost:3306/fixflow"
 
-
 create = create_engine(DB_URL)
 
 sessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=create)
