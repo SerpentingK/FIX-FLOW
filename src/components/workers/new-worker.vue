@@ -12,21 +12,21 @@
             </label>
             <label for="pasw-input" class="input-container">
                 <span>Contraseña: </span>
-                <input type="text" id="doc-input">
+                <input type="text" id="pasw-input">
             </label>
-            <div class="mydict">
+            <div class="role-select">
                 <div>
-                    <label>
+                    <label class="select-label">
                         <input type="radio" name="radio">
-                        <span>Women</span>
+                        <span>GERENTE</span>
                     </label>
-                    <label>
+                    <label class="select-label">
                         <input type="radio" name="radio">
-                        <span>Men</span>
+                        <span>ADMINISTRADOR</span>
                     </label>
-                    <label>
+                    <label class="select-label">
                         <input type="radio" name="radio">
-                        <span>Divided</span>
+                        <span>COLABORADOR</span>
                     </label>
 
                 </div>
@@ -90,21 +90,20 @@ h2 {
     font-family: var(--baseFont);
 }
 
-/* From Uiverse.io by Pradeepsaranbishnoi */
 :focus {
     outline: 0;
     border-color: #2260ff;
     box-shadow: 0 0 0 4px #b5c9fc;
 }
 
-.mydict div {
+.role-select div {
     display: flex;
     flex-wrap: wrap;
     margin-top: 0.5rem;
     justify-content: center;
 }
 
-.mydict input[type="radio"] {
+.role-select input[type="radio"] {
     clip: rect(0 0 0 0);
     clip-path: inset(100%);
     height: 1px;
@@ -114,14 +113,14 @@ h2 {
     width: 1px;
 }
 
-.mydict input[type="radio"]:checked+span {
+.role-select input[type="radio"]:checked+span {
     box-shadow: 0 0 0 0.0625em #0043ed;
     background-color: #dee7ff;
     z-index: 1;
     color: #0043ed;
 }
 
-label span {
+.select-label span {
     display: block;
     cursor: pointer;
     background-color: #fff;
@@ -135,11 +134,11 @@ label span {
     transition: background-color .5s ease;
 }
 
-label:first-child span {
+.select-label:first-child span {
     border-radius: .375em 0 0 .375em;
 }
 
-label:last-child span {
+.select-label:last-child span {
     border-radius: 0 .375em .375em 0;
 }
 </style>
