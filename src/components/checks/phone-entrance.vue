@@ -1,5 +1,5 @@
 <script setup>
-import celForm from './cel-form.vue';
+import celForm from './phone-form.vue';
 </script>
 <template>
     <section class="container">
