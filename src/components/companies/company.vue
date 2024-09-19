@@ -1,29 +1,19 @@
 <script setup>
-
+import {inject, ref} from 'vue';
 import { useRoute } from 'vue-router'; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
 const isActive = (path) => route.path === path;// Función para verificar si el enlace es el activo
-
-defineProps({
-    loggedCompany: {
-        type: String,
-        required: true
-    },
-    loggedWorker: {
-        type: String,
-        required: false,
-        default: null
-    }
-})
+const loggedCompany = inject("loggedCompany", ref(null))
+const loggedWorker = inject("loggedWorker", ref(null))
 </script>
 <template>
     <section class="container">
-        <router-link to="/session" class="router" :class="{ 'active': isActive('/session') }">
+        <router-link to="/session" class="router" :class="{ 'active': isActive('/session'), 'logged': loggedCompany != null }">
             <ion-icon name="person-circle-outline"></ion-icon>
             <span>{{ loggedCompany }}</span>
         </router-link>
-        <router-link to="/worker" class="router" :class="{ 'active': isActive('/worker') }" v-if="loggedWorker != null">
+        <router-link to="/worker" class="router" :class="{ 'active': isActive('/worker'), 'logged': loggedWorker != null }">
             <ion-icon name="person-circle-outline"></ion-icon>
             <span>{{ loggedWorker}}</span>
         </router-link>
@@ -59,11 +49,18 @@ defineProps({
     overflow: hidden;
     background: var(--baseOrange);
     color: black;
+    transform: translateX(400px);
+    opacity: 0;
     box-shadow: var(--secShadow);
+    transition: all .4s ease;
 }
 .router.active{
     color:white;
 
+}
+.router.logged{
+    transform: translateX(0);
+    opacity: 1;
 }
 .router.active::before{
     background: var(--baseOrange);
