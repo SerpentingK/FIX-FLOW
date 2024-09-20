@@ -1,12 +1,12 @@
 <script>
-import { ref, inject } from "vue";
+import { ref, inject, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const router = useRouter();
-    const workersCount = inject("workersCount", ref(null));
+    const workersCount = inject("workersCount", ref(0));
     const loggedCompany = inject("loggedCompany", ref(null));
     const worker = ref({
       wname: "",
@@ -23,8 +23,8 @@ export default {
           worker.value
         );
         msg.value = answer.data.msg;
-        console.log(msg.value);
-        workersCount.value += 1;
+        workersCount.value++
+        console.log(workersCount.value);
         router.push("/workers/login-worker");
       } catch (error) {
         if (error.response && error.response.data) {
@@ -39,6 +39,7 @@ export default {
     return {
       worker,
       postWorker,
+      workersCount
     };
   },
 };
