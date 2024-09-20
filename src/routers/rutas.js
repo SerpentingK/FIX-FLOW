@@ -1,14 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
-import workers from "@/components/workers.vue";
-import users from "@/components/users.vue";
-import phones from "@/components/phones.vue";
-import spareParts from "@/components/spare-parts.vue";
-import celForm from "@/components/cel-entrance.vue";
-import check_list from "@/components/check_list.vue";
-import listSpare from "@/components/spare-list.vue";
-import spareCategories from "@/components/spare-categories.vue";
-import session from "@/components/session.vue";
-import workersList from "@/components/workers-list.vue";
+import workers from "@/components/workers/workers.vue";
+import loginCompany from "@/components/companies/login-company.vue";
+import phones from "@/components/checks/phones.vue";
+import spareParts from "@/components/spare-parts/spare-parts.vue";
+import celForm from "@/components/checks/phone-entrance.vue";
+import check_list from "@/components/checks/check_list.vue";
+import listSpare from "@/components/spare-parts/spare-list.vue";
+import spareCategories from "@/components/spare-parts/spare-categories.vue";
+import session from "@/components/companies/session.vue";
+import workersList from "@/components/workers/workers-list.vue";
+import loginWorker from "@/components/workers/login-worker.vue";
+import newWorker from "@/components/workers/new-worker.vue";
 
 const routes = [
   {
@@ -18,7 +20,7 @@ const routes = [
   {
     path: "/users",
     name: "usuarios",
-    component: users
+    component: loginCompany
   },
   {
     path: "/session",
@@ -29,11 +31,20 @@ const routes = [
     path: "/workers",
     name: "workers",
     component: workers,
-  },
-  {
-    path: "/workers-list",
-    name: "workers-list",
-    component: workersList
+    children: [
+      {
+        path: "new-worker",
+        component: newWorker
+      },
+      {
+        path: "workers-list",
+        component: workersList
+      },
+      {
+        path: "login-worker",
+        component: loginWorker
+      }
+    ]
   },
   {
     path: "/phones",

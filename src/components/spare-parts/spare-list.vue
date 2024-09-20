@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import parts from "./parts.vue";
+import parts from "./spare-part.vue";
 
 const optionsSp = ref(["Pantallas", "Pachas", "Baterias"]);
 </script>

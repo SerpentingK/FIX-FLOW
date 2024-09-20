@@ -34,6 +34,7 @@ export default {
 
     // Inyectar la variable global
     const loggedCompany = inject("loggedCompany", ref(null));
+    const workersCount = inject("workersCount", ref(null))
 
     const startSession = async () => {
       try {
@@ -46,8 +47,11 @@ export default {
         msg.value = answer.data.msg;
         // Asignar la empresa que inició sesión a la variable global
         loggedCompany.value = session.value.company_user;
-        // Redirigir a /tec si el inicio de sesión es exitoso
-        router.push("/workers");
+        if(workersCount > 0){
+          router.push("/workers/login-worker");
+        }else{
+          router.push("/workers/new-worker")
+        }
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al iniciar sesión: ${error.response.data.detail}`);
