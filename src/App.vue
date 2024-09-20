@@ -9,7 +9,7 @@ import company from './components/companies/company.vue';
 const loggedCompany = ref(null);
 const workersCount = ref(0);
 const loggedWorker = ref(null);
-const workerRole= "ADMINISTRADOR";//"COLABORADOR"
+const workerRole= ref(null)
 
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
