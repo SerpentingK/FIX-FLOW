@@ -22,12 +22,12 @@ export default {
     const company = ref({
       company_user: "",
       mail: "",
-      password: "",
+      password: ""
     });
 
     const session = ref({
       company_user: "",
-      password: "",
+      password: ""
     });
 
     const msg = ref("");

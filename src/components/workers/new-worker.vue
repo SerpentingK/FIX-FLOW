@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const router = useRouter();
+    const workersCount = inject("workersCount", ref(null));
     const loggedCompany = inject("loggedCompany", ref(null));
     const worker = ref({
       wname: "",
@@ -22,7 +23,8 @@ export default {
           worker.value
         );
         msg.value = answer.data.msg;
-        console(msg.value);
+        console.log(msg.value);
+        workersCount.value += 1;
         router.push("/workers/login-worker");
       } catch (error) {
         if (error.response && error.response.data) {
