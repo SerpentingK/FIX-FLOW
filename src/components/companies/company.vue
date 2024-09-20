@@ -13,7 +13,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
             <ion-icon name="person-circle-outline"></ion-icon>
             <span>{{ loggedCompany }}</span>
         </router-link>
-        <router-link to="/worker" class="router" :class="{ 'active': isActive('/worker'), 'logged': loggedWorker != null }">
+        <router-link to="/workers/worker" class="router" :class="{ 'active': isActive('/worker'), 'logged': loggedWorker != null }">
             <ion-icon name="person-circle-outline"></ion-icon>
             <span>{{ loggedWorker}}</span>
         </router-link>

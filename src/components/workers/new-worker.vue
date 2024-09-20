@@ -1,11 +1,14 @@
 <script setup>
 import {ref, inject} from 'vue';
+import { useRouter } from "vue-router";
 
 const workersCount = inject("workersCount", ref(null))
+const router = useRouter();
 
 const increaseWorkers = (event) => {
     event.preventDefault(); // Evitar recarga de página
     workersCount.value += 1;
+    router.push('/workers/login-worker')
     //Solucion temporal al inicio de sesion
 };
 </script>
@@ -32,11 +35,11 @@ const increaseWorkers = (event) => {
                         <input type="radio" name="radio">
                         <span>GERENTE</span>
                     </label>
-                    <label class="select-label">
+                    <label class="select-label" v-if="workersCount > 0">
                         <input type="radio" name="radio">
                         <span>ADMINISTRADOR</span>
                     </label>
-                    <label class="select-label">
+                    <label class="select-label" v-if="workersCount > 0">
                         <input type="radio" name="radio">
                         <span>COLABORADOR</span>
                     </label>

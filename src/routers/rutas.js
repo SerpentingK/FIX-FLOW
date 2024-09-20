@@ -11,6 +11,7 @@ import session from "@/components/companies/session.vue";
 import workersList from "@/components/workers/workers-list.vue";
 import loginWorker from "@/components/workers/login-worker.vue";
 import newWorker from "@/components/workers/new-worker.vue";
+import worker from "@/components/workers/worker.vue";
 
 const routes = [
   {
@@ -43,6 +44,10 @@ const routes = [
       {
         path: "login-worker",
         component: loginWorker
+      },
+      {
+        path: "worker",
+        component: worker
       }
     ]
   },

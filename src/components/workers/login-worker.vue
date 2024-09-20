@@ -1,7 +1,8 @@
 <script setup>
-import {inject, ref} from 'vue';
+import { inject, ref } from 'vue';
 
 const loggedWorker = inject("loggedWorker", ref(null))
+const workerRole = inject("workerRole", ref(null))
 
 const login = (event) => {
     event.preventDefault();
@@ -40,7 +41,8 @@ h2 {
     color: white;
     margin: 20px 0;
 }
-.container{
+
+.container {
     background-color: var(--baseGray);
     padding: 20px 30px;
     display: flex;
@@ -50,21 +52,24 @@ h2 {
     box-shadow: var(--baseShadow);
     border: 4px solid var(--baseOrange);
 }
-.container span{
+
+.container span {
     color: gray;
     font-weight: bolder;
     letter-spacing: 1px;
 }
-.login-form{
+
+.login-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 20px 0;
     width: 100%;
     padding: 20px;
-    gap:20px;
+    gap: 20px;
 }
-.input-container{
+
+.input-container {
     display: flex;
     justify-content: center;
     gap: 15px;
@@ -75,16 +80,19 @@ h2 {
     box-shadow: var(--secShadow);
     align-items: center;
 }
-.input-container input{
+
+.input-container input {
     all: unset;
 }
-.btn span{
+
+.btn span {
     color: white;
     letter-spacing: 3px;
     font-weight: 300;
     transition: all .4s;
 }
-.btn{
+
+.btn {
     all: unset;
     padding: 20px;
     display: flex;
@@ -97,18 +105,22 @@ h2 {
     box-shadow: var(--secShadow);
     transition: all .6s;
 }
-.btn ion-icon{
+
+.btn ion-icon {
     scale: 2;
     transform: translateY(30px);
     transition: all .4s;
 }
-.btn:hover ion-icon{
+
+.btn:hover ion-icon {
     transform: translateY(0px);
 }
-.btn:hover{
+
+.btn:hover {
     opacity: .8;
 }
-.btn:hover span{
+
+.btn:hover span {
     scale: 1.05;
 }
 </style>
