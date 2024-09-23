@@ -1,13 +1,43 @@
-<script setup>
-import { inject, ref } from 'vue';
+<script>
+import { inject, ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+export default {
+  setup() {
+    const router = useRouter();
+    const loggedWorker = inject("loggedWorker", ref(null));
+    const workerRole = inject("workerRole", ref(null));
+    const sessionworker = ref({
+      wname: "",
+      password: "",
+    });
+    const msg = ref("");
 
-const loggedWorker = inject("loggedWorker", ref(null))
-const workerRole = inject("workerRole", ref(null))
-
-const login = (event) => {
-    event.preventDefault();
-    loggedWorker.value = "David"
-    //Solucion temporal al inicio de sesion
+    const startUsers = async () => {
+      try {
+        const answer = await axios.post("http://127.0.0.1:8000/loginWorker", {
+          wname: sessionworker.value.wname,
+          password: sessionworker.value.password,
+        });
+        msg.value = answer.data.status;
+        loggedWorker.value = sessionworker.value.wname;
+        workerRole.value = answer.data.role;
+        router.push("/phones/cel-form")
+      } catch (error) {
+        if (error.response && error.response.data) {
+          alert(`Error al iniciar sesión: ${error.response.data.detail}`);
+          console.error("Error al iniciar sesión", error.response.data);
+        } else {
+          alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
+          console.error(error);
+        }
+      }
+    };
+    return {
+      sessionworker,
+      startUsers,
+    };
+  },
 };
 </script>
 
