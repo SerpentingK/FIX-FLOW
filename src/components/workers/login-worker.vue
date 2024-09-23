@@ -1,76 +1,36 @@
-<script>
-import { inject, ref } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
-export default {
-  setup() {
-    const router = useRouter();
-    const loggedWorker = inject("loggedWorker", ref(null));
-    const workerRole = inject("workerRole", ref(null));
-    const sessionworker = ref({
-      wname: "",
-      password: "",
-    });
-    const msg = ref("");
+<script setup>
+import { inject, ref } from 'vue';
 
-    const startUsers = async () => {
-      try {
-        const answer = await axios.post("http://127.0.0.1:8000/loginWorker", {
-          wname: sessionworker.value.wname,
-          password: sessionworker.value.password,
-        });
-        msg.value = answer.data.status;
-        loggedWorker.value = sessionworker.value.wname;
-        workerRole.value = answer.data.role;
-        router.push("/phones/cel-form")
-      } catch (error) {
-        if (error.response && error.response.data) {
-          alert(`Error al iniciar sesión: ${error.response.data.detail}`);
-          console.error("Error al iniciar sesión", error.response.data);
-        } else {
-          alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
-          console.error(error);
-        }
-      }
-    };
-    return {
-      sessionworker,
-      startUsers,
-    };
-  },
+const loggedWorker = inject("loggedWorker", ref(null))
+const workerRole = inject("workerRole", ref(null))
+
+const login = (event) => {
+    event.preventDefault();
+    loggedWorker.value = "David"
+    //Solucion temporal al inicio de sesion
 };
 </script>
 
 <template>
-  <section class="container">
-    <h2>INICIE SESIÓN</h2>
-    <span>Ingrese su usuario y contraseña</span>
-    <span>Si no tiene uno comuniquese su encargado</span>
-    <form class="login-form" @submit.prevent="startUsers">
-      <label for="input-name " class="input-container">
-        <ion-icon name="person-outline"></ion-icon>
-        <input
-          v-model="sessionworker.wname"
-          type="text"
-          id="input-name"
-          placeholder="Usuario"
-        />
-      </label>
-      <label for="pasw-input" class="input-container">
-        <ion-icon name="lock-closed-outline"></ion-icon>
-        <input
-          v-model="sessionworker.password"
-          type="password"
-          id="pasw-input"
-          placeholder="Contraseña"
-        />
-      </label>
-      <button class="btn">
-        <span>Iniciar turno</span>
-        <ion-icon name="caret-forward-outline"></ion-icon>
-      </button>
-    </form>
-  </section>
+    <section class="container">
+        <h2>INICIE SESIÓN</h2>
+        <span>Ingrese su usuario y contraseña</span>
+        <span>Si no tiene uno comuniquese su encargado</span>
+        <form class="login-form" @submit="login">
+            <label for="input-name " class="input-container">
+                <ion-icon name="person-outline"></ion-icon>
+                <input type="text" id="input-name" placeholder="Usuario">
+            </label>
+            <label for="pasw-input" class="input-container">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                <input type="password" id="pasw-input" placeholder="Contraseña">
+            </label>
+            <button class="btn">
+                <span>Iniciar turno</span>
+                <ion-icon name="caret-forward-outline"></ion-icon>
+            </button>
+        </form>
+    </section>
 </template>
 
 <style scoped>

@@ -9,7 +9,8 @@ import company from './components/companies/company.vue';
 const loggedCompany = ref(null);
 const workersCount = ref(0);
 const loggedWorker = ref(null);
-const workerRole= ref(null);
+const workerRole= "ADMINISTRADOR";//"COLABORADOR" "ADMINISTRADOR"
+
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
 provide('workersCount', workersCount);
@@ -33,7 +34,7 @@ const handleRedirection = () => {
 };
 // Ejecutar la función al montar el componente
 onMounted(() => {
-    handleRedirection();
+  handleRedirection();
 });
 // Verificar cualquier cambio en la ruta
 watch(
@@ -43,8 +44,6 @@ watch(
   }
 );
 </script>
-
-
 
 <template>
   <section class="body">
