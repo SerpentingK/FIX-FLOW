@@ -27,8 +27,8 @@ const handleRedirection = () => {
     router.push('/session'); // Redirigir a /session si loggedCompany es diferente de null
   }else if(route.path !== '/users' && loggedCompany.value === null ){
     router.push('/users');
-  }else if (route.path === '/workers/login-worker' && workersCount.value === 0){
-    router.push('/workers/new-worker')
+  }else if (route.path === '/workers/login-worker' && loggedWorker.value !== null){
+    router.push('/workers/worker')
   }
 };
 // Ejecutar la función al montar el componente
