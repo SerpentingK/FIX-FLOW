@@ -42,8 +42,11 @@ const loggedWorker = inject("loggedWorker", ref(null))
             <router-view></router-view>
         </section>
 
-        <router-link to="/workers/workers-list" v-if="workerRole == 'Gerente'" class="router edit-btn">
-            <ion-icon name="create-outline"></ion-icon>
+        <router-link to="/workers/workers-list" v-if="workerRole == 'ADMINISTRADOR'" class="edit-btn">
+            <div>
+                <ion-icon name="create-outline"></ion-icon>
+                <span>Editar colaboradores</span>
+            </div>
         </router-link>
     </section>
 
@@ -91,8 +94,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
     box-shadow: var(--secShadow);
     width: 300px;
 }
-
-.info-cont span {
+.info-cont span{
     font-weight: bolder;
     font-size: 20px;
 }
@@ -115,7 +117,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
     flex-direction: column;
     align-items: start;
     left: -70px;
-    gap: 20px;
+    gap:20px;
 }
 
 .router {
@@ -131,8 +133,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
     box-shadow: var(--baseShadow);
     transition: all .4s ease;
 }
-
-.router ion-icon {
+.router ion-icon{
     font-size: 30px;
 }
 
@@ -140,11 +141,4 @@ const loggedWorker = inject("loggedWorker", ref(null))
     background-color: var(--baseGray);
     scale: 1.2;
 }
-
-.edit-btn{
-    position: absolute;
-    right: -70px;
-    top: 0;
-}
-
 </style>
