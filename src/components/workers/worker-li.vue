@@ -19,9 +19,7 @@ const toDelete = (msg = "") => {
     toggleAlertVisibility(msg);
     isAlertVisible.value = true; // Marcar que la alerta ha sido mostrada
   } else {
-    // Si la alerta ya fue mostrada, git merge main
- merge main
- con la eliminación
+    // Si la alerta ya fue mostrada
     deleteWorker();
   }
 };
