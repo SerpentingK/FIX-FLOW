@@ -55,7 +55,7 @@ defineProps({
     <span class="spans">{{ document }}</span>
     <span class="spans">{{ wrole }}</span>
     <div class="op-container">
-      <button class="delete-btn" @click="toDelete('PRESIONE OTRA VEZ PARA ELIMINAR')">
+      <button class="delete-btn" @click="toDelete('PRESIONE OTRA VEZ PARA ELIMINAR  ')">
         <ion-icon name="close"></ion-icon>
       </button>
     </div>
