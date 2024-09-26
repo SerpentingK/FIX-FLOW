@@ -1,97 +1,65 @@
-<script>
-import { ref, inject, onMounted } from "vue";
-import axios from "axios";
+<script setup>
+import {ref, inject} from 'vue';
 import { useRouter } from "vue-router";
 
-export default {
-  setup() {
-    const router = useRouter();
-    const workersCount = inject("workersCount", ref(0));
-    const loggedCompany = inject("loggedCompany", ref(null));
-    const worker = ref({
-      wname: "",
-      password: "",
-      document: "",
-      company: loggedCompany.value,
-      wrole: "Gerente",
-    });
-    const msg = ref("");
-    const postWorker = async () => {
-      try {
-        const answer = await axios.post(
-          "http://127.0.0.1:8000/insertWorker",
-          worker.value
-        );
-        msg.value = answer.data.msg;
-        workersCount.value++
-        console.log(workersCount.value);
-        router.push("/workers/login-worker");
-      } catch (error) {
-        if (error.response && error.response.data) {
-          alert(`Error al registrar empresa: ${error.response.data.detail}`);
-          console.error("Error al registrar empresa", error.response.data);
-        } else {
-          alert("Ha ocurrido un error inesperado. Inténtalo de nuevo.");
-          console.error(error);
-        }
-      }
-    };
-    return {
-      worker,
-      postWorker,
-      workersCount
-    };
-  }
-}
+const workersCount = inject("workersCount", ref(null))
+const router = useRouter();
+
+const increaseWorkers = (event) => {
+    event.preventDefault(); // Evitar recarga de página
+    workersCount.value += 1;
+    router.push('/workers/login-worker')
+    //Solucion temporal al inicio de sesion
+};
 </script>
 
-  <template>
+<template>
     <section class="container">
-      <h2>CREE UN NUEVO COLABORADOR</h2>
-      <form class="worker-form" @submit.prevent="postWorker">
-        <label for="name-input" class="input-container">
-          <span>Nombre: </span>
-          <input v-model="worker.wname" type="text" id="name-input" />
-        </label>
-        <label for="doc-input" class="input-container">
-          <span>Documento: </span>
-          <input v-model="worker.document" type="text" id="doc-input" />
-        </label>
-        <label for="pasw-input" class="input-container">
-          <span>Contraseña: </span>
-          <input v-model="worker.password" type="text" id="pasw-input" />
-        </label>
-        <div class="role-select">
-          <div>
-            <label class="select-label">
-              <input v-model="worker.wrole" value="Gerente" type="radio" name="radio" />
-              <span>GERENTE</span>
+        <h2>CREE UN NUEVO COLABORADOR</h2>
+        <form class="worker-form" @submit="increaseWorkers">
+            <label for="name-input" class="input-container">
+                <span>Nombre: </span>
+                <input type="text" id="name-input">
             </label>
-            <label class="select-label">
-              <input v-model="worker.wrole" value="Administrador" type="radio" name="radio" />
-              <span>ADMINISTRADOR</span>
+            <label for="doc-input" class="input-container">
+                <span>Documento: </span>
+                <input type="text" id="doc-input">
             </label>
-            <label class="select-label">
-              <input v-model="worker.wrole" value="Colaborador" type="radio" name="radio" />
-              <span>COLABORADOR</span>
+            <label for="pasw-input" class="input-container">
+                <span>Contraseña: </span>
+                <input type="text" id="pasw-input">
             </label>
-          </div>
-        </div>
-        <div>{{ workersCount }}</div>
-        <button type="submit" class="btn"><span>Registrar</span></button>
-      </form>
-      </section>
-      
-  </template>
-  <style scoped>
-  h2 {
+            <div class="role-select">
+                <div>
+                    <label class="select-label">
+                        <input type="radio" name="radio">
+                        <span>GERENTE</span>
+                    </label>
+                    <label class="select-label" v-if="workersCount > 0">
+                        <input type="radio" name="radio">
+                        <span>ADMINISTRADOR</span>
+                    </label>
+                    <label class="select-label" v-if="workersCount > 0">
+                        <input type="radio" name="radio">
+                        <span>COLABORADOR</span>
+                    </label>
+
+                </div>
+            </div>
+            <div>{{workersCount}}</div>
+            <button type="submit" class="btn"><span>Registrar</span></button>
+        </form>
+    </section>
+</template>
+<style scoped>
+h2 {
     font-weight: bolder;
     font-family: var(--titleFont);
     font-size: 30px;
     color: white;
-  }
+}
 
-  .container {
+.container {
     background-color: var(--baseGray);
     padding: 30px 40px;
     display: flex;
@@ -101,18 +69,18 @@ export default {
     box-shadow: var(--baseShadow);
     border: 4px solid var(--baseOrange);
     border-radius: 20px;
-  }
+}
 
-  .worker-form {
+.worker-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
     gap: 20px;
     padding: 10px;
-  }
+}
 
-  .input-container {
+.input-container {
     background-color: white;
     color: black;
     display: flex;
@@ -123,36 +91,35 @@ export default {
     box-shadow: var(--secShadow);
     font-size: 20px;
     border-radius: 10px;
-  }
+}
 
-  .input-container input {
+.input-container input {
     all: unset;
-  }
+}
 
-  .worker-form select {
+.worker-form select {
     background-color: white;
     border-radius: 20px;
     padding: 15px 30px;
     box-shadow: var(--secShadow);
     font-size: 20px;
     font-family: var(--baseFont);
-  }
+}
 
-  :focus {
+:focus {
     outline: 0;
     border-color: var(--baseOrange);
     box-shadow: 0 0 0 4px #b5c9fc;
-  }
-
-  .role-select div {
+}
+.role-select div {
     display: flex;
     flex-wrap: wrap;
     margin-top: 0.5rem;
     justify-content: center;
     box-shadow: var(--secShadow);
-  }
+}
 
-  .role-select input[type="radio"] {
+.role-select input[type="radio"] {
     clip: rect(0 0 0 0);
     clip-path: inset(100%);
     height: 1px;
@@ -160,42 +127,42 @@ export default {
     position: absolute;
     white-space: nowrap;
     width: 1px;
-    transition: all 0.4s ease;
-  }
+    transition: all .4s ease;
+}
 
-  .role-select input[type="radio"]:checked+span {
+.role-select input[type="radio"]:checked+span {
     box-shadow: 0 0 0 0.0625em var(--baseOrange);
     background-color: #dee7ff;
     z-index: 1;
     color: var(--baseOrange);
     transform: scale(1.1);
     border-radius: 5px;
-  }
+}
 
-  .select-label span {
+.select-label span {
     display: block;
     cursor: pointer;
     background-color: #fff;
     padding: 10px 20px;
     position: relative;
-    margin-left: 0.0625em;
+    margin-left: .0625em;
     box-shadow: 0 0 0 0.0625em #b5bfd9;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em;
     color: #3e4963;
     text-align: center;
-    transition: all 0.2s ease;
+    transition: all .2s ease;
     font-weight: bolder;
-  }
+}
 
-  .select-label:first-child span {
-    border-radius: 0.375em 0 0 0.375em;
-  }
+.select-label:first-child span {
+    border-radius: .375em 0 0 .375em;
+}
 
-  .select-label:last-child span {
-    border-radius: 0 0.375em 0.375em 0;
-  }
+.select-label:last-child span {
+    border-radius: 0 .375em .375em 0;
+}
 
-  .btn {
+.btn{
     outline: none;
     cursor: pointer;
     border: none;
@@ -213,39 +180,35 @@ export default {
     color: white;
     box-shadow: var(--secShadow);
     border: 3px solid var(--baseOrange);
-  }
-
-  .btn span {
+}
+.btn span{
     position: relative;
     z-index: 10;
-    transition: all 0.4s;
-  }
-
-  .btn:hover span {
-    color: white;
+    transition: all .4s;
+}
+.btn:hover span{
+    color:white;
     scale: 1.2;
-  }
+}
 
-  .btn::before,
-  .btn::after {
-    position: absolute;
+.btn::before,
+.btn::after{
+    position:absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
-  }
-
-  .btn::before {
+}
+.btn::before{
     content: "";
-    background: var(--baseGray);
+    background: var(--baseGray  );
     width: 120%;
     left: -10%;
     transform: skew(90dg);
     transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
-  }
-
-  .btn:hover::before {
-    transform: translate3d(100%, 0, 0);
-  }
+}
+.btn:hover::before{
+    transform: translate3d(100%,0,0);
+}
 </style>

@@ -15,7 +15,6 @@ import worker from "@/components/workers/worker.vue";
 import receivedList from "@/components/workers/received-list.vue";
 import deliveriesList from "@/components/workers/deliveries-list.vue";
 import repairsList from "@/components/workers/repairs-list.vue";
-import workerEdit from "@/components/workers/worker-edit.vue";
 
 const routes = [
   {
@@ -44,10 +43,6 @@ const routes = [
       {
         path: "workers-list",
         component: workersList
-      },
-      {
-        path: "worker-edit",
-        component: workerEdit
       },
       {
         path: "login-worker",
