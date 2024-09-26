@@ -59,7 +59,7 @@ export default {
         // Asignar la empresa que inició sesión a la variable global
         loggedCompany.value = session.value.company_user;
         await getWorkersCount();
-        if (workersCount.value > 0) {
+        if (workersCount.value > 1) {
           router.push("/workers/login-worker");
         } else {
           router.push("/workers/new-worker");
