@@ -138,4 +138,9 @@ const loggedWorker = inject("loggedWorker", ref(null))
     background-color: var(--baseGray);
     scale: 1.2;
 }
+.edit-btn{
+    position: absolute;
+    top: 0;
+    right: -80px;
+}
 </style>
