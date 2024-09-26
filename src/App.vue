@@ -9,8 +9,7 @@ import company from './components/companies/company.vue';
 const loggedCompany = ref(null);
 const workersCount = ref(0);
 const loggedWorker = ref(null);
-const workerRole= "ADMINISTRADOR";//"COLABORADOR" "ADMINISTRADOR"
-
+const workerRole= ref(null);
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
 provide('workersCount', workersCount);
@@ -28,13 +27,13 @@ const handleRedirection = () => {
     router.push('/session'); // Redirigir a /session si loggedCompany es diferente de null
   }else if(route.path !== '/users' && loggedCompany.value === null ){
     router.push('/users');
-  }else if (route.path === '/workers/login-worker' && workersCount.value === 0){
-    router.push('/workers/new-worker')
+  }else if (route.path === '/workers/login-worker' && loggedWorker.value !== null){
+    router.push('/workers/worker')
   }
 };
 // Ejecutar la función al montar el componente
 onMounted(() => {
-  handleRedirection();
+    handleRedirection();
 });
 // Verificar cualquier cambio en la ruta
 watch(
@@ -44,6 +43,8 @@ watch(
   }
 );
 </script>
+
+
 
 <template>
   <section class="body">
