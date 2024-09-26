@@ -39,7 +39,6 @@ const loggedWorker = inject("loggedWorker", ref(null))
 
         </nav>
         <section class="list-container">
-
             <router-view></router-view>
         </section>
 
@@ -90,6 +89,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
     display: flex;
     gap: 10px;
     box-shadow: var(--secShadow);
+    width: 300px;
 }
 
 .info-cont span {
