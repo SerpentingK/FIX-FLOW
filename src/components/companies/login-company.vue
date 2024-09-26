@@ -14,8 +14,21 @@ export default {
         container.value.classList.add("toggle");
       }
     };
-
+    const getWorkersCount = async () => {
+      try {
+        if (loggedCompany.value) {
+          const answer = await axios.get(
+            `http://127.0.0.1:8000/company/${loggedCompany.value}/workers/count`
+          );
+          workersCount.value = answer.data.count;
+          console.log("workersCount:", workersCount.value);
+        }
+      } catch (error) {
+        console.error("Error al obtener el conteo de trabajadores", error);
+      }
+    };
     onMounted(() => {
+      getWorkersCount();
       container.value = document.querySelector(".container");
     });
 
@@ -34,23 +47,22 @@ export default {
 
     // Inyectar la variable global
     const loggedCompany = inject("loggedCompany", ref(null));
-    const workersCount = inject("workersCount", ref(null))
+    const workersCount = inject("workersCount", ref(0));
 
     const startSession = async () => {
       try {
-        const answer = await axios.post(
-          `http://127.0.0.1:8000/loginCompany`, {
-            company_user: session.value.company_user,
-            password: session.value.password
-          }
-        );
+        const answer = await axios.post(`http://127.0.0.1:8000/loginCompany`, {
+          company_user: session.value.company_user,
+          password: session.value.password,
+        });
         msg.value = answer.data.msg;
         // Asignar la empresa que inició sesión a la variable global
         loggedCompany.value = session.value.company_user;
-        if(workersCount > 0){
+        await getWorkersCount();
+        if (workersCount.value > 0) {
           router.push("/workers/login-worker");
-        }else{
-          router.push("/workers/new-worker")
+        } else {
+          router.push("/workers/new-worker");
         }
       } catch (error) {
         if (error.response && error.response.data) {
@@ -97,6 +109,7 @@ export default {
       msg,
       toggle,
       container,
+      workersCount,
     };
   },
 };
