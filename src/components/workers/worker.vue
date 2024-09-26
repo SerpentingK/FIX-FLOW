@@ -42,11 +42,8 @@ const loggedWorker = inject("loggedWorker", ref(null))
             <router-view></router-view>
         </section>
 
-        <router-link to="/workers/workers-list" v-if="workerRole == 'ADMINISTRADOR'" class="edit-btn">
-            <div>
-                <ion-icon name="create-outline"></ion-icon>
-                <span>Editar colaboradores</span>
-            </div>
+        <router-link to="/workers/workers-list" v-if="workerRole == 'Gerente'" class="router edit-btn">
+            <ion-icon name="create-outline"></ion-icon>
         </router-link>
     </section>
 
