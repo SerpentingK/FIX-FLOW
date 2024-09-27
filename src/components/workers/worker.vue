@@ -147,13 +147,12 @@ const loggedWorker = inject("loggedWorker", ref(null))
 }
 .close-sesion-btn{
     all: unset;
-    position: absolute;
-    bottom: -80px;
+    margin: 30px 0 20px;
     padding: 10px 20px;
     background-color: var(--baseOrange);
     color: white;
     border-radius: 20px;
-    border: 4px solid white;
+    border: 2px solid white;
     box-shadow: var(--secShadow);
     cursor: pointer;
     transition: .4s;
@@ -161,6 +160,6 @@ const loggedWorker = inject("loggedWorker", ref(null))
 .close-sesion-btn:hover{
     scale: 1.1;
     background-color: var(--baseGray);
-    border: 4px solid var(--baseOrange);
+    border-color: var(--baseOrange);
 }
 </style>

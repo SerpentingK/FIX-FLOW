@@ -14,16 +14,19 @@ import bill_li from './bill-li.vue';
     all:unset
 }
 .container ol{
-    border: 2px solid red;
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     list-style: none;
+    max-height: 400px;
+    overflow: scroll;
+}
+.container ol::-webkit-scrollbar{
+    display: none;
 }
 .container ol *{
     margin:0;
-    padding: 0;
 }
 </style>
