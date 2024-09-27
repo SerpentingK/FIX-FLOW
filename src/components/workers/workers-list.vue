@@ -30,7 +30,7 @@ onMounted(async () => {
         :wrole="i.wrole"
       ></workerLi>
     </ol>
-    <router-link to="/workers/new-worker">AÑADIR TECNICOS</router-link>
+    <router-link to="/workers/new-worker" class="add-worker-router">AÑADIR TECNICOS</router-link>
   </section>
 </template>
 
@@ -63,8 +63,34 @@ ol {
   list-style: none;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 10px 20px;
   gap: 30px;
+  max-height: 500px;
+  overflow: scroll;
+  border-bottom: 4px solid white;
+}
+ol::-webkit-scrollbar{
+  display: none;
+}
+.add-worker-router{
+  all:unset;
+  margin: 50px 0 30px;
+  padding: 10px 30px;
+  background-color: var(--baseOrange);
+  color: white;
+  border: 2px solid white;
+  border-radius: 15px;
+  box-shadow: var(--secShadow);
+  font-weight: bolder;
+  font-family: var(--baseFont);
+  transition: .4s;
+  cursor: pointer;
+}
+.add-worker-router:hover{
+  scale: 1.1;
+  color: var(--baseGray);
+  background-color: white;
+  border-color: var(--baseGray);
 }
 </style>
