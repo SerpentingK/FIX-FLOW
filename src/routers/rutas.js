@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import workers from "@/components/workers/workers.vue";
 import loginCompany from "@/components/companies/login-company.vue";
-import phones from "@/components/checks/phones.vue";
+import bills from "@/components/checks/bills.vue";
 import spareParts from "@/components/spare-parts/spare-parts.vue";
-import celForm from "@/components/checks/phone-entrance.vue";
-import check_list from "@/components/checks/check_list.vue";
+import billEntrance from "@/components/checks/bill-entrance.vue";
+import billList from "@/components/checks/bill-list.vue";
 import listSpare from "@/components/spare-parts/spare-list.vue";
 import spareCategories from "@/components/spare-parts/spare-categories.vue";
 import session from "@/components/companies/session.vue";
@@ -70,18 +70,18 @@ const routes = [
     ]
   },
   {
-    path: "/phones",
-    name: "phones",
-    redirect: "/phones/cel-form",
-    component: phones,
+    path: "/bills",
+    name: "bills",
+    redirect: "/bills/bill-entrance",
+    component: bills,
     children: [
       {
-        path: "cel-form",
-        component: celForm,
+        path: "bill-entrance",
+        component: billEntrance,
       },
       {
-        path: "check-list",
-        component: check_list,
+        path: "bill-list",
+        component: billList,
       },
     ],
   },

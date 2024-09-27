@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import check from './check.vue';
+import check from './bill.vue';
 
 const options = ref(["N. Factura", "Cliente", "Fecha"]);
 </script>
