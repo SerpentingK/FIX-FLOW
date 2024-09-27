@@ -72,12 +72,15 @@ li {
   box-shadow: var(--secShadow);
   list-style: none;
   border-radius: 20px;
+  width: 100%;
+  justify-content:flex-end
 }
 li span {
   background-color: white;
   padding: 10px 30px;
   border-radius: 10px;
   font-weight: bolder;
+  min-width: 200px;
 }
 .op-container {
   display: flex;
