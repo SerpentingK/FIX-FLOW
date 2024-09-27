@@ -169,6 +169,14 @@ export default {
             placeholder="Contraseña"
           />
         </div>
+        <div class="container-input">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <input
+            v-model="company.password"
+            type="password"
+            placeholder="Verifique su contraseña"
+          />
+        </div>
         <button type="submit" class="button">REGISTRO</button>
       </form>
     </div>
@@ -200,7 +208,7 @@ export default {
 }
 
 .container {
-  border: 3px solid rgb(255, 255, 255);
+  border: 4px solid var(--baseOrange);
   background-color: var(--baseGray);
   color: white;
   overflow: hidden;
@@ -271,12 +279,20 @@ export default {
   width: 170px;
   height: 45px;
   font-size: 15px;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 10px;
   cursor: pointer;
   margin-top: 10px;
   background-color: var(--baseOrange);
   color: white;
+  transition: .4s;
+  font-weight: bolder;
+}
+.button:hover{
+  border-color: var(--baseGray);
+  box-shadow: var(--secShadow);
+  color: var(--baseGray);
+  background-color: white;
 }
 
 /*Animation form*/
@@ -302,12 +318,12 @@ export default {
   transform: translateX(100%);
   transition: transform 0.6s ease-in-out, border-radius 0.4s ease-in;
   overflow: hidden;
-  border-radius: 0 0 0 50%;
+  border-radius: 0 0 0 30%;
 }
 
 .container.toggle .container-welcome {
   transform: translateX(0%);
-  border-radius: 0 0 50% 0;
+  border-radius: 0 0 30% 0;
 }
 
 .welcome {
