@@ -45,6 +45,8 @@ const loggedWorker = inject("loggedWorker", ref(null))
         <router-link to="/workers/workers-list" v-if="workerRole == 'Gerente'" class="router edit-btn">
             <ion-icon name="create-outline"></ion-icon>
         </router-link>
+
+        <button class="close-sesion-btn">CERRAR SESION</button>
     </section>
 
 </template>
@@ -142,5 +144,23 @@ const loggedWorker = inject("loggedWorker", ref(null))
     position: absolute;
     top: 0;
     right: -80px;
+}
+.close-sesion-btn{
+    all: unset;
+    position: absolute;
+    bottom: -80px;
+    padding: 10px 20px;
+    background-color: var(--baseOrange);
+    color: white;
+    border-radius: 20px;
+    border: 4px solid white;
+    box-shadow: var(--secShadow);
+    cursor: pointer;
+    transition: .4s;
+}
+.close-sesion-btn:hover{
+    scale: 1.1;
+    background-color: var(--baseGray);
+    border: 4px solid var(--baseOrange);
 }
 </style>
