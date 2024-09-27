@@ -25,8 +25,8 @@ const isActive = (path) => route.path.startsWith(path);
     <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
     <router-link to="/workers/login-worker" class="router" :class="{ active: isActive('/workers') }" 
       v-if="loggedCompany != null">Colaboradores</router-link>
-    <router-link to="/phones" class="router" :class="{ active: isActive('/phones') }"
-      v-if="loggedCompany != null && loggedWorker != null">Celulares</router-link>
+    <router-link to="/bills" class="router" :class="{ active: isActive('/bills') }"
+      v-if="loggedCompany != null && loggedWorker != null">Facturas</router-link>
     <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
       v-if="loggedCompany != null && loggedWorker != null">Repuestos</router-link>
     <button @click="goBack" :disabled="!canGoBack" class="back-button">

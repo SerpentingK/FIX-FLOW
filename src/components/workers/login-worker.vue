@@ -24,7 +24,7 @@ export default {
         msg.value = answer.data.status;
         loggedWorker.value = sessionworker.value.wname;
         workerRole.value = answer.data.role;
-        router.push("/phones/cel-form")
+        router.push("/bills/bill-entrance")
       } catch (error) {
         if (error.response && error.response.data) {
           alert(`Error al iniciar sesión: ${error.response.data.detail}`);
