@@ -1,20 +1,31 @@
 <script setup>
 import workerLi from "./worker-li.vue";
 import axios from "axios";
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, ref, watch } from "vue";
 
 const loggedCompany = inject("loggedCompany", ref(null));
 const listW = ref([]);
+
 onMounted(async () => {
+  await fetchWorkers();
+    // Llamada para cargar la lista de trabajadores inicialmente
+});
+
+const fetchWorkers = async () => {
   try {
-    const answer = await axios.get(
-      `http://127.0.0.1:8000/collaborators/${loggedCompany.value}/workers`
-    );
+    const answer = await axios.get(`http://127.0.0.1:8000/collaborators/${loggedCompany.value}/workers`);
     listW.value = answer.data;
-    console.log(listW.value);
   } catch (error) {
     console.error(error);
   }
+};
+const handleWorkerDeleted = (wname) => {
+  // Actualiza la lista de trabajadores al eliminar el trabajador
+  listW.value = listW.value.filter(worker => worker.name !== wname);
+  fetchWorkers(); // Llamar a fetchWorkers nuevamente para actualizar la lista
+};
+watch(listW, async () => {
+  await fetchWorkers();
 });
 </script>
 
@@ -28,6 +39,7 @@ onMounted(async () => {
         :wname="i.wname"
         :document="i.document"
         :wrole="i.wrole"
+        @workerDeleted="handleWorkerDeleted"
       ></workerLi>
     </ol>
     <router-link to="/workers/new-worker" class="add-worker-router">AÑADIR TECNICOS</router-link>

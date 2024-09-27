@@ -1,12 +1,19 @@
 <script setup>
 import { inject, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute(); // Obtiene la ruta actual
 const isActive = (path) => route.path === path;
+const router = useRouter()
 
 const workerRole = inject("workerRole", ref(null))
 const loggedWorker = inject("loggedWorker", ref(null))
+
+const closeSession = () => {
+    loggedWorker.value = null
+    workerRole.value = null
+    router.push("/workers/login-worker")
+}
 
 </script>
 
@@ -46,7 +53,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
             <ion-icon name="create-outline"></ion-icon>
         </router-link>
 
-        <button class="close-sesion-btn">CERRAR SESION</button>
+        <button class="close-sesion-btn" @click="closeSession">CERRAR SESION</button>
     </section>
 
 </template>

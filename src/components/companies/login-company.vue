@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted, inject, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
@@ -7,6 +7,7 @@ export default {
   setup() {
     const router = useRouter();
     const container = ref(null);
+    const confirmPassword = ref("");
     const toggle = () => {
       if (container.value.classList.contains("toggle")) {
         container.value.classList.remove("toggle");
@@ -21,7 +22,6 @@ export default {
             `http://127.0.0.1:8000/company/${loggedCompany.value}/workers/count`
           );
           workersCount.value = answer.data.count;
-          console.log("workersCount:", workersCount.value);
         }
       } catch (error) {
         console.error("Error al obtener el conteo de trabajadores", error);
@@ -36,6 +36,10 @@ export default {
       company_user: "",
       mail: "",
       password: "",
+    });
+
+    const passwordsMatch = computed(() => {
+      return company.value.password === confirmPassword.value;
     });
 
     const session = ref({
@@ -77,7 +81,10 @@ export default {
 
     const postCompany = async () => {
       try {
-        console.log("Datos a enviar:", company.value);
+        if (!passwordsMatch.value) {
+          alert("Las contraseñas no coinciden.");
+          return; 
+        }
         const answer = await axios.post(
           "http://127.0.0.1:8000/insertCompany",
           company.value
@@ -88,6 +95,7 @@ export default {
           mail: "",
           password: "",
         };
+        confirmPassword.value = "";
 
         toggle();
       } catch (error) {
@@ -103,6 +111,8 @@ export default {
 
     return {
       company,
+      passwordsMatch,
+      confirmPassword,
       postCompany,
       startSession,
       session,
@@ -172,12 +182,13 @@ export default {
         <div class="container-input">
           <ion-icon name="lock-closed-outline"></ion-icon>
           <input
-            v-model="company.password"
+            v-model="confirmPassword"
             type="password"
             placeholder="Verifique su contraseña"
           />
         </div>
-        <button type="submit" class="button">REGISTRO</button>
+        <p v-if="!passwordsMatch" style="color: white;">Las contraseñas no coinciden.</p>
+        <button type="submit" class="button" :disabled="!passwordsMatch">REGISTRO</button>
       </form>
     </div>
     <div class="container-welcome">
@@ -285,10 +296,10 @@ export default {
   margin-top: 10px;
   background-color: var(--baseOrange);
   color: white;
-  transition: .4s;
+  transition: 0.4s;
   font-weight: bolder;
 }
-.button:hover{
+.button:hover {
   border-color: var(--baseGray);
   box-shadow: var(--secShadow);
   color: var(--baseGray);

@@ -6,6 +6,7 @@ export default {
   setup() {
     const router = useRouter();
     const loggedWorker = inject("loggedWorker", ref(null));
+    const loggedCompany = inject("loggedCompany", ref(null));
     const workerRole = inject("workerRole", ref(null));
     const sessionworker = ref({
       wname: "",
@@ -15,7 +16,8 @@ export default {
 
     const startUsers = async () => {
       try {
-        const answer = await axios.post("http://127.0.0.1:8000/loginWorker", {
+        console.log("loggedCompany:", loggedCompany.value);
+        const answer = await axios.post(`http://127.0.0.1:8000/loginWorker/${loggedCompany.value}`, {
           wname: sessionworker.value.wname,
           password: sessionworker.value.password,
         });
