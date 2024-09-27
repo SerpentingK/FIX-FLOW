@@ -49,7 +49,7 @@ watch(
 <template>
   <section class="body">
     <navBar></navBar>
-    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`"  :logged-worker="`${loggedWorker}`"></company>
+    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`"  :logged-worker="`${loggedWorker}`" class="info"></company>
     <section>
       <router-view></router-view>
     </section>
@@ -85,5 +85,8 @@ section {
   bottom: -10px;
   z-index: -1;
   opacity: 0.7;
+}
+.info{
+  z-index: 9999;
 }
 </style>

@@ -85,7 +85,7 @@ li {
   list-style: none;
   border-radius: 20px;
   width: 100%;
-  justify-content:flex-end
+  justify-content:flex-end;
 }
 
 li span {
