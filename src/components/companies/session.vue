@@ -1,7 +1,18 @@
 <script setup>
 import {inject, ref} from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter()
 const loggedCompany = inject('loggedCompany', ref(null))
+const loggedWorker = inject('loggedWorker', ref(null))
+const workerRole = inject('workerRole', ref(null))
+
+const closeCompany = () => {
+    workerRole.value = null
+    loggedCompany.value = null;
+    loggedWorker.value = null;
+    router.push("/")
+}
 </script>
 
 <template>
@@ -16,7 +27,7 @@ const loggedCompany = inject('loggedCompany', ref(null))
             <div>|</div>
             <router-link to="/"  class="op-router">Actualizar Usuario</router-link>
         </div>
-        <button class="logout-btn">
+        <button @click="closeCompany" class="logout-btn">
             <div class="sign">
                 <ion-icon name="log-out-outline"></ion-icon>
             </div>
