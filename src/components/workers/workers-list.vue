@@ -30,6 +30,7 @@ onMounted(async () => {
         :wrole="i.wrole"
       ></workerLi>
     </ol>
+    <router-link to="/workers/new-worker">AÑADIR TECNICOS</router-link>
   </section>
 </template>
 
