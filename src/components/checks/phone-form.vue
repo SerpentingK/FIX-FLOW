@@ -1,23 +1,26 @@
 <script setup>
-
+import ref from 'vue';
+defineProps({
+    cel_num:{
+        type: String,
+        default: 1,
+        required: true
+    }
+})
 </script>
 
 <template>
     <section class="container">
-        <h2> Celular 1</h2>
+        <h2> Celular {{ cel_num }}</h2>
         <label>
             <span>Tipo: </span>
-            <select name="" id="">
-                <option value="Celular">Celular</option>
-                <option value="Tablet">Tablet</option>
-                <option value="Bafle">Bafle</option>
-            </select>
         </label>
     </section>
 </template>
 
 <style scoped>
-*{
-    all: unset;
+.container{
+    background-color: white;
+    padding: 10px 30px;
 }
 </style>

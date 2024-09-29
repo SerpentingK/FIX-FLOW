@@ -12,10 +12,11 @@ const isActive = (path) => route.path === path;// Función para verificar si el 
                 <ion-icon name="enter-outline"></ion-icon>
             </router-link>
             <router-link to="/bills/bill-list" class="router"
-                :class="{ 'active': isActive('/workers/worker/received-list') }">
+                :class="{ 'active': isActive('/bills/bill-list') }">
                 <ion-icon name="file-tray-full-outline"></ion-icon>
             </router-link>
         </nav>
+        <router-view></router-view>
     </section>
 </template>
 <style scoped>
@@ -24,11 +25,14 @@ const isActive = (path) => route.path === path;// Función para verificar si el 
     position: relative;
     margin: 0 auto;
     width: 92%;
-    height: 600px;
-    border-radius: 10px;
+    height: 650px;
+    border-radius: 40px;
     border: 4px solid var(--baseOrange);
     box-shadow: 0 15px 10px 2px rgba(0, 0, 0, 0.676);
-
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px 40px;
 }
 .op-nav{
     position: absolute;
@@ -50,5 +54,9 @@ const isActive = (path) => route.path === path;// Función para verificar si el 
     justify-content: center;
     box-shadow: var(--baseShadow);
     transition: all .4s ease;
+}
+.router.active{
+    background-color: var(--baseGray);
+    scale: 1.2;
 }
 </style>

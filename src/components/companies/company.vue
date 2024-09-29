@@ -35,10 +35,9 @@ const loggedWorker = inject("loggedWorker", ref(null))
     border: none;
     padding: 0.9rem 2rem;
     margin: 0;
-    width: 240px;
+    width: 200px;
     font-family: var(--secFont);
     letter-spacing: 1px;
-    font-size: inherit;
     position: relative;
     display: flex;
     gap: 10px;
@@ -68,7 +67,7 @@ const loggedWorker = inject("loggedWorker", ref(null))
 .router *{
     position: relative;
     z-index: 10;
-    font-size: 18px;
+    font-size: 14px;
     transition: all .4s;
 }
 .router:hover *{

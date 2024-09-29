@@ -1,89 +1,98 @@
 <script setup>
-import celForm from './phone-form.vue';
+import {ref} from 'vue';
+import phoneForm from './phone-form.vue';
+
+const phones_count = ref(3)
 </script>
 <template>
     <section class="container">
-        <h2>Ingreso de facturas</h2>
-        <form class="cel-form">
-            <label for="in-client-name" class="in-container">
-                <ion-icon name="people-circle-outline" style="font-size: 25px;"></ion-icon>
-                <span>Cliente: </span>
-                <input type="text" id="in-client-name">
+        <form class="client-form">
+            <label for="name-inp" class="input-container">
+                <ion-icon name="person-add"></ion-icon>
+                <input type="text" placeholder="NOMBRE CLIENTE" id="name-inp">
             </label>
-            <label for="in-client-phone" class="in-container">
-                <span>Telefono: </span>
-                <input type="text" id="in-client-phone">
+            <label for="tel-inp" class="input-container">
+                <ion-icon name="call"></ion-icon>
+                <input type="text" placeholder="NUMERO DE TELEFONO" id="tel-inp">
             </label>
-            <label for="in-cel-num" class="in-container">
-                <span>N. Dispositivos:  </span>
-                <input type="number" id="in-cel-num" min="1" max="5">
+            <label for="cant-inp" class="input-container">
+                <ion-icon name="call"></ion-icon>
+                <input type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5" value="1" id="cant-inp">
             </label>
-            <celForm v-for="i in 3" :key="i"></celForm>
+            <button type="submit" class="nxt-btn">
+                <span>SIGUIENTE</span>
+                <ion-icon name="caret-forward"></ion-icon>
+            </button>
         </form>
-        <section class="cells-container">
-            a
-        </section>
-    </section>
 
+        <phoneForm v-for="i in phones_count" :key="i"></phoneForm>
+    </section>
 </template>
 <style scoped>
-*{
-    font-family: "SUSE", sans-serif;
-}
-.container {
+.container{
     all: unset;
-    display: grid;
-    height: 90%;
-    width: 90%;
-    padding: 10px;
-    grid-template-columns: 80% 20%;
-    grid-template-rows: 15% 85%;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-}
-.container h2{
-    grid-area: 1 / 1 / 2 / 2; 
-    font-weight: bolder;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cel-form {
     width: 100%;
-    padding: 10px 30px;
-    display: flex;
-    grid-area: 2 / 1 / 3 / 2;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    background-color: aqua;
-    gap: 5px;
-    align-items: center;
-    height: auto;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
-.cel-form::-webkit-scrollbar {
-    display: none; /* Oculta la barra de desplazamiento en navegadores WebKit */
+.client-form{
+    background-color: white;
+    width: 100%;
+    padding: 20px 30px;
+    border-radius: 25px;
+    border: 3px solid  var(--baseGray);
+    box-shadow: var(--baseShadow);
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.in-container {
-    background-color: var(--baseGray);
-    color: white;
-    font-weight: bolder;
-    padding: 20px;
-    margin-top: 30px;
-    border-radius: 20px;
-    display:flex;
-    justify-content: center;
+.input-container{
+    background: var(--baseGray);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
     align-items: center;
-    gap: 4px;
+    min-width: 250px;
+    gap: 20px;
+    color: white;
+    cursor: pointer;
+    transition: .4s;
+    font-weight: bolder;
 }
-.in-container input{
+/* Cambia el color del contenedor cuando el input está enfocado */
+.input-container:focus-within {
+  background-color: var(--baseOrange);
+}
+.input-container ion-icon{
+    scale: 1.3;
+}
+.input-container input{
     all: unset;
+    scale: 1;
+    text-transform: uppercase;
+    width: 100%;
 }
-.cells-container{
-    grid-area: 1 / 2 / 3 / 3;
-    background-color: blue;
+.nxt-btn{
+    all: unset;
+    background-color: var(--baseOrange);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    gap: 10px;
+    color: white;
+    border: 3px solid var(--baseOrange);
+    transition: .4s;
+}
+.nxt-btn *{
+    font-weight: bolder;
+    scale: 1.05;
+    transition: .4s;
+}
+.nxt-btn:hover{
+    background-color: var(--baseGray);
+}
+.nxt-btn:hover *{
+    scale: 1.15;
 }
 </style>
