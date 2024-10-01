@@ -47,61 +47,36 @@ onMounted(() => {
     });
 });
 
-// Variables reactivas
-const brands = ref([]);
-const devices = ref([]);
-const selectedBrand = ref(null);
-const selectedDevice = ref(null);
+// Marcas de celulares
+const marks = [
+  "Samsung",
+  "Xiaomi",
+  "Huawei",
+  "Apple",
+  "Motorola",
+  "Nokia",
+  "OnePlus",
+  "Oppo",
+  "Realme",
+  "Vivo",
+  "Sony",
+  "Google",
+  "LG",
+  "ZTE",
+  "Asus",
+  "Lenovo",
+  "Meizu",
+  "Alcatel",
+  "Honor",
+  "Tecno",
+  "Infinix",
+  "BlackBerry",
+  "Otro"
+];
 
-// Función para obtener marcas
-const fetchBrands = async () => {
-    try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec?route=brand-list');
-        const result = await response.json();
+// Variable reactiva para la marca seleccionada
+const selectedBrand = ref(marks[0]);
 
-        if (result.status === 200) {
-            brands.value = result.data;
-        } else {
-            console.error('Error en la respuesta de la API:', result.message);
-        }
-    } catch (error) {
-        console.error('Error al obtener las marcas:', error);
-    }
-};
-
-// Función para obtener dispositivos de la marca seleccionada
-const fetchDevices = async () => {
-    if (!selectedBrand.value) return;
-
-    try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                route: "device-list-by-brand",
-                brand_id: selectedBrand.value,
-                brand_name: brands.value.find(brand => brand.brand_id === selectedBrand.value).brand_name,
-                page: 1
-            }),
-        });
-        const result = await response.json();
-
-        if (result.status === 200) {
-            devices.value = result.data.device_list;
-        } else {
-            console.error('Error en la respuesta de la API:', result.message);
-            devices.value = [];
-        }
-    } catch (error) {
-        console.error('Error al obtener los dispositivos:', error);
-        devices.value = [];
-    }
-};
-
-// Llamar a la función al montar el componente
-onMounted(fetchBrands);
 </script>
 
 <template>
@@ -110,24 +85,20 @@ onMounted(fetchBrands);
         <section>
             <label for="brand-select" class="input-container">
                 <span>Seleccione una marca:</span>
-                <select id="brand-select" v-model="selectedBrand" @change="fetchDevices">
-                    <option v-for="(brand, index) in brands" :key="brand.brand_id" :value="brand.brand_id">
-                        {{ brand.brand_name }}
+                <select id="brand-select" v-model="selectedBrand">
+                    <option v-for="mark in marks" :key="mark" :value="mark">
+                        {{ mark }}
                     </option>
-                    <option value="Otro">Otro</option>
                 </select>
+                <!-- Mostrar input solo si la marca seleccionada es "Otro" -->
+                <input v-if="selectedBrand === 'Otro'" type="text" placeholder="Otro">
             </label>
-            <label for="device-select" class="input-container">
-                <span>Seleccione un modelo:</span>
-                <select id="device-select" v-model="selectedDevice">
-                    <option v-for="(device, index) in devices" :key="index" :value="device.key">
-                        {{ device.device_name }}
-                    </option>
-                    <option value="Otro">Otro</option>
-                </select>
+            <label for="model-inp" class="input-container">
+                <span>Modelo:</span>
+                <input type="text" id="model-inp">
             </label>
             <label for="desc-inp" class="input-container">
-                <span>Descripcion:</span>
+                <span>Descripción:</span>
                 <input type="text" id="desc-inp">
             </label>
             <label for="price-inp" class="input-container">
@@ -188,6 +159,7 @@ onMounted(fetchBrands);
     border: none;
     padding: 0;
     margin: 0;
+    padding: 5px 10px;
     font: inherit;
     color: white;
 }
