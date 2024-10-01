@@ -74,24 +74,24 @@ const fetchDevices = async () => {
     if (!selectedBrand.value) return;
 
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                route: "device-list-by-brand",
-                brand_id: selectedBrand.value,
-                brand_name: brands.value.find(brand => brand.brand_id === selectedBrand.value).brand_name,
-                page: 1
-            }),
-        });
-        const result = await response.json();
+        const raw = `{
+        "route": "device-list-by-brand",
+        "brand_id": ${selectedBrand.value},
+        "brand_name": "${brands.value.find((brand) => brand.brand_id === selectedBrand.value).brand_name}",
+        "page": 1
+        }`;
 
-        if (result.status === 200) {
-            devices.value = result.data.device_list;
+        const requestOptions = {
+            method: "POST",
+            body: raw,
+            redirect: "follow"
+        }
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec", requestOptions);
+        const result = await response.text();
+        if (result) {
+            devices.value = JSON.parse(result).data.device_list;
         } else {
-            console.error('Error en la respuesta de la API:', result.message);
+            console.error('Error en la respuesta de la API:', result);
             devices.value = [];
         }
     } catch (error) {
