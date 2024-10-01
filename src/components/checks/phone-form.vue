@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 
 // Definir propiedades
 const props = defineProps({
@@ -8,6 +8,43 @@ const props = defineProps({
         default: "2",
         required: true
     }
+});
+
+// Inyectar bill_total y updateBillTotal
+const updateBillTotal = inject('updateBillTotal');
+
+// Mantener el valor anterior del precio
+let previousValue = 0;
+
+// Formatear el precio y actualizar bill_total
+function formatPrice(input) {
+    // Eliminar cualquier carácter no numérico
+    let value = input.value.replace(/\D/g, '');
+    
+    // Convertir el valor a número
+    const newValue = Number(value) || 0;
+
+    // Restar el valor anterior y sumar el nuevo valor
+    updateBillTotal(newValue - previousValue);
+
+    // Actualizar el valor anterior
+    previousValue = newValue;
+
+    // Agregar el formato de miles usando replace y expresión regular
+    input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+// Usamos onMounted para asegurarnos de que el DOM está listo
+onMounted(() => {
+    // Seleccionamos todos los inputs con la clase 'price-input'
+    const priceInputs = document.querySelectorAll('.price-input');
+
+    // Recorremos cada input y le agregamos el evento 'input'
+    priceInputs.forEach(function(input) {
+        input.addEventListener('input', function () {
+            formatPrice(this);
+        });
+    });
 });
 
 // Variables reactivas
@@ -52,15 +89,14 @@ const fetchDevices = async () => {
         const result = await response.json();
 
         if (result.status === 200) {
-            devices.value = result.data.device_list; // Ajusta esto según la estructura del JSON que obtienes
-            alert(devices.value) // Verifica qué dispositivos se están obteniendo
+            devices.value = result.data.device_list;
         } else {
             console.error('Error en la respuesta de la API:', result.message);
-            devices.value = []; // Limpiar dispositivos si hay un error
+            devices.value = [];
         }
     } catch (error) {
         console.error('Error al obtener los dispositivos:', error);
-        devices.value = []; // Limpiar dispositivos si hay un error
+        devices.value = [];
     }
 };
 
@@ -69,7 +105,7 @@ onMounted(fetchBrands);
 </script>
 
 <template>
-    <form class="form-container">
+    <section class="form-container">
         <h2>CELULAR {{ cel_num }}</h2>
         <section>
             <label for="brand-select" class="input-container">
@@ -94,44 +130,50 @@ onMounted(fetchBrands);
                 <span>Descripcion:</span>
                 <input type="text" id="desc-inp">
             </label>
-            <label for="desc-inp" class="input-container">
+            <label for="price-inp" class="input-container">
                 <span>Precio:</span>
-                <input type="number" id="desc-inp" min="20000" value="20000">
-            </label>
-            <label for="desc-inp" class="input-container">
-                <span>Descripcion:</span>
-                <input type="text" id="desc-inp">
+                <input type="number" id="price-inp" min="10000" value="10000" class="price-input">
             </label>
         </section>
-    </form>
+    </section>
 </template>
 
-
 <style scoped>
+.input-container input::-webkit-inner-spin-button,
+.input-container input::-webkit-outer-spin-button {
+    display: none;
+}
 .form-container {
     background-color: white;
     border-radius: 25px;
     padding: 20px 30px;
-    border: 3px solid var(--baseOrange);
+    border: 4px solid var(--baseGray);
     box-shadow: var(--baseShadow);
     height: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    transition: .4s;
 }
-.form-container section{
+.form-container:focus-within {
+    border-color: var(--baseOrange);
+}
+.form-container section {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
 }
-
+.input-container:focus-within {
+    background-color: var(--baseOrange);
+}
 .input-container {
+    transition: .4s;
     margin-top: 20px;
     background-color: var(--baseGray);
     padding: 20px 25px;
     color: rgb(113,113,113);
     text-transform: uppercase;
-    display:flex;
+    display: flex;
     min-width: 400px;
     gap: 10px;
     border-radius: 10px;
@@ -139,24 +181,23 @@ onMounted(fetchBrands);
     align-items: center;
     box-shadow: var(--secShadow);
 }
-.input-container *{
+.input-container * {
     width: 100%;
-    appearance: none; /* Elimina el estilo predeterminado */
-    background: transparent; /* Fondo transparente */
-    border: none; /* Sin borde */
-    padding: 0; /* Sin relleno */
-    margin: 0; /* Sin margen */
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
     font: inherit;
     color: white;
 }
-.input-container select option{
+.input-container select option {
     color: black;
 }
-/* Estilo para mantener la flecha (no todos los navegadores lo permiten) */
 .input-container select::-ms-expand {
-    display: none; /* Para IE y Edge */
+    display: none;
 }
-.input-container *{
+.input-container * {
     scale: 1.1;
 }
 </style>
