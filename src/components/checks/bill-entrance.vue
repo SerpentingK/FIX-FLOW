@@ -1,28 +1,59 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, provide } from 'vue';
 import phoneForm from './phone-form.vue';
 
 const phones_count = ref(1); // Inicialmente 1
-const bill_total = ref(0); // Total de la factura
+const bill_total = ref(0); // Inicialmente 0
 
-// Función para formatear el número
+// Proveer bill_total
+provide('bill_total', bill_total);
+
+// Función para agregar el formato de miles a un número (para inputs y spans)
 function formatNumber(value) {
     let formattedValue = value.toString().replace(/\D/g, '');
     return formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 // Computed para formatear el valor de bill_total
-const formattedBillTotal = computed(() => formatNumber(bill_total.value));
+const formattedBillTotal = computed(() => {
+    return formatNumber(bill_total.value);
+});
 
-// Función para actualizar el total de la factura
-function updateBillTotal(price, index) {
-    bill_total.value = 0;
-    phonePrices.value[index] = price; // Actualizamos el precio del dispositivo en la posición correspondiente
-    bill_total.value = phonePrices.value.reduce((acc, val) => acc + val, 0);
-}
+// Computed para obtener el valor del abono
+const paymentAmount = ref(0); // Inicialmente 0
 
-const phonePrices = ref(Array(phones_count.value).fill(0)); // Array para almacenar los precios de los teléfonos
+// Computed para mostrar el pendiente a pagar
+const pendingAmount = computed(() => {
+    return bill_total.value - paymentAmount.value;
+});
 
+// Usamos onMounted para asegurarnos de que el DOM está listo
+onMounted(() => {
+    // Seleccionamos todos los inputs con la clase 'price-input' (para phoneForm)
+    const priceInputs = document.querySelectorAll('.price-input');
+
+    // Recorremos cada input de phoneForm y le agregamos el evento 'input'
+    priceInputs.forEach(function (input) {
+        input.addEventListener('input', function () {
+            const previousValue = Number(input.dataset.previousValue) || 0; // Valor previo
+            const currentValue = Number(input.value.replace(/\D/g, '')) || 0; // Valor actual
+
+            // Actualizar bill_total: restar el valor previo y sumar el nuevo valor
+            bill_total.value += (currentValue - previousValue);
+            input.dataset.previousValue = currentValue; // Guardar el valor actual para la próxima vez
+            input.value = formatNumber(input.value); // Formatear el input
+        });
+    });
+
+    // Formatear específicamente el input de payment
+    const payment_inp = document.getElementById('payment-inp');
+    payment_inp.addEventListener('input', function () {
+        payment_inp.value = formatNumber(payment_inp.value); // Solo formatear
+
+        // Actualizar el valor del abono
+        paymentAmount.value = Number(payment_inp.value.replace(/\D/g, '')) || 0;
+    });
+});
 </script>
 
 <template>
@@ -38,18 +69,13 @@ const phonePrices = ref(Array(phones_count.value).fill(0)); // Array para almace
             </label>
             <label for="cant-inp" class="input-container">
                 <ion-icon name="call"></ion-icon>
-                <input v-model="phones_count" type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5" id="cant-inp">
+                <input v-model="phones_count" type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5"
+                    id="cant-inp">
             </label>
         </section>
 
-        <!-- Usamos la etiqueta transition para animar el phoneForm -->
         <transition-group name="fade" tag="div" class="phone-forms">
-            <phoneForm 
-                v-for="i in phones_count" 
-                :key="i" 
-                :cel_num="i" 
-                :onPriceUpdate="(price) => updateBillTotal(price, i - 1)">
-            </phoneForm>
+            <phoneForm v-for="i in phones_count" :key="i" :cel_num="i"></phoneForm>
         </transition-group>
 
         <section class="bill-form">
@@ -59,8 +85,16 @@ const phonePrices = ref(Array(phones_count.value).fill(0)); // Array para almace
             </label>
             <label for="payment-inp" class="input-container">
                 <ion-icon name="cash-outline"></ion-icon>
-                <input type="number" placeholder="ABONO" id="payment-inp" class="price-input">
+                <input type="text" placeholder="ABONO" id="payment-inp" data-previous-value="0">
             </label>
+            <label class="input-container">
+                <ion-icon name="cash-outline"></ion-icon>
+                <span>PENDIENTE A PAGAR: $ <span>{{ formatNumber(pendingAmount) }}</span></span>
+            </label>
+            <button type="submit" class="register-btn">
+                <span class="reg-span">REGISTRAR</span>
+                <ion-icon name="enter-outline"></ion-icon>
+            </button>
         </section>
     </form>
 </template>
@@ -96,7 +130,7 @@ const phonePrices = ref(Array(phones_count.value).fill(0)); // Array para almace
 
 .client-form:focus-within,
 .bill-form:focus-within {
-    border-color: var(--baseOrange)
+    border-color: var(--baseOrange);
 }
 
 .input-container {
@@ -131,10 +165,40 @@ const phonePrices = ref(Array(phones_count.value).fill(0)); // Array para almace
     width: 100%;
 }
 
+.nxt-btn {
+    all: unset;
+    box-shadow: var(--secShadow);
+    background-color: var(--baseOrange);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    gap: 10px;
+    color: white;
+    border: 3px solid var(--baseOrange);
+    transition: .4s;
+}
+
+.nxt-btn * {
+    font-weight: bolder;
+    scale: 1.05;
+    transition: .4s;
+}
+
+.nxt-btn:hover {
+    background-color: var(--baseGray);
+}
+
+.nxt-btn:hover * {
+    scale: 1.15;
+}
+
 .phone-forms {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    transition: .4s;
 }
 
 /* Estilos para la transición de fade */
@@ -146,5 +210,44 @@ const phonePrices = ref(Array(phones_count.value).fill(0)); // Array para almace
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+.register-btn{
+    background-color: var(--baseOrange);
+    box-shadow: var(--secShadow);   
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 2px solid var(--baseOrange);
+    transition: .3s;
+    overflow: hidden;
+}
+.register-btn ion-icon{
+    scale: 1.5;
+    transform: translateY(100px);
+    transition: .6s;
+}
+.register-btn:hover{
+    scale:1.1;
+    color: var(--baseGray);
+    background-color: white;
+}
+.register-btn:hover ion-icon{
+    transform: translateY(0);
+
+}
+.register-btn:hover .reg-span{
+    scale: 1.2;
+    letter-spacing: 0;
+}
+
+.reg-span {
+    transition: .2s;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    
 }
 </style>

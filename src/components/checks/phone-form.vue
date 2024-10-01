@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 
 // Definir propiedades
 const props = defineProps({
@@ -10,15 +10,27 @@ const props = defineProps({
     }
 });
 
-// Variable reactiva para el precio del teléfono
-const price = ref(10000); // Valor por defecto
+// Inyectar bill_total y updateBillTotal
+const updateBillTotal = inject('updateBillTotal');
 
-// Emitir evento al padre cuando el precio cambia
-const emit = defineEmits(['price-change']);
+// Mantener el valor anterior del precio
+let previousValue = 0;
 
-// Formatear el precio con puntos de miles
+// Formatear el precio y actualizar bill_total
 function formatPrice(input) {
+    // Eliminar cualquier carácter no numérico
     let value = input.value.replace(/\D/g, '');
+    
+    // Convertir el valor a número
+    const newValue = Number(value) || 0;
+
+    // Restar el valor anterior y sumar el nuevo valor
+    updateBillTotal(newValue - previousValue);
+
+    // Actualizar el valor anterior
+    previousValue = newValue;
+
+    // Agregar el formato de miles usando replace y expresión regular
     input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
@@ -28,19 +40,14 @@ onMounted(() => {
     const priceInputs = document.querySelectorAll('.price-input');
 
     // Recorremos cada input y le agregamos el evento 'input'
-    priceInputs.forEach(function (input) {
+    priceInputs.forEach(function(input) {
         input.addEventListener('input', function () {
             formatPrice(this);
         });
     });
 });
 
-// Escuchar cambios en el precio
-watch(price, (newValue) => {
-    emit('price-change', newValue); // Emitir evento al padre con el nuevo valor del precio
-});
-
-// Variables reactivas para las marcas y dispositivos
+// Variables reactivas
 const brands = ref([]);
 const devices = ref([]);
 const selectedBrand = ref(null);
@@ -82,15 +89,14 @@ const fetchDevices = async () => {
         const result = await response.json();
 
         if (result.status === 200) {
-            devices.value = result.data.device_list; // Ajusta esto según la estructura del JSON que obtienes
-            alert(devices.value); // Verifica qué dispositivos se están obteniendo
+            devices.value = result.data.device_list;
         } else {
             console.error('Error en la respuesta de la API:', result.message);
-            devices.value = []; // Limpiar dispositivos si hay un error
+            devices.value = [];
         }
     } catch (error) {
         console.error('Error al obtener los dispositivos:', error);
-        devices.value = []; // Limpiar dispositivos si hay un error
+        devices.value = [];
     }
 };
 
@@ -126,7 +132,7 @@ onMounted(fetchBrands);
             </label>
             <label for="price-inp" class="input-container">
                 <span>Precio:</span>
-                <input type="number" id="price-inp" v-model="price" min="10000" class="price-input">
+                <input type="number" id="price-inp" min="10000" value="10000" class="price-input">
             </label>
         </section>
     </section>
@@ -150,7 +156,7 @@ onMounted(fetchBrands);
     transition: .4s;
 }
 .form-container:focus-within {
-    border-color: var(--baseOrange)
+    border-color: var(--baseOrange);
 }
 .form-container section {
     display: flex;
@@ -187,6 +193,9 @@ onMounted(fetchBrands);
 }
 .input-container select option {
     color: black;
+}
+.input-container select::-ms-expand {
+    display: none;
 }
 .input-container * {
     scale: 1.1;
