@@ -62,7 +62,7 @@ onMounted(() => {
         formatPrice(this);
     });
   });
-});
+
 
 // Variables reactivas para gestionar el estado del componente
 const brands = ref([]); // Lista de marcas
