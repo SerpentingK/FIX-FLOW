@@ -1,17 +1,12 @@
 <script setup>
 // Importar funciones y herramientas de Vue.js
-import { ref, onMounted, inject, defineEmits } from "vue";
-
-// Definir los eventos que el componente emitirá al padre
-const emit = defineEmits(["priceUpdated"]);
+import { ref, onMounted, inject } from "vue";
 
 // Función para manejar el input de precio
 function handlePriceInput(event) {
   // Obtener el nuevo precio como número, eliminando caracteres no numéricos
   const newPrice = Number(event.target.value.replace(/\D/g, "")) || 0;
-
-  // Emitir el nuevo precio al componente padre
-  emit("priceUpdated", newPrice);
+  
 
   // Actualizar el total de la factura con la diferencia del nuevo precio y el valor anterior
   updateBillTotal(newPrice - previousValue);
@@ -62,7 +57,7 @@ onMounted(() => {
         formatPrice(this);
     });
   });
-});
+
 
 // Variables reactivas para gestionar el estado del componente
 const brands = ref([]); // Lista de marcas
