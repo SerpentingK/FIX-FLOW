@@ -3,18 +3,21 @@ import { ref } from 'vue';
 import check from './bill.vue';
 
 const options = ref(["N. Factura", "Cliente", "Fecha"]);
+const selectedOption = ref(options.value[0]); // Mantiene el valor seleccionado
+
 </script>
 
 <template>
     <section class="container">
         <nav class="search-bar">
             <form action="" class="search-form">
-                <select id="searchOption">
+                <select id="searchOption" v-model="selectedOption">
                     <option v-for="option in options" :key="option">
                         {{ option }}
                     </option>
                 </select>
-                <input type="text">
+                <input v-if="selectedOption !== 'Fecha'" type="text" placeholder="Buscar...">
+                <input v-else type="date">
                 <button type="submit">Buscar</button>
             </form>
         </nav>
@@ -32,6 +35,7 @@ const options = ref(["N. Factura", "Cliente", "Fecha"]);
 }
 
 .container{
+    border:none;
     display: flex;
     flex-direction: column;
     align-items: center;

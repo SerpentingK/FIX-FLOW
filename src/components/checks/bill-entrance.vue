@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, provide } from 'vue';
 import phoneForm from './phone-form.vue';
+import bill from './bill.vue';
 
 const phones_count = ref(1); // Inicialmente 1
 const bill_total = ref(0); // Inicialmente 0
@@ -30,6 +31,11 @@ const paymentAmount = ref(0); // Inicialmente 0
 const pendingAmount = computed(() => {
     return bill_total.value - paymentAmount.value;
 });
+
+const show_letter_switch = ref(false);
+const show_letter = () => {
+    show_letter_switch.value = !show_letter_switch.value;
+}
 
 // Usamos onMounted para asegurarnos de que el DOM está listo
 onMounted(() => {
@@ -61,7 +67,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <form class="container">
+    <form class="container" @submit.prevent="show_letter()">
         <section class="client-form">
             <label for="name-inp" class="input-container">
                 <ion-icon name="person-add"></ion-icon>
@@ -101,6 +107,7 @@ onMounted(() => {
             </button>
         </section>
     </form>
+    <bill v-if="show_letter_switch" style="position: absolute; z-index: 10;"></bill>
 </template>
 
 <style scoped>
