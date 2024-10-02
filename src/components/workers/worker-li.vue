@@ -83,7 +83,7 @@ li {
   gap: 20px;
   box-shadow: var(--secShadow);
   list-style: none;
-  border-radius: 20px;
+  border-radius: 10px;
   width: 100%;
   justify-content:flex-end;
 }

@@ -23,7 +23,6 @@ const updateTotal = (newPrice) => {
     calculateTotal(); // Asegúrate de recalcular el total
 };
 
-provide('updateBillTotal', updateTotal);
 
 // Función para agregar el formato de miles a un número (para inputs y spans)
 function formatNumber(value) {
@@ -44,6 +43,8 @@ const show_letter_switch = ref(false);
 const show_letter = () => {
     show_letter_switch.value = !show_letter_switch.value;
 }
+
+provide(show_letter, 'show_letter')
 
 // Función para calcular el total
 const calculateTotal = () => {
@@ -86,6 +87,59 @@ onMounted(() => {
         paymentAmount.value = Number(payment_inp.value.replace(/\D/g, '')) || 0;
     });
 });
+
+const phones_list = [
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-2",
+        brand: "Apple",
+        device: "IPhone 11 PRO",
+        price: 30000,
+        details: "pantalla",
+        delivered: true,
+        repaired: true,
+        delivery_date: "08/06/2024"
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    }
+]
 </script>
 
 
@@ -133,8 +187,22 @@ onMounted(() => {
                 <ion-icon name="enter-outline"></ion-icon>
             </button>
         </section>
+        <bill 
+            v-if="show_letter_switch" 
+            style="position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
+            bill_number="0001-A" 
+            client_name="David Carrillo" 
+            entry_date="08/06/2024" 
+            :total_price="50000" 
+            :due="40000" 
+            :payment="10000" 
+            client_phone="3133680686" 
+            wname="srk" 
+            :phones_list="phones_list"
+        ></bill>
+
     </form>
-    <bill v-if="show_letter_switch" style="position: absolute; z-index: 10;"></bill>
+    
 </template>
 <style scoped>
 .container {
@@ -145,6 +213,7 @@ onMounted(() => {
     gap: 20px;
     overflow-y: scroll;
     padding: 10px 20px;
+    position: relative;
 }
 
 .container::-webkit-scrollbar {
@@ -249,6 +318,7 @@ onMounted(() => {
     opacity: 0;
 }
 .register-btn{
+    cursor: pointer;
     background-color: var(--baseOrange);
     box-shadow: var(--secShadow);   
     border: none;
