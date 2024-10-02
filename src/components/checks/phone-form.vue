@@ -29,8 +29,10 @@ const props = defineProps({
   },
 });
 
-// Inyectar la función updateBillTotal desde un componente padre
-const updateBillTotal = inject("updateBillTotal");
+
+// Inyectar la función updateBillTotal desde el padre
+const updateBillTotal = inject('updateBillTotal');
+
 
 // Mantener el valor anterior del precio
 let previousValue = 0;
@@ -55,13 +57,9 @@ function formatPrice(input) {
 
 // Función que se ejecuta cuando el componente se monta
 onMounted(() => {
-  // Seleccionar todos los inputs de precio
-  const priceInputs = document.querySelectorAll(".price-input");
-
-  // Agregar un listener para cada input de precio
-  priceInputs.forEach(function (input) {
-    input.addEventListener("input", function () {
-      formatPrice(this); // Formatear el precio al cambiar
+    const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
+    priceInput.addEventListener('input', function() {
+        formatPrice(this);
     });
   });
 });
@@ -274,6 +272,10 @@ onMounted(fetchBrands);
   margin: 0;
   font: inherit;
   color: white;
+}
+.input-container *:focus{
+    border: none;
+    outline: none;
 }
 .input-container select option {
   color: black;
