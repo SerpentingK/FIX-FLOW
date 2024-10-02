@@ -52,11 +52,15 @@ function formatPrice(input) {
 
 // Función que se ejecuta cuando el componente se monta
 onMounted(() => {
-    const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
-    priceInput.addEventListener('input', function() {
-        formatPrice(this);
+  const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
+  if (priceInput) {
+    priceInput.addEventListener('input', function () {
+      formatPrice(this);
     });
-  });
+  } else {
+    console.error('El input no se encontró en el DOM');
+  }
+});
 
 
 // Variables reactivas para gestionar el estado del componente
