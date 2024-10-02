@@ -8,6 +8,13 @@ const bill_total = ref(0); // Inicialmente 0
 // Proveer bill_total
 provide('bill_total', bill_total);
 
+const updateTotal = (newPrice) => {
+    bill_total.value += newPrice; // Actualiza el total directamente
+    calculateTotal(); // Asegúrate de recalcular el total
+};
+
+provide('updateBillTotal', updateTotal);
+
 // Función para agregar el formato de miles a un número (para inputs y spans)
 function formatNumber(value) {
     let formattedValue = value.toString().replace(/\D/g, '');
@@ -27,6 +34,24 @@ const pendingAmount = computed(() => {
     return bill_total.value - paymentAmount.value;
 });
 
+// Función para calcular el total
+const calculateTotal = () => {
+    const priceInputs = document.querySelectorAll('.price-input');
+    let total = 0;
+
+    // Sumar todos los precios de los inputs
+    priceInputs.forEach(input => {
+        total += Number(input.value.replace(/\D/g, '')) || 0;
+    });
+
+    // Actualizar el bill_total
+    bill_total.value = total;
+};
+// Función para manejar la actualización del precio
+const onPriceUpdated = (newPrice) => {
+    updateTotal(newPrice); // Llama a la función para actualizar el total
+};
+
 // Usamos onMounted para asegurarnos de que el DOM está listo
 onMounted(() => {
     // Seleccionamos todos los inputs con la clase 'price-input' (para phoneForm)
@@ -35,13 +60,8 @@ onMounted(() => {
     // Recorremos cada input de phoneForm y le agregamos el evento 'input'
     priceInputs.forEach(function (input) {
         input.addEventListener('input', function () {
-            const previousValue = Number(input.dataset.previousValue) || 0; // Valor previo
-            const currentValue = Number(input.value.replace(/\D/g, '')) || 0; // Valor actual
-
-            // Actualizar bill_total: restar el valor previo y sumar el nuevo valor
-            bill_total.value += (currentValue - previousValue);
-            input.dataset.previousValue = currentValue; // Guardar el valor actual para la próxima vez
             input.value = formatNumber(input.value); // Formatear el input
+            calculateTotal(); // Llamar a la función para calcular el total
         });
     });
 
@@ -56,6 +76,7 @@ onMounted(() => {
 });
 </script>
 
+
 <template>
     <form class="container">
         <section class="client-form">
@@ -69,13 +90,17 @@ onMounted(() => {
             </label>
             <label for="cant-inp" class="input-container">
                 <ion-icon name="call"></ion-icon>
-                <input v-model="phones_count" type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5"
-                    id="cant-inp">
+                <input v-model="phones_count" type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5" id="cant-inp">
             </label>
         </section>
 
         <transition-group name="fade" tag="div" class="phone-forms">
-            <phoneForm v-for="i in phones_count" :key="i" :cel_num="i"></phoneForm>
+            <phoneForm 
+                v-for="i in phones_count" 
+                :key="i" 
+                :cel_num="i" 
+                @priceUpdated="onPriceUpdated">
+            </phoneForm>
         </transition-group>
 
         <section class="bill-form">
@@ -98,7 +123,6 @@ onMounted(() => {
         </section>
     </form>
 </template>
-
 <style scoped>
 .container {
     all: unset;
