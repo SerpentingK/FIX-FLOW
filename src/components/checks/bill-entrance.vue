@@ -164,7 +164,7 @@ onMounted(() => {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    min-width: 250px;
+    min-width: 300px;
     gap: 20px;
     color: white;
     cursor: pointer;

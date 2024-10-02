@@ -202,7 +202,7 @@ onMounted(fetchBrands);
           <option value="Otro">Otro</option>
         </select>
         <button v-if="hasMoreDevices" @click="loadMoreDevices">
-          Ver más dispositivos
+          Ver más
         </button>
       </label>
       <label for="desc-inp" class="input-container">
@@ -258,7 +258,7 @@ onMounted(fetchBrands);
   color: rgb(113, 113, 113);
   text-transform: uppercase;
   display: flex;
-  min-width: 400px;
+  min-width: 600px;
   gap: 10px;
   border-radius: 10px;
   font-weight: bolder;
