@@ -1,18 +1,6 @@
 <script setup>
 // Importar funciones y herramientas de Vue.js
-import { ref, onMounted, inject } from "vue";
-
-// Función para manejar el input de precio
-function handlePriceInput(event) {
-  // Obtener el nuevo precio como número, eliminando caracteres no numéricos
-  const newPrice = Number(event.target.value.replace(/\D/g, "")) || 0;
-
-  // Actualizar el total de la factura con la diferencia del nuevo precio y el valor anterior
-  updateBillTotal(newPrice - previousValue);
-
-  // Actualizar el valor anterior con el nuevo precio
-  previousValue = newPrice;
-}
+import { ref, onMounted, inject, defineProps } from "vue";
 
 // Definir propiedades que se pueden pasar al componente
 const props = defineProps({
@@ -23,44 +11,31 @@ const props = defineProps({
   },
 });
 
-
 // Inyectar la función updateBillTotal desde el padre
 const updateBillTotal = inject('updateBillTotal');
-
 
 // Mantener el valor anterior del precio
 let previousValue = 0;
 
-// Función para formatear el precio en el input
-function formatPrice(input) {
-  // Eliminar caracteres no numéricos del input
-  let value = input.value.replace(/\D/g, "");
+// Variable reactiva para el precio
+const price = ref(0);
 
-  // Convertir el valor a número, o 0 si no es válido
-  const newValue = Number(value) || 0;
+// Función para manejar el input de precio
+const handlePriceInput = (event) => {
+  // Obtener el nuevo precio como número, eliminando caracteres no numéricos
+  const newPrice = Number(event.target.value.replace(/\D/g, "")) || 0;
 
-  // Actualizar el total de la factura
-  updateBillTotal(newValue - previousValue);
+  // Actualizar el total de la factura con la diferencia del nuevo precio y el valor anterior
+  updateBillTotal(newPrice - previousValue);
 
-  // Actualizar el valor anterior
-  previousValue = newValue;
-
-  // Formatear el valor con separadores de miles
-  input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+  // Actualizar el valor anterior con el nuevo precio
+  previousValue = newPrice;
+};
 
 // Función que se ejecuta cuando el componente se monta
 onMounted(() => {
-  const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
-  if (priceInput) {
-    priceInput.addEventListener('input', function () {
-      formatPrice(this);
-    });
-  } else {
-    console.error('El input no se encontró en el DOM');
-  }
+  // Puedes configurar el input de precio aquí, si necesitas hacer algo adicional
 });
-
 
 // Variables reactivas para gestionar el estado del componente
 const brands = ref([]); // Lista de marcas
@@ -73,15 +48,10 @@ const hasMoreDevices = ref(true); // Controlar si hay más dispositivos para car
 // Función para obtener la lista de marcas
 const fetchBrands = async () => {
   try {
-    // Realizar una solicitud a la API para obtener las marcas
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec?route=brand-list"
-    );
+    const response = await fetch("https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec?route=brand-list");
     const result = await response.json();
-
-    // Verificar el estado de la respuesta y actualizar la lista de marcas
     if (result.status === 200) {
-      brands.value = result.data; // Guardar marcas en la variable reactiva
+      brands.value = result.data;
     } else {
       console.error("Error en la respuesta de la API:", result.message);
     }
@@ -92,72 +62,47 @@ const fetchBrands = async () => {
 
 // Función para obtener la lista de dispositivos según la marca seleccionada
 const fetchDevices = async (append = false) => {
-  if (!selectedBrand.value) return; // Si no hay marca seleccionada, salir de la función
+  if (!selectedBrand.value) return;
 
   try {
-    // Crear el cuerpo de la solicitud
     const raw = `{
-        "route": "device-list-by-brand",
-        "brand_id": ${selectedBrand.value},
-        "brand_name": "${
-          brands.value.find((brand) => brand.brand_id === selectedBrand.value)
-            .brand_name
-        }",
-        "page": ${page.value}
-        }`;
+      "route": "device-list-by-brand",
+      "brand_id": ${selectedBrand.value},
+      "brand_name": "${brands.value.find(brand => brand.brand_id === selectedBrand.value).brand_name}",
+      "page": ${page.value}
+    }`;
 
-    // Configuración de la solicitud
-    const requestOptions = {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec", {
       method: "POST",
       body: raw,
       redirect: "follow",
-    };
+    });
 
-    // Realizar la solicitud para obtener dispositivos
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec",
-      requestOptions
-    );
     const result = await response.json();
-
-    // Verificar que se haya obtenido dispositivos
     if (result && result.data.device_list.length > 0) {
-      if (append) {
-        // Si se está añadiendo a la lista existente
-        devices.value = [...devices.value, ...result.data.device_list];
-      } else {
-        // Si se está reemplazando la lista
-        devices.value = result.data.device_list;
-      }
-      // Actualizar la variable que controla si hay más dispositivos
+      devices.value = append ? [...devices.value, ...result.data.device_list] : result.data.device_list;
       hasMoreDevices.value = result.data.device_list.length > 0;
     } else {
-      hasMoreDevices.value = false; // No hay más dispositivos
+      hasMoreDevices.value = false;
     }
   } catch (error) {
     console.error("Error al obtener los dispositivos:", error);
-    devices.value = []; // Limpiar lista de dispositivos en caso de error
+    devices.value = [];
   }
 };
 
 // Función para manejar el cambio de marca
 const handleBrandChange = () => {
-  devices.value = []; // Limpiar la lista de dispositivos antes de cambiar de marca
-  page.value = 1; // Reiniciar la página a 1
-  fetchDevices(); // Obtener dispositivos para la nueva marca
-
-  // Limpiar los inputs de precio
-  const priceInputs = document.querySelectorAll(".price-input");
-  priceInputs.forEach((input) => {
-    input.value = ""; // Reiniciar los inputs de precio
-  });
+  devices.value = [];
+  page.value = 1;
+  fetchDevices();
 };
 
 // Función para cargar más dispositivos
 const loadMoreDevices = (event) => {
-  event.preventDefault(); // Prevenir el comportamiento por defecto del botón
-  page.value++; // Incrementar la página
-  fetchDevices(true); // Añadir más dispositivos a la lista existente
+  event.preventDefault();
+  page.value++;
+  fetchDevices(true);
 };
 
 // Llamar a fetchBrands cuando el componente se monta
@@ -168,10 +113,10 @@ onMounted(fetchBrands);
   <section class="form-container">
     <h2>CELULAR {{ cel_num }}</h2>
     <section>
-      <label for="brand-select" class="input-container">
+      <label :for="`brand-select-${cel_num}`" class="input-container">
         <span>Seleccione una marca:</span>
         <select
-          id="brand-select"
+          :id="`brand-select-${cel_num}`"
           v-model="selectedBrand"
           @change="handleBrandChange"
         >
@@ -185,9 +130,9 @@ onMounted(fetchBrands);
           <option value="Otro">Otro</option>
         </select>
       </label>
-      <label for="device-select" class="input-container">
+      <label :for="`device-select-${cel_num}`" class="input-container">
         <span>Seleccione un modelo:</span>
-        <select id="device-select" v-model="selectedDevice">
+        <select :id="`device-select-${cel_num}`" v-model="selectedDevice">
           <option
             v-for="(device, index) in devices"
             :key="index"
@@ -201,22 +146,24 @@ onMounted(fetchBrands);
           Ver más
         </button>
       </label>
-      <label for="desc-inp" class="input-container">
+      <label :for="`desc-inp-${cel_num}`" class="input-container">
         <span>Descripcion:</span>
-        <input type="text" id="desc-inp" />
+        <input type="text" :id="`desc-inp-${cel_num}`" />
       </label>
-      <label for="price-inp" class="input-container">
+      <label :for="`price-inp-${cel_num}`" class="input-container">
         <span>Precio:</span>
         <input
           type="number"
-          id="price-inp"
+          :id="`price-inp-${cel_num}`"
           class="price-input"
+          v-model="price"
           @input="handlePriceInput"
         />
       </label>
     </section>
   </section>
 </template>
+
 
 <style scoped>
 .input-container input::-webkit-inner-spin-button,
@@ -271,7 +218,7 @@ onMounted(fetchBrands);
   font: inherit;
   color: white;
 }
-.input-container *:focus{
+.input-container *:focus {
     border: none;
     outline: none;
 }
