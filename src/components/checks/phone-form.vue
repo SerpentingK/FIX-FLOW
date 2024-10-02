@@ -6,7 +6,6 @@ import { ref, onMounted, inject } from "vue";
 function handlePriceInput(event) {
   // Obtener el nuevo precio como número, eliminando caracteres no numéricos
   const newPrice = Number(event.target.value.replace(/\D/g, "")) || 0;
-  
 
   // Actualizar el total de la factura con la diferencia del nuevo precio y el valor anterior
   updateBillTotal(newPrice - previousValue);
@@ -52,11 +51,16 @@ function formatPrice(input) {
 
 // Función que se ejecuta cuando el componente se monta
 onMounted(() => {
-    const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
-    priceInput.addEventListener('input', function() {
-        formatPrice(this);
+  const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
+  if (priceInput) {
+    priceInput.addEventListener('input', function () {
+      formatPrice(this);
     });
-  });
+  } else {
+    console.error('El input no se encontró en el DOM');
+  }
+}); 
+
 
 
 // Variables reactivas para gestionar el estado del componente
@@ -195,7 +199,7 @@ onMounted(fetchBrands);
           <option value="Otro">Otro</option>
         </select>
         <button v-if="hasMoreDevices" @click="loadMoreDevices">
-          Ver más dispositivos
+          Ver más
         </button>
       </label>
       <label for="desc-inp" class="input-container">
@@ -251,7 +255,7 @@ onMounted(fetchBrands);
   color: rgb(113, 113, 113);
   text-transform: uppercase;
   display: flex;
-  min-width: 400px;
+  min-width: 600px;
   gap: 10px;
   border-radius: 10px;
   font-weight: bolder;
