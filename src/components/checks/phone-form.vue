@@ -2,7 +2,6 @@
 // Importar funciones y herramientas de Vue.js
 import { ref, onMounted, inject } from "vue";
 
-
 // Función para manejar el input de precio
 function handlePriceInput(event) {
   // Obtener el nuevo precio como número, eliminando caracteres no numéricos
@@ -61,6 +60,7 @@ onMounted(() => {
     console.error('El input no se encontró en el DOM');
   }
 }); 
+
 
 
 // Variables reactivas para gestionar el estado del componente
