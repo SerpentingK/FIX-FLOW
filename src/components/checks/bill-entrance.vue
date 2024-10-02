@@ -5,19 +5,23 @@ import phoneForm from './phone-form.vue';
 const phones_count = ref(1); // Inicialmente 1
 const bill_total = ref(0); // Inicialmente 0
 
-// Proveer bill_total
+// Función para actualizar bill_total
+const updateBillTotal = (difference) => {
+  bill_total.value += difference;
+};
+
+// Proveer bill_total y la función updateBillTotal
 provide('bill_total', bill_total);
+provide('updateBillTotal', updateBillTotal);
+
+// Computed para formatear el valor de bill_total
+const formattedBillTotal = computed(() => formatNumber(bill_total.value));
 
 // Función para agregar el formato de miles a un número (para inputs y spans)
 function formatNumber(value) {
     let formattedValue = value.toString().replace(/\D/g, '');
     return formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
-
-// Computed para formatear el valor de bill_total
-const formattedBillTotal = computed(() => {
-    return formatNumber(bill_total.value);
-});
 
 // Computed para obtener el valor del abono
 const paymentAmount = ref(0); // Inicialmente 0

@@ -10,7 +10,7 @@ const props = defineProps({
     }
 });
 
-// Inyectar bill_total y updateBillTotal
+// Inyectar la función updateBillTotal desde el padre
 const updateBillTotal = inject('updateBillTotal');
 
 // Mantener el valor anterior del precio
@@ -36,14 +36,9 @@ function formatPrice(input) {
 
 // Usamos onMounted para asegurarnos de que el DOM está listo
 onMounted(() => {
-    // Seleccionamos todos los inputs con la clase 'price-input'
-    const priceInputs = document.querySelectorAll('.price-input');
-
-    // Recorremos cada input y le agregamos el evento 'input'
-    priceInputs.forEach(function(input) {
-        input.addEventListener('input', function () {
-            formatPrice(this);
-        });
+    const priceInput = document.querySelector(`#price-inp-${props.cel_num}`);
+    priceInput.addEventListener('input', function() {
+        formatPrice(this);
     });
 });
 
@@ -132,7 +127,7 @@ onMounted(fetchBrands);
             </label>
             <label for="price-inp" class="input-container">
                 <span>Precio:</span>
-                <input type="number" id="price-inp" min="10000" value="10000" class="price-input">
+                <input type="number" :id="'price-inp-' + cel_num" min="10000" value="10000" class="price-input">
             </label>
         </section>
     </section>
@@ -190,6 +185,10 @@ onMounted(fetchBrands);
     margin: 0;
     font: inherit;
     color: white;
+}
+.input-container *:focus{
+    border: none;
+    outline: none;
 }
 .input-container select option {
     color: black;
