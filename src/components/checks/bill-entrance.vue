@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, provide } from 'vue';
 import phoneForm from './phone-form.vue';
+import bill from './bill.vue';
 
 const phones_count = ref(1); // Inicialmente 1
 const bill_total = ref(0); // Inicialmente 0
@@ -22,7 +23,6 @@ const updateTotal = (newPrice) => {
     calculateTotal(); // Asegúrate de recalcular el total
 };
 
-provide('updateBillTotal', updateTotal);
 
 // Función para agregar el formato de miles a un número (para inputs y spans)
 function formatNumber(value) {
@@ -37,6 +37,14 @@ const paymentAmount = ref(0); // Inicialmente 0
 const pendingAmount = computed(() => {
     return bill_total.value - paymentAmount.value;
 });
+
+
+const show_letter_switch = ref(false);
+const show_letter = () => {
+    show_letter_switch.value = !show_letter_switch.value;
+}
+
+provide(show_letter, 'show_letter')
 
 // Función para calcular el total
 const calculateTotal = () => {
@@ -55,6 +63,7 @@ const calculateTotal = () => {
 const onPriceUpdated = (newPrice) => {
     updateTotal(newPrice); // Llama a la función para actualizar el total
 };
+
 
 // Usamos onMounted para asegurarnos de que el DOM está listo
 onMounted(() => {
@@ -78,11 +87,64 @@ onMounted(() => {
         paymentAmount.value = Number(payment_inp.value.replace(/\D/g, '')) || 0;
     });
 });
+
+const phones_list = [
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-2",
+        brand: "Apple",
+        device: "IPhone 11 PRO",
+        price: 30000,
+        details: "pantalla",
+        delivered: true,
+        repaired: true,
+        delivery_date: "08/06/2024"
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    }
+]
 </script>
 
 
 <template>
-    <form class="container">
+    <form class="container" @submit.prevent="show_letter()">
         <section class="client-form">
             <label for="name-inp" class="input-container">
                 <ion-icon name="person-add"></ion-icon>
@@ -125,7 +187,22 @@ onMounted(() => {
                 <ion-icon name="enter-outline"></ion-icon>
             </button>
         </section>
+        <bill 
+            v-if="show_letter_switch" 
+            style="position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
+            bill_number="0001-A" 
+            client_name="David Carrillo" 
+            entry_date="08/06/2024" 
+            :total_price="50000" 
+            :due="40000" 
+            :payment="10000" 
+            client_phone="3133680686" 
+            wname="srk" 
+            :phones_list="phones_list"
+        ></bill>
+
     </form>
+    
 </template>
 <style scoped>
 .container {
@@ -136,6 +213,7 @@ onMounted(() => {
     gap: 20px;
     overflow-y: scroll;
     padding: 10px 20px;
+    position: relative;
 }
 
 .container::-webkit-scrollbar {
@@ -240,6 +318,7 @@ onMounted(() => {
     opacity: 0;
 }
 .register-btn{
+    cursor: pointer;
     background-color: var(--baseOrange);
     box-shadow: var(--secShadow);   
     border: none;
