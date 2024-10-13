@@ -94,16 +94,6 @@ const show_letter = inject('show_letter')
                     <span>Detalles:</span>
                     <span>{{ phone.details }}</span>
                 </div>
-                <div class="bool-info" :class="{true:phone.repaired}">
-                    <span>REPARADO</span>
-                </div>
-                <div class="bool-info" :class="{true:phone.delivered}">
-                    <span>ENTREGADO</span>
-                </div>
-                <div class="fact-container" v-if="phone.delivered">
-                    <span>Fecha entregado:</span>
-                    <span>{{ phone.delivery_date }}</span>
-                </div>
             </div>
             <button class="cancel-btn" @click="show_letter()">CANCELAR</button>
             <button class="confirm-btn">CONFIRMAR</button>
@@ -173,18 +163,6 @@ const show_letter = inject('show_letter')
     background-color: var(--baseGray);
     color: white;
     border-color: var(--baseOrange);
-}
-.bool-info{
-    background-color: var(--baseGray);
-    border: 4px solid red;
-    box-shadow: 0 0 10px 4px red;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 20px;
-}
-.bool-info.true{
-    border-color: green ;
-    box-shadow: 0 0 10px 4px green;
 }
 button{
     border: none;

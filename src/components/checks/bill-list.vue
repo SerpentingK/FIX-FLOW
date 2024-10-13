@@ -1,10 +1,72 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, provide } from 'vue';
 import bill_li from './bill-li.vue';
+import bill_info from './bill-info.vue';
 
 const options = ref(["N. Factura", "Cliente", "Fecha"]);
 const selectedOption = ref(options.value[0]); // Mantiene el valor seleccionado
 
+
+const show_letter_switch = ref(true);
+const show_bill_info = () => {
+    show_letter_switch.value = !show_letter_switch.value;       
+}
+
+provide('show_bill_info', show_bill_info);
+
+
+const phones_list = [
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-2",
+        brand: "Apple",
+        device: "IPhone 11 PRO",
+        price: 30000,
+        details: "pantalla",
+        delivered: true,
+        repaired: true,
+        delivery_date: "08/06/2024"
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    },
+    {
+        phone_ref: "0001-A-1",
+        brand: "Apple",
+        device: "IPhone XR",
+        price: 20000,
+        details: "pantalla",
+        delivered: false,
+        repaired: false,
+        delivery_date: null
+    }
+]
 </script>
 
 <template>
@@ -26,8 +88,22 @@ const selectedOption = ref(options.value[0]); // Mantiene el valor seleccionado
                 <bill_li v-for="i in 4" :key="i" :check_num="`A-000${i}`" client_name="Felipe Sierra" check_date="08/06/2004" total_price="50000"></bill_li>
             </ul>
         </section>
+        <bill_info
+            v-if="show_letter_switch" 
+            bill_number="0001-A" 
+            client_name="David Carrillo" 
+            entry_date="08/06/2024" 
+            :total_price="50000" 
+            :due="40000" 
+            :payment="10000" 
+            client_phone="3133680686" 
+            wname="srk" 
+            :phones_list="phones_list"
+        ></bill_info>
     </section>
+
 </template>
+    
 
 <style scoped>
 *{

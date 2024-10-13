@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, provide } from 'vue';
 import phoneForm from './phone-form.vue';
-import bill from './bill.vue';
+import bill from './bill-check.vue';
 
 const phones_count = ref(1); // Inicialmente 1
 const bill_total = ref(0); // Inicialmente 0
