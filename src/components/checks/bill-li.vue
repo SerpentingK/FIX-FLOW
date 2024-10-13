@@ -23,13 +23,12 @@ defineProps({
 </script>
 
 <template>
-    <div class="btn">
+    <button @click="show_bill_info()" class="btn">
         <div class="check-num">{{check_num}}</div>
         <div> {{client_name}} </div>
         <div v-if="check_date != null">{{check_date}}</div>
         <div> ${{ total_price }}</div>
-        <button @click="show_bill_info">Ver mas</button>
-    </div>
+    </button>
 </template>
 
 <style scoped>

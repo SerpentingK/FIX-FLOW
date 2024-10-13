@@ -7,7 +7,7 @@ const options = ref(["N. Factura", "Cliente", "Fecha"]);
 const selectedOption = ref(options.value[0]); // Mantiene el valor seleccionado
 
 
-const show_letter_switch = ref(true);
+const show_letter_switch = ref(false);
 const show_bill_info = () => {
     show_letter_switch.value = !show_letter_switch.value;       
 }
@@ -88,18 +88,24 @@ const phones_list = [
                 <bill_li v-for="i in 4" :key="i" :check_num="`A-000${i}`" client_name="Felipe Sierra" check_date="08/06/2004" total_price="50000"></bill_li>
             </ul>
         </section>
-        <bill_info
-            v-if="show_letter_switch" 
-            bill_number="0001-A" 
-            client_name="David Carrillo" 
-            entry_date="08/06/2024" 
-            :total_price="50000" 
-            :due="40000" 
-            :payment="10000" 
-            client_phone="3133680686" 
-            wname="srk" 
-            :phones_list="phones_list"
-        ></bill_info>
+        <transition
+            name="slide-fade"
+            mode="out-in"
+        >
+            <bill_info
+                v-if="show_letter_switch"
+                bill_number="0001-A"
+                client_name="David Carrillo"
+                entry_date="08/06/2024"
+                :total_price="50000"
+                :due="40000"
+                :payment="10000"
+                client_phone="3133680686"
+                wname="srk"
+                :phones_list="phones_list"
+                key="bill-info"
+            />
+        </transition>
     </section>
 
 </template>
@@ -154,5 +160,18 @@ const phones_list = [
 }
 .search-form button:hover{
     border: 2px solid white;
+}
+/* Transición personalizada */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+    transition: all .5s ease;
+}
+.slide-fade-enter-from {
+    transform: translateY(-100px);
+    opacity: 0;
+}
+.slide-fade-leave-to {
+    transform: translateY(100px);
+    opacity: 0;
 }
 </style>

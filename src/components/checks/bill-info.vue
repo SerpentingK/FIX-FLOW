@@ -55,7 +55,11 @@ const show_letter = inject('show_letter')
 .info-container{
     position: absolute;
     background-color: var(--baseGray);
-    height: 100px;
-    width: 100px;
+    min-height: 300px;
+    width: 80%;
+    box-shadow: var(--baseShadow);
+    padding: 20px 30px;
+    border-radius: 20px;
+    border:4px solid var(--baseOrange);
 }
 </style>

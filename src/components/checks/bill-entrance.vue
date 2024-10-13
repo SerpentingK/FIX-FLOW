@@ -8,7 +8,7 @@ const bill_total = ref(0); // Inicialmente 0
 
 // Función para actualizar bill_total
 const updateBillTotal = (difference) => {
-  bill_total.value += difference;
+    bill_total.value += difference;
 };
 
 // Proveer bill_total y la función updateBillTotal
@@ -156,16 +156,13 @@ const phones_list = [
             </label>
             <label for="cant-inp" class="input-container">
                 <ion-icon name="call"></ion-icon>
-                <input v-model="phones_count" type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5" id="cant-inp">
+                <input v-model="phones_count" type="number" placeholder="CANTIDAD DISPOSITIVOS" min="1" max="5"
+                    id="cant-inp">
             </label>
         </section>
 
         <transition-group name="fade" tag="div" class="phone-forms">
-            <phoneForm 
-                v-for="i in phones_count" 
-                :key="i" 
-                :cel_num="i" 
-                @priceUpdated="onPriceUpdated">
+            <phoneForm v-for="i in phones_count" :key="i" :cel_num="i" @priceUpdated="onPriceUpdated">
             </phoneForm>
         </transition-group>
 
@@ -187,22 +184,15 @@ const phones_list = [
                 <ion-icon name="enter-outline"></ion-icon>
             </button>
         </section>
-        <bill 
-            v-if="show_letter_switch" 
-            style="position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%);" 
-            bill_number="0001-A" 
-            client_name="David Carrillo" 
-            entry_date="08/06/2024" 
-            :total_price="50000" 
-            :due="40000" 
-            :payment="10000" 
-            client_phone="3133680686" 
-            wname="srk" 
-            :phones_list="phones_list"
-        ></bill>
+        <transition name="slide-fade" mode="out-in">
+            <bill v-if="show_letter_switch"
+                style="position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+                bill_number="0001-A" client_name="David Carrillo" entry_date="08/06/2024" :total_price="50000"
+                :due="40000" :payment="10000" client_phone="3133680686" wname="srk" :phones_list="phones_list"></bill>
+        </transition>
 
     </form>
-    
+
 </template>
 <style scoped>
 .container {
@@ -317,10 +307,11 @@ const phones_list = [
 .fade-leave-to {
     opacity: 0;
 }
-.register-btn{
+
+.register-btn {
     cursor: pointer;
     background-color: var(--baseOrange);
-    box-shadow: var(--secShadow);   
+    box-shadow: var(--secShadow);
     border: none;
     color: white;
     padding: 10px 20px;
@@ -332,21 +323,25 @@ const phones_list = [
     transition: .3s;
     overflow: hidden;
 }
-.register-btn ion-icon{
+
+.register-btn ion-icon {
     scale: 1.5;
     transform: translateY(100px);
     transition: .6s;
 }
-.register-btn:hover{
-    scale:1.1;
+
+.register-btn:hover {
+    scale: 1.1;
     color: var(--baseGray);
     background-color: white;
 }
-.register-btn:hover ion-icon{
+
+.register-btn:hover ion-icon {
     transform: translateY(0);
 
 }
-.register-btn:hover .reg-span{
+
+.register-btn:hover .reg-span {
     scale: 1.2;
     letter-spacing: 0;
 }
@@ -355,6 +350,19 @@ const phones_list = [
     transition: .2s;
     font-weight: bolder;
     letter-spacing: 1px;
-    
+
+}
+/* Transición personalizada */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+    transition: all .5s ease;
+}
+.slide-fade-enter-from {
+    transform: translateY(-100px);
+    opacity: 0;
+}
+.slide-fade-leave-to {
+    transform: translateY(100px);
+    opacity: 0;
 }
 </style>
