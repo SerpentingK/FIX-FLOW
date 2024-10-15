@@ -37,7 +37,7 @@ const phones_list = [
         delivery_date: "08/06/2024"
     },
     {
-        phone_ref: "0001-A-1",
+        phone_ref: "0001-A-3",
         brand: "Apple",
         device: "IPhone XR",
         price: 20000,
@@ -47,7 +47,7 @@ const phones_list = [
         delivery_date: null
     },
     {
-        phone_ref: "0001-A-1",
+        phone_ref: "0001-A-4",
         brand: "Apple",
         device: "IPhone XR",
         price: 20000,
@@ -57,7 +57,7 @@ const phones_list = [
         delivery_date: null
     },
     {
-        phone_ref: "0001-A-1",
+        phone_ref: "0001-A-5",
         brand: "Apple",
         device: "IPhone XR",
         price: 20000,
