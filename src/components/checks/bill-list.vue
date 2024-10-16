@@ -2,6 +2,7 @@
 import { ref, provide } from 'vue';
 import bill_li from './bill-li.vue';
 import bill_info from './bill-info.vue';
+import pay_window from './pay-window.vue';
 
 const options = ref(["N. Factura", "Cliente", "Fecha"]);
 const selectedOption = ref(options.value[0]); // Mantiene el valor seleccionado
@@ -11,6 +12,13 @@ const show_letter_switch = ref(false);
 const show_bill_info = () => {
     show_letter_switch.value = !show_letter_switch.value;       
 }
+
+const show_pay_window = ref(false)
+const switch_spw = () => {
+    show_pay_window.value = !show_pay_window.value
+    alert(show_pay_window.value)
+}
+provide('switch_spw', switch_spw)
 
 provide('show_bill_info', show_bill_info);
 
@@ -63,7 +71,7 @@ const phones_list = [
         price: 20000,
         details: "pantalla",
         delivered: false,
-        repaired: false,
+        repaired: true,
         delivery_date: null
     }
 ]
@@ -88,7 +96,7 @@ const phones_list = [
                 <bill_li v-for="i in 4" :key="i" :check_num="`A-000${i}`" client_name="Felipe Sierra" check_date="08/06/2004" total_price="50000"></bill_li>
             </ul>
         </section>
-        <transition
+        <transition-group
             name="slide-fade"
             mode="out-in"
         >
@@ -105,7 +113,9 @@ const phones_list = [
                 :phones_list="phones_list"
                 key="bill-info"
             />
-        </transition>
+
+            <pay_window v-if="show_pay_window"></pay_window>
+        </transition-group>
     </section>
 
 </template>

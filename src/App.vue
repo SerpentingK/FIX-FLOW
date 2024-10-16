@@ -9,7 +9,7 @@ import company from './components/companies/company.vue';
 const loggedCompany = ref(null);
 const workersCount = ref(0);
 const loggedWorker = ref(null);
-const workerRole= ref(null);
+const workerRole = ref(null);
 // Proveer la variable a los componentes hijos
 provide('loggedCompany', loggedCompany);
 provide('workersCount', workersCount);
@@ -25,15 +25,15 @@ const route = useRoute();
 const handleRedirection = () => {
   if (route.path === '/users' && loggedCompany.value !== null) {
     router.push('/session'); // Redirigir a /session si loggedCompany es diferente de null
-  }else if(route.path !== '/users' && loggedCompany.value === null ){
+  } else if (route.path !== '/users' && loggedCompany.value === null) {
     router.push('/users');
-  }else if (route.path === '/workers/login-worker' && loggedWorker.value !== null){
+  } else if (route.path === '/workers/login-worker' && loggedWorker.value !== null) {
     router.push('/workers/worker')
   }
 };
 // Ejecutar la función al montar el componente
 onMounted(() => {
-    handleRedirection();
+  handleRedirection();
 });
 // Verificar cualquier cambio en la ruta
 watch(
@@ -49,9 +49,12 @@ watch(
 <template>
   <section class="body">
     <navBar></navBar>
-    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`"  :logged-worker="`${loggedWorker}`" class="info"></company>
+    <company v-if="loggedCompany != null" :logged-company="`${loggedCompany}`" :logged-worker="`${loggedWorker}`"
+      class="info"></company>
     <section>
-      <router-view></router-view>
+      <transition name="slide-fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </section>
   </section>
   <logo class="logo-fixed"></logo>
@@ -86,7 +89,21 @@ section {
   z-index: -1;
   opacity: 0.7;
 }
-.info{
+
+.info {
   z-index: 9999;
+}
+/* Transición personalizada */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+    transition: all .5s ease;
+}
+.slide-fade-enter-from {
+    transform: translateY(-100px);
+    opacity: 0;
+}
+.slide-fade-leave-to {
+    transform: translateY(100px);
+    opacity: 0;
 }
 </style>
