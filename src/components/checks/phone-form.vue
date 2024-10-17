@@ -1,6 +1,7 @@
 <script setup>
 // Importar funciones y herramientas de Vue.js
-import { ref, onMounted, inject, defineProps } from "vue";
+import { ref, onMounted, inject, defineProps, watch, defineExpose } from "vue";
+import axios from "axios";
 
 // Definir propiedades que se pueden pasar al componente
 const props = defineProps({
@@ -12,7 +13,7 @@ const props = defineProps({
 });
 
 // Inyectar la función updateBillTotal desde el padre
-const updateBillTotal = inject('updateBillTotal');
+const updateBillTotal = inject("updateBillTotal");
 
 // Mantener el valor anterior del precio
 let previousValue = 0;
@@ -30,83 +31,100 @@ const handlePriceInput = (event) => {
 
   // Actualizar el valor anterior con el nuevo precio
   previousValue = newPrice;
-};
 
-// Función que se ejecuta cuando el componente se monta
-onMounted(() => {
-  // Puedes configurar el input de precio aquí, si necesitas hacer algo adicional
-});
+  price.value = newPrice;
+};
 
 // Variables reactivas para gestionar el estado del componente
-const brands = ref([]); // Lista de marcas
+const brands = ref([]);
+
+const selectedBrandName = ref("");
+
+const newBrand = ref("");
 const devices = ref([]); // Lista de dispositivos
-const selectedBrand = ref(null); // Marca seleccionada
-const selectedDevice = ref(null); // Dispositivo seleccionado
-const page = ref(1); // Página actual para paginación
-const hasMoreDevices = ref(true); // Controlar si hay más dispositivos para cargar
-
-// Función para obtener la lista de marcas
-const fetchBrands = async () => {
+const selectedDevice = ref("");
+const detail = ref("");
+const newDevice = ref("");
+//nueva variable para contrarla visibilidad del campo de entrada
+const showNewDeviceInput = ref(false);
+// Nueva variable para controlar la visibilidad del campo de entrada
+const showNewBrandInput = ref(false);
+onMounted(async () => {
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec?route=brand-list");
-    const result = await response.json();
-    if (result.status === 200) {
-      brands.value = result.data;
-    } else {
-      console.error("Error en la respuesta de la API:", result.message);
-    }
+    const response = await axios.get("http://127.0.0.1:8000/allBrands");
+    brands.value = response.data;
   } catch (error) {
-    console.error("Error al obtener las marcas:", error);
+    console.error("Error cargando marcas desde la API", error);
   }
-};
+});
 
-// Función para obtener la lista de dispositivos según la marca seleccionada
-const fetchDevices = async (append = false) => {
-  if (!selectedBrand.value) return;
-
-  try {
-    const raw = `{
-      "route": "device-list-by-brand",
-      "brand_id": ${selectedBrand.value},
-      "brand_name": "${brands.value.find(brand => brand.brand_id === selectedBrand.value).brand_name}",
-      "page": ${page.value}
-    }`;
-
-    const response = await fetch("https://script.google.com/macros/s/AKfycbxNu27V2Y2LuKUIQMK8lX1y0joB6YmG6hUwB1fNeVbgzEh22TcDGrOak03Fk3uBHmz-/exec", {
-      method: "POST",
-      body: raw,
-      redirect: "follow",
-    });
-
-    const result = await response.json();
-    if (result && result.data.device_list.length > 0) {
-      devices.value = append ? [...devices.value, ...result.data.device_list] : result.data.device_list;
-      hasMoreDevices.value = result.data.device_list.length > 0;
-    } else {
-      hasMoreDevices.value = false;
+watch(selectedBrandName, async (newName) => {
+  if (newName && newName !== "Otro") {
+    try {
+      // Obtener el ID de la marca seleccionada
+      const brand = brands.value.find((b) => b.name === newName);
+      if (brand) {
+        const response = await axios.get(`http://127.0.0.1:8000/${selectedBrandName.value}/Devices`);
+        devices.value = response.data;
+      }
+    } catch (error) {
+      console.error("Error cargando dispositivos", error);
+      devices.value = []; // Limpiar si hay error
     }
-  } catch (error) {
-    console.error("Error al obtener los dispositivos:", error);
-    devices.value = [];
   }
+});
+
+
+const getPhoneData = () => {
+  return {
+    brand_name: selectedBrandName .value,
+    device: selectedDevice.value,
+    price: price.value,
+    details: detail.value,
+  };
 };
 
-// Función para manejar el cambio de marca
-const handleBrandChange = () => {
-  devices.value = [];
-  page.value = 1;
-  fetchDevices();
+const addNewBrand = async () => {
+  if (newBrand.value && !brands.value.includes(newBrand.value)) {
+    try {
+      await axios.post("http://127.0.0.1:8000/newBrand", {
+        name: newBrand.value,
+      });
+      brands.value.push({ name: newBrand.value });
+      selectedBrandName.value = newBrand.value; // Seleccionar la nueva marca
+      newBrand.value = ""; // Limpiar el campo de entrada
+      showNewBrandInput.value = false; // Ocultar el campo de entrada
+    } catch (error) {
+      console.error("Error agregando nueva marca", error.data);
+    }
+  }
+  return false;
 };
 
-// Función para cargar más dispositivos
-const loadMoreDevices = (event) => {
-  event.preventDefault();
-  page.value++;
-  fetchDevices(true);
+const addNewDevice = async () => {
+  if (newDevice.value && !devices.value.includes(newDevice.value)) {
+    try {
+      await axios.post("http://127.0.0.1:8000/newDevice", {
+        id_brands: selectedBrandName.value,
+        name: newDevice.value,
+      });
+      devices.value.push({
+        id_brands: selectedBrandName.value,
+        name: newDevice.value,
+      });
+      selectedDevice.value = newDevice.value;
+      newDevice.value = "";
+      showNewDeviceInput.value = false;
+    } catch (error) {
+      console.error("Error agregando nuevo dispositivos", error.data);
+    }
+  }
+  return false;
 };
 
-// Llamar a fetchBrands cuando el componente se monta
-onMounted(fetchBrands);
+defineExpose({
+  getPhoneData,
+});
 </script>
 
 <template>
@@ -115,40 +133,47 @@ onMounted(fetchBrands);
     <section>
       <label :for="`brand-select-${cel_num}`" class="input-container">
         <span>Seleccione una marca:</span>
-        <select
-          :id="`brand-select-${cel_num}`"
-          v-model="selectedBrand"
-          @change="handleBrandChange"
-        >
-          <option
-            v-for="(brand, index) in brands"
-            :key="brand.brand_id"
-            :value="brand.brand_id"
-          >
-            {{ brand.brand_name }}
+        <select v-model="selectedBrandName">
+          <option v-for="brand in brands" :key="brand.name" :value="brand.name">
+            {{ brand.name }}
           </option>
           <option value="Otro">Otro</option>
         </select>
+        <!-- Mostrar campo para nueva marca si se selecciona "Otro" -->
+        <div v-if="selectedBrandName === 'Otro'" class="input-container">
+          <input
+            type="text"
+            v-model="newBrand"
+            placeholder="Ingrese una nueva marca"
+          />
+          <button type="button" @click="addNewBrand">Agregar Marca</button>
+        </div>
       </label>
       <label :for="`device-select-${cel_num}`" class="input-container">
         <span>Seleccione un modelo:</span>
         <select :id="`device-select-${cel_num}`" v-model="selectedDevice">
           <option
-            v-for="(device, index) in devices"
-            :key="index"
-            :value="device.key"
+            v-for="device in devices"
+            :key="device.id_brands"
+            :value="device.name"
           >
-            {{ device.device_name }}
+            {{ device.name }}
           </option>
           <option value="Otro">Otro</option>
         </select>
-        <button v-if="hasMoreDevices" @click="loadMoreDevices">
-          Ver más
-        </button>
+        <!-- Mostrar campo para nueva marca si se selecciona "Otro" -->
+        <div v-if="selectedDevice === 'Otro'" class="input-container">
+          <input
+            type="text"
+            v-model="newDevice"
+            placeholder="Ingrese un nuevo modelo"
+          />
+          <button type="button" @click="addNewDevice">Agregar Modelo</button>
+        </div>
       </label>
       <label :for="`desc-inp-${cel_num}`" class="input-container">
         <span>Descripcion:</span>
-        <input type="text" :id="`desc-inp-${cel_num}`" />
+        <input v-model="detail" type="text" :id="`desc-inp-${cel_num}`" />
       </label>
       <label :for="`price-inp-${cel_num}`" class="input-container">
         <span>Precio:</span>
@@ -163,7 +188,6 @@ onMounted(fetchBrands);
     </section>
   </section>
 </template>
-
 
 <style scoped>
 .input-container input::-webkit-inner-spin-button,
@@ -219,8 +243,8 @@ onMounted(fetchBrands);
   color: white;
 }
 .input-container *:focus {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
 .input-container select option {
   color: black;
