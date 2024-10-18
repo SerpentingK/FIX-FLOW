@@ -1,4 +1,7 @@
 <script setup>
+import { ref, inject } from 'vue';
+
+const show_bill_info = inject('show_bill_info')
 defineProps({
     check_num:{
         type: String,
@@ -20,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-    <button>
+    <button @click="show_bill_info()" class="btn">
         <div class="check-num">{{check_num}}</div>
         <div> {{client_name}} </div>
         <div v-if="check_date != null">{{check_date}}</div>
@@ -29,7 +32,7 @@ defineProps({
 </template>
 
 <style scoped>
-button{
+.btn{
     cursor: pointer;
     display: flex;
     align-items: center;

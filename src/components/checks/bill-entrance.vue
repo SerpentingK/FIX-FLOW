@@ -8,7 +8,7 @@ const bill_total = ref(0); // Inicialmente 0
 
 // Función para actualizar bill_total
 const updateBillTotal = (difference) => {
-  bill_total.value += difference;
+    bill_total.value += difference;
 };
 
 // Proveer bill_total y la función updateBillTotal
