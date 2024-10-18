@@ -4,7 +4,15 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const {client_name,total_price, due, payment, client_phone, wname, phones_list} = defineProps({
+const {
+  client_name,
+  total_price,
+  due,
+  payment,
+  client_phone,
+  wname,
+  phones_list,
+} = defineProps({
   client_name: {
     type: String,
     required: true,
@@ -51,11 +59,11 @@ const bill = ref({
 
 const postBill = async () => {
   // Asegúrate de que cada objeto en phones tenga las propiedades correctas
-  bill.value.phones = bill.value.phones.map(phone => ({
-    brand_name: phone.brand_name,  // Cambiar 'brand' a 'brands'
+  bill.value.phones = bill.value.phones.map((phone) => ({
+    brand_name: phone.brand_name, // Cambiar 'brand' a 'brands'
     device: phone.device,
     details: phone.details,
-    price: phone.price      // Asegúrate de incluir 'price'
+    price: phone.price, // Asegúrate de incluir 'price'
   }));
 
   try {

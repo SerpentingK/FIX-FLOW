@@ -64,7 +64,9 @@ watch(selectedBrandName, async (newName) => {
       // Obtener el ID de la marca seleccionada
       const brand = brands.value.find((b) => b.name === newName);
       if (brand) {
-        const response = await axios.get(`http://127.0.0.1:8000/${selectedBrandName.value}/Devices`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/${selectedBrandName.value}/Devices`
+        );
         devices.value = response.data;
       }
     } catch (error) {
@@ -74,10 +76,9 @@ watch(selectedBrandName, async (newName) => {
   }
 });
 
-
 const getPhoneData = () => {
   return {
-    brand_name: selectedBrandName .value,
+    brand_name: selectedBrandName.value,
     device: selectedDevice.value,
     price: price.value,
     details: detail.value,
