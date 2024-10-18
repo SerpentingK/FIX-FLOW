@@ -8,7 +8,7 @@ const bill_total = ref(0); // Inicialmente 0
 
 // Función para actualizar bill_total
 const updateBillTotal = (difference) => {
-    bill_total.value += difference;
+  bill_total.value += difference;
 };
 
 // Proveer bill_total y la función updateBillTotal
@@ -97,7 +97,7 @@ const handleAddPhone = () => {
   if (phoneFormRef.value) {
     phoneFormRef.value.forEach((phoneForm) => {
       const phoneData = phoneForm.getPhoneData();
-      
+
       // Verificar si todos los campos están completos
       if (
         phoneData.brand_name &&
@@ -107,19 +107,20 @@ const handleAddPhone = () => {
         phoneData.details
       ) {
         // Verificar si el dato ya existe en phones_list
-        const exists = phones_list.value.some(phone => 
-          phone.brand_name === phoneData.brand_name && 
-          phone.device === phoneData.device && 
-          phone.price === phoneData.price && 
-          phone.details === phoneData.details
+        const exists = phones_list.value.some(
+          (phone) =>
+            phone.brand_name === phoneData.brand_name &&
+            phone.device === phoneData.device &&
+            phone.price === phoneData.price &&
+            phone.details === phoneData.details
         );
 
         if (!exists) {
-          console.log('Datos recibidos:', phoneData);
+          console.log("Datos recibidos:", phoneData);
           phones_list.value.push(phoneData);
         }
       } else {
-        console.error('Error: Algunos campos están vacíos');
+        console.error("Error: Algunos campos están vacíos");
       }
     });
   }
