@@ -130,8 +130,8 @@ const phones_list = [
         :phones_list="phones_list"
         key="bill-info"
       />
+      
     </transition>
-  </section>
 </template>
 
 <style scoped>
