@@ -1,6 +1,5 @@
 <script setup>
 import { ref, inject, provide } from 'vue';
-import pay_window from './pay-window.vue';
 defineProps({
     bill_number: {
         type: String,

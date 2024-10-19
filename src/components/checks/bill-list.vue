@@ -16,7 +16,6 @@ const show_bill_info = () => {
 const show_pay_window = ref(false)
 const switch_spw = () => {
     show_pay_window.value = !show_pay_window.value
-    alert(show_pay_window.value)
 }
 provide('switch_spw', switch_spw)
 
