@@ -80,7 +80,7 @@ const getPhoneData = () => {
   return {
     brand_name: selectedBrandName.value,
     device: selectedDevice.value,
-    price: price.value,
+    individual_price: price.value,
     details: detail.value,
   };
 };
