@@ -102,8 +102,8 @@ const handleAddPhone = () => {
       if (
         phoneData.brand_name &&
         phoneData.device &&
-        phoneData.price !== null &&
-        phoneData.price !== undefined &&
+        phoneData.individual_price !== null &&
+        phoneData.individual_price !== undefined &&
         phoneData.details
       ) {
         // Verificar si el dato ya existe en phones_list
@@ -111,7 +111,7 @@ const handleAddPhone = () => {
           (phone) =>
             phone.brand_name === phoneData.brand_name &&
             phone.device === phoneData.device &&
-            phone.price === phoneData.price &&
+            phone.individual_price === phoneData.individual_price &&
             phone.details === phoneData.details
         );
 
