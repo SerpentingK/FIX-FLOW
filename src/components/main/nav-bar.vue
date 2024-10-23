@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, inject } from "vue"; // Importado para usar propiedades computadas
+import { ref, inject } from "vue"; // Importado para usar propiedades computadas
 import { useRoute } from "vue-router"; // Importado para obtener la ruta actual
 
 const route = useRoute(); // Obtiene la ruta actual
@@ -7,43 +7,46 @@ const route = useRoute(); // Obtiene la ruta actual
 const loggedCompany = inject('loggedCompany', ref(null))
 const loggedWorker = inject("loggedWorker", ref(null))
 
-// Comprobamos si hay historial para regresar
-const canGoBack = ref(window.history.length > 1);
-// Función para ir a la página anterior
-const goBack = () => {
-  if (canGoBack.value) {
-    router.back();
-  }
-};
 
 // Función para activar la clase 'active' en el enlace actual
 const isActive = (path) => route.path.startsWith(path);
+const show_nav_bar = ref(true)
+const switch_snv = () => {
+  show_nav_bar.value = !show_nav_bar.value
+}
 </script>
 
 <template>
-  <nav>
-    <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
-    <router-link to="/workers/login-worker" class="router" :class="{ active: isActive('/workers') }" 
-      v-if="loggedCompany != null">Colaboradores</router-link>
-    <router-link to="/bills" class="router" :class="{ active: isActive('/bills') }"
-      v-if="loggedCompany != null && loggedWorker != null">Facturas</router-link>
-    <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
-      v-if="loggedCompany != null && loggedWorker != null">Repuestos</router-link>
-    <button @click="goBack" :disabled="!canGoBack" class="back-button">
-      <ion-icon name="arrow-back-circle-outline"></ion-icon>
-    </button>
-  </nav>
+  <transition name="slide-fade" mode="out-in">
+    <nav v-if="show_nav_bar">
+      <router-link to="/users" class="router" :class="{ active: isActive('/users') }">Usuario</router-link>
+      <router-link to="/workers/login-worker" class="router" :class="{ active: isActive('/workers') }"
+        v-if="loggedCompany != null">Colaboradores</router-link>
+      <router-link to="/bills" class="router" :class="{ active: isActive('/bills') }"
+        v-if="loggedCompany != null && loggedWorker != null">Facturas</router-link>
+      <router-link to="/spareparts" class="router" :class="{ active: isActive('/spareParts') }"
+        v-if="loggedCompany != null && loggedWorker != null">Repuestos</router-link>
+    </nav>
+  </transition>
+  <button class="nav-btn" @click="switch_snv()">
+    <transition-group name="opacity" mode="out-in">
+      <ion-icon name="menu" v-if="!show_nav_bar"></ion-icon>
+      <ion-icon name="close" v-if="show_nav_bar"></ion-icon>
+    </transition-group>
+  </button>
 </template>
 
 <style scoped>
+.nav-btn {
+  display: none;
+}
+
 nav {
   background-color: rgba(255, 255, 255, 0.4);
-  /* Color blanco con transparencia */
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-  /* Efecto de difuminado */
   border-radius: 5px;
-  /* Bordes redondeados opcionales */
+  transition: 3s;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -72,45 +75,60 @@ nav {
   box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.418);
 }
 
-.back-button {
-  width: 9em;
-  height: 3em;
-  border-radius: 30em;
-  font-family: inherit;
-  border: none;
-  position: absolute;
-  bottom: 20px;
-  left: 10px;
-  overflow: hidden;
-  z-index: 1;
-  transition: color 0.3s ease-in;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.611);
-  border: 1px solid transparent;
-}
+@media (max-width: 600px) {
+  .nav-btn {
+    all: unset;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 12;
+    background-color: var(--baseOrange);
+  }
+  .nav-btn ion-icon{
+    position: absolute;
+    background-color: var(--baseOrange);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: var(--baseShadow);
+    color: white;
+  }
 
-.back-button ion-icon {
-  font-size: 30px;
-}
+  nav {
+    position: absolute;
+    left: 0;
+    width: 50%;
+    z-index: 10;
+    padding-top: 40px;
+  }
 
-.back-button::before {
-  content: "";
-  width: 0;
-  height: 3em;
-  border-radius: 30em;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: var(--baseOrange);
-  transition: 0.5s ease;
-  display: block;
-  z-index: -1;
-}
+  /* Transición personalizada */
+  .slide-fade-enter-active,
+  .slide-fade-leave-active {
+    transition: all .5s ease;
+  }
 
-.back-button:hover::before {
-  width: 9em;
-}
+  .slide-fade-enter-from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
 
-.back-button:hover {
-  color: white;
+  .slide-fade-leave-to {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  .opacity-enter-active,
+  .opacity-leave-active{
+    transition: all .6s ease;
+  }
+  .opacity-enter-from{
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  .opacity-leave-to{
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+
 }
 </style>

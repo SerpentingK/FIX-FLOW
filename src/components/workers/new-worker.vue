@@ -77,7 +77,6 @@ export default {
             </label>
           </div>
         </div>
-        <div>{{ workersCount }}</div>
         <button type="submit" class="btn"><span>Registrar</span></button>
       </form>
       </section>

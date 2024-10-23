@@ -130,19 +130,15 @@ const postBill = async () => {
           <span>Detalles:</span>
           <span>{{ phone.details }}</span>
         </div>
-        <div class="bool-info" :class="{ true: phone.repaired }">
-          <span>REPARADO</span>
-        </div>
-        <div class="bool-info" :class="{ true: phone.delivered }">
-          <span>ENTREGADO</span>
-        </div>
-        <div class="fact-container" v-if="phone.delivered">
-          <span>Fecha entregado:</span>
-          <span>{{ phone.delivery_date }}</span>
-        </div>
       </div>
-      <button class="cancel-btn" @click="show_letter()">CANCELAR</button>
-      <button class="confirm-btn" @click="postBill()">CONFIRMAR</button>
+      <div class="btns-container">
+        <button class="cancel-btn" @click="show_letter()">
+          <span class="btn-text">CANCELAR</span></button>
+        <button class="confirm-btn" @click="postBill()">
+          <span class="btn-text">REGISTRAR</span>
+        </button>
+      </div>
+      
     </div>
   </section>
 </template>
@@ -209,17 +205,11 @@ const postBill = async () => {
   color: white;
   border-color: var(--baseOrange);
 }
-.bool-info {
-  background-color: var(--baseGray);
-  border: 4px solid red;
-  box-shadow: 0 0 10px 4px red;
-  padding: 10px 20px;
-  color: white;
-  border-radius: 20px;
-}
-.bool-info.true {
-  border-color: green;
-  box-shadow: 0 0 10px 4px green;
+.btns-container{
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  padding: 20px 50px;
 }
 button {
   border: none;
@@ -230,16 +220,21 @@ button {
   font-size: 20px;
   font-weight: bolder;
   color: white;
-  box-shadow: var(--secShadow);
   transition: 0.2s;
+  border: 2px solid;
 }
 .confirm-btn {
-  background-color: green;
+  border-color: var(--baseOrange);
+  background-color: var(--baseOrange);
 }
 .cancel-btn {
-  background-color: red;
+  border-color: var(--baseOrange);
+  background-color: var(--baseGray);
 }
-button:hover {
-  scale: 1.05;
+.btn-text{
+  transition: 3s;
+}
+button:hover .btn-text{
+  transform: scale(1.2);
 }
 </style>

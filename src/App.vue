@@ -106,4 +106,9 @@ section {
     transform: translateY(100px);
     opacity: 0;
 }
+@media (max-width: 600px) {
+  .body{
+    display: flex;
+  }
+}
 </style>

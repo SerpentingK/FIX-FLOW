@@ -95,4 +95,9 @@ const loggedWorker = inject("loggedWorker", ref(null))
 .router:hover::before{
     transform: translate3d(100%,0,0);
 }
+@media (max-width: 600px) {
+    .container{
+        display: none;
+    }
+}
 </style>

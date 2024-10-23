@@ -141,13 +141,14 @@ defineExpose({
           <option value="Otro">Otro</option>
         </select>
         <!-- Mostrar campo para nueva marca si se selecciona "Otro" -->
-        <div v-if="selectedBrandName === 'Otro'" class="input-container">
+        <div v-if="selectedBrandName === 'Otro'" class="other-container">
           <input
             type="text"
             v-model="newBrand"
-            placeholder="Ingrese una nueva marca"
+            placeholder="Nueva marca"
+            class="other-input"
           />
-          <button type="button" @click="addNewBrand">Agregar Marca</button>
+          <button type="button" @click="addNewBrand"><ion-icon name="add-circle"></ion-icon></button>
         </div>
       </label>
       <label :for="`device-select-${cel_num}`" class="input-container">
@@ -163,13 +164,14 @@ defineExpose({
           <option value="Otro">Otro</option>
         </select>
         <!-- Mostrar campo para nueva marca si se selecciona "Otro" -->
-        <div v-if="selectedDevice === 'Otro'" class="input-container">
+        <div v-if="selectedDevice === 'Otro'" class="other-container">
           <input
             type="text"
             v-model="newDevice"
-            placeholder="Ingrese un nuevo modelo"
+            placeholder="Nuevo modelo"
+            class="other-input"
           />
-          <button type="button" @click="addNewDevice">Agregar Modelo</button>
+          <button type="button" @click="addNewDevice"><ion-icon name="add-circle"></ion-icon></button>
         </div>
       </label>
       <label :for="`desc-inp-${cel_num}`" class="input-container">
@@ -191,6 +193,9 @@ defineExpose({
 </template>
 
 <style scoped>
+*{
+  transition: .3s;
+}
 .input-container input::-webkit-inner-spin-button,
 .input-container input::-webkit-outer-spin-button {
   display: none;
@@ -255,5 +260,28 @@ defineExpose({
 }
 .input-container * {
   scale: 1.1;
+}
+.other-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--baseGray);
+  padding: 5px 10px;
+  gap: 20px;
+  border-radius: 10px;  
+}
+.other-input{
+  width: 100px;
+}
+.other-container button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  cursor: pointer;
+  transition: 3s;
+}
+.other-container button:hover{
+  scale: 1.2;
 }
 </style>

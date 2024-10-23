@@ -7,7 +7,14 @@ export default {
   setup() {
     const router = useRouter();
     const container = ref(null);
+    const container_forms = ref(null);
     const confirmPassword = ref("");
+    const isMobile = ref(false);
+    const toggled = ref(false)
+
+    const updateMedia = () => {
+      isMobile.value = window.innerWidth <= 600;
+    };
     const toggle = () => {
       if (container.value.classList.contains("toggle")) {
         container.value.classList.remove("toggle");
@@ -15,6 +22,17 @@ export default {
         container.value.classList.add("toggle");
       }
     };
+    const toggle_responsive = () => {
+      container_forms.value.forEach(form => {
+        if (form.classList.contains("toggle")) {
+          form.classList.remove("toggle");
+        } else {
+          form.classList.add("toggle");
+        }
+      });
+      toggled.value = !toggled.value;
+    };
+
     const getWorkersCount = async () => {
       try {
         if (loggedCompany.value) {
@@ -28,8 +46,11 @@ export default {
       }
     };
     onMounted(() => {
+      updateMedia();
+      window.addEventListener("resize", updateMedia);
       getWorkersCount();
       container.value = document.querySelector(".container");
+      container_forms.value = document.querySelectorAll(".container-form");
     });
 
     const company = ref({
@@ -83,7 +104,7 @@ export default {
       try {
         if (!passwordsMatch.value) {
           alert("Las contraseñas no coinciden.");
-          return; 
+          return;
         }
         const answer = await axios.post(
           "http://127.0.0.1:8000/insertCompany",
@@ -120,12 +141,19 @@ export default {
       toggle,
       container,
       workersCount,
+      toggle_responsive,
+      isMobile,
+      toggled
     };
   },
 };
 </script>
 
 <template>
+  <button v-if="isMobile" @click="toggle_responsive()" class="ses-btn">
+    <span v-if="!toggled">REGISTRARSE</span>
+    <span v-if="toggled">INICIAR SESION</span>
+  </button>
   <div class="container">
     <div class="container-form">
       <form class="sign-in" @submit.prevent="startSession">
@@ -133,19 +161,11 @@ export default {
         <span>Use su usuario y su contraseña</span>
         <div class="container-input">
           <ion-icon name="person-outline"></ion-icon>
-          <input
-            v-model="session.company_user"
-            type="text"
-            placeholder="Usuario"
-          />
+          <input v-model="session.company_user" type="text" placeholder="Usuario" />
         </div>
         <div class="container-input">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input
-            v-model="session.password"
-            type="password"
-            placeholder="Contraseña"
-          />
+          <input v-model="session.password" type="password" placeholder="Contraseña" />
         </div>
         <a href="#">¿Olvidaste tu contraseña?</a>
         <button type="submit" class="button">INICIAR SESION</button>
@@ -157,35 +177,19 @@ export default {
         <span>Use su correo electronico para el registro</span>
         <div class="container-input">
           <ion-icon name="mail-outline"></ion-icon>
-          <input
-            v-model="company.mail"
-            type="text"
-            placeholder="Correo Electronico"
-          />
+          <input v-model="company.mail" type="text" placeholder="Correo Electronico" />
         </div>
         <div class="container-input">
           <ion-icon name="person-outline"></ion-icon>
-          <input
-            v-model="company.company_user"
-            type="text"
-            placeholder="Usuario"
-          />
+          <input v-model="company.company_user" type="text" placeholder="Usuario" />
         </div>
         <div class="container-input">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input
-            v-model="company.password"
-            type="password"
-            placeholder="Contraseña"
-          />
+          <input v-model="company.password" type="password" placeholder="Contraseña" />
         </div>
         <div class="container-input">
           <ion-icon name="lock-closed-outline"></ion-icon>
-          <input
-            v-model="confirmPassword"
-            type="password"
-            placeholder="Verifique su contraseña"
-          />
+          <input v-model="confirmPassword" type="password" placeholder="Verifique su contraseña" />
         </div>
         <p v-if="!passwordsMatch" style="color: white;">Las contraseñas no coinciden.</p>
         <button type="submit" class="button" :disabled="!passwordsMatch">REGISTRO</button>
@@ -211,6 +215,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style scoped>
 * {
   margin: 0;
@@ -275,6 +280,7 @@ export default {
   height: 100%;
   background-color: inherit;
 }
+
 .container-input ion-icon {
   color: gray;
 }
@@ -299,6 +305,7 @@ export default {
   transition: 0.4s;
   font-weight: bolder;
 }
+
 .button:hover {
   border-color: var(--baseGray);
   box-shadow: var(--secShadow);
@@ -371,5 +378,117 @@ export default {
 
 .container.toggle .welcome-sign-up {
   transform: translateX(-100%);
+}
+
+@media (max-width: 600px) {
+  .container * {
+    all: unset;
+    transition: transform 0.5s ease-in;
+  }
+
+  .container {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .container-form {
+    background-color: var(--baseGray);
+    width: 100%;
+    height: 100%;
+  }
+
+  .container-form.toggle {
+    transform: translateY(-100%);
+  }
+
+  .container-form form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-form h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .container-form span {
+    font-size: 10px;
+    margin-bottom: 15px;
+  }
+
+  .container-welcome {
+    display: none;
+  }
+
+  .container-input {
+    width: 70%;
+    height: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 0px 15px;
+    background-color: #eeeeee;
+    border-radius: 5px;
+  }
+
+  .container-input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+  }
+
+  .container-input ion-icon {
+    color: gray;
+    width: 20px;
+  }
+
+  .container-form a {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    text-decoration: underline;
+  }
+
+  .button {
+    width: 70%;
+    height: 45px;
+    font-size: 15px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    background-color: var(--baseOrange);
+    color: white;
+    transition: 0.4s;
+    font-weight: bolder;
+    text-align: center;
+  }
+
+  .ses-btn {
+    all: unset;
+    text-align: center;
+    height: 20px;
+    position: absolute;
+    z-index: 12;
+    bottom: 20px;
+    color: white;
+    text-transform: uppercase;
+    background-color: var(--baseOrange);
+    box-shadow: var(--secShadow);
+    padding: 20px 60px;
+    border-radius: 20px;
+    letter-spacing: 2px;
+    font-weight: bolder;
+    width: 60%;
+  }
 }
 </style>

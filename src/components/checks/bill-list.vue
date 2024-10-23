@@ -149,7 +149,7 @@ const phones_list = [
 .search-bar {
   background-color: var(--baseGray);
   padding: 10px;
-  width: 50%;
+  width: 100%;
   height: auto;
   padding: 20px 50px;
   margin-top: 20px;
