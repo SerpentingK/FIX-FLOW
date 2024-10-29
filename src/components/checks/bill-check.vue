@@ -63,7 +63,7 @@ const postBill = async () => {
     brand_name: phone.brand_name, // Cambiar 'brand' a 'brands'
     device: phone.device,
     details: phone.details,
-    price: phone.price, // Asegúrate de incluir 'price'
+    individual_price: phone.individual_price, // Asegúrate de incluir 'price'
   }));
 
   try {
@@ -124,7 +124,7 @@ const postBill = async () => {
         </div>
         <div class="fact-container">
           <span>Precio:</span>
-          <span>${{ phone.price }}</span>
+          <span>${{ phone.individual_price }}</span>
         </div>
         <div class="fact-container">
           <span>Detalles:</span>

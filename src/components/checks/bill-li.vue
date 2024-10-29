@@ -2,7 +2,7 @@
 import { ref, inject } from "vue";
 
 const show_bill_info = inject("show_bill_info");
-defineProps({
+const {check_num,client_name,check_date,total_price} =defineProps({
   check_num: {
     type: String,
     required: true,
@@ -20,10 +20,16 @@ defineProps({
     required: true,
   },
 });
+
+//emitir numero de factura al hacer click 
+const emitbillnumber = () => {
+  show_bill_info(check_num)
+}
+
 </script>
 
 <template>
-  <button @click="show_bill_info()" class="btn">
+  <button @click="emitbillnumber()" class="btn">
     <div class="check-num">{{ check_num }}</div>
     <div>{{ client_name }}</div>
     <div v-if="check_date != null">{{ check_date }}</div>

@@ -5,14 +5,16 @@ select * from company;
 create table company(
 company_user varchar(30) not null primary key,
 mail varchar(200) not null,
-pasw varchar(50) not null
+password varchar(80) not null,
+url_image varchar(100)
 );
 
 create table worker(
 wname varchar(50) not null unique,
+password varchar(80) not null,
 document varchar(20) not null primary key,
 company varchar(30) not null,
-wtype enum('administrador', 'tecnico'),
+wtype enum('Gerente','administrador', 'tecnico'),
 constraint fk_wor_com foreign key (company) references company(company_user)
 );
 
@@ -20,7 +22,6 @@ create table bill(
 bill_number varchar(20) primary key,
 total_price float not null,
 entry_date date not null,
-delivery_date date,
 due float,
 client_name varchar(30) not null,
 client_phone varchar(20),
@@ -32,15 +33,28 @@ constraint fk_bill_wor foreign key (wname) references worker(wname)
 create table phone(
 bill_number varchar(20) not null,
 phone_ref varchar(30) not null primary key,
-model varchar(20) not null,
-mark varchar(20) not null,
-price float not null,
+brand_name varchar(20) not null,
+device varchar(20) not null,
+individual_price float not null,
 details varchar(250),
 disp_type varchar(20),
 delivered boolean,
-finished boolean,
+repaired boolean,
+date_delivered date
 constraint fk_pho_bill foreign key (bill_number) references bill(bill_number)
+constraint fk_pho_brands foreign key (brand_name) references brands(name)
 );
+
+create table brands(
+    id int auto_increment,
+    name varchar(60) primary key,
+)
+
+create table devices(
+    id_brands varchar(60),
+    name varchar(80) primary key,
+    constraint fk_dev_brands foreign key(id_brands) references brands(name)
+)
 
 
 create table category(
