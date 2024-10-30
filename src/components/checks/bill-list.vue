@@ -10,18 +10,21 @@ const selectedOption = ref(options.value[0]); // Mantiene el valor seleccionado
 
 const show_letter_switch = ref(false);
 const billInfo = ref({}); // Aquí guardarás la información de la factura seleccionada
-const billPhone = ref({});
+const billPhone = ref([]);
 
 const show_bill_info = async (billNumber) => {
   show_letter_switch.value = !show_letter_switch.value;
   try {
-    console.log(billNumber);
     const response = await axios.get(
       `http://127.0.0.1:8000/bill/${billNumber}`
     );
     billInfo.value = response.data[0]; // Asigna los datos de la factura al objeto billInfo
     console.log("Datos de la factura:", response.data[0]);
-    console.log(billInfo.client_name);
+    const responsephone = await axios.get(
+      `http://127.0.0.1:8000/billphone/${billNumber}`
+    );
+    billPhone.value = responsephone.data;
+    console.log("Datos de la phones:", responsephone.data);
   } catch (error) {
     console.error("Error al obtener la información de la factura", error);
   }
@@ -89,7 +92,7 @@ onMounted(async () => {
         :payment="billInfo.payment"
         :client_phone="billInfo.client_phone"
         :wname="billInfo.wname"
-        :phones_list="billInfo.phones_list"
+        :phones_list="billPhone"
       />
 
       <pay_window v-if="show_pay_window"></pay_window>
@@ -106,7 +109,7 @@ onMounted(async () => {
       :payment="billInfo.payment"
       :client_phone="billInfo.client_phone"
       :wname="billInfo.wname"
-      :phones_list="billInfo.phones_list"
+      :phones_list="billPhone"
     />
   </transition>
 </template>
