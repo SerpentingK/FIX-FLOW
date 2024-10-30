@@ -81,7 +81,7 @@ onMounted(async () => {
         </bill_li>
       </ul>
     </section>
-    <transition-group name="slide-fade" mode="out-in">
+    <transition-group name="slide-fade">
       <bill_info
         v-if="show_letter_switch"
         :bill_number="billInfo.bill_number"
