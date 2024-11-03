@@ -75,50 +75,5 @@ const deleteWorker = async () => {
 </template>
 
 <style scoped>
-li {
-  background-color: var(--baseGray);
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  box-shadow: var(--secShadow);
-  list-style: none;
-  border-radius: 10px;
-  width: 100%;
-  justify-content:flex-end;
-}
 
-li span {
-  background-color: white;
-  padding: 10px 30px;
-  border-radius: 10px;
-  font-weight: bolder;
-  min-width: 200px;
-}
-
-.op-container {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  gap: 20px;
-}
-
-.delete-btn {
-  all: unset;
-  font-size: 20px;
-  font-weight: bolder;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.3s;
-  background-color: red;
-}
-
-.delete-btn:hover {
-  scale: 1.2;
-}
 </style>

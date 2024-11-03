@@ -81,7 +81,7 @@ nav {
     position: fixed;
     top: 10px;
     left: 10px;
-    z-index: 12;
+    z-index: 16;
     background-color: var(--baseOrange);
   }
   .nav-btn ion-icon{
@@ -98,8 +98,9 @@ nav {
     position: absolute;
     left: 0;
     width: 50%;
-    z-index: 10;
+    z-index: 15;
     padding-top: 40px;
+
   }
 
   /* Transición personalizada */

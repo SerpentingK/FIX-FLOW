@@ -19,35 +19,18 @@ defineProps({
 </script>
 
 <template>
-    <button>
+    <li>
         <span>{{ entry_date}}</span>
         <span>{{ bill_number }}</span>
         <span>{{ client_name }}</span>
-    </button>
+    </li>
 </template>
 
 <style scoped>
-button{
-    all: unset;
-    background-color: var(--baseGray);
-    padding: 10px 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    cursor: pointer;
-    border-radius: 25px;
-    transition: .6s;
-}
-button:hover{
-    filter: contrast(200%);
-}
-button span{
-    color: var(--baseGray);
-    background-color: white;
-    min-width: 200px;
-    border-radius: 15px;
-    padding: 10px 20px;
-    font-weight: bolder;
-}
+    li{
+        display: flex;
+        font-size: 12px;
+        gap: 10px;
+        
+    }
 </style>

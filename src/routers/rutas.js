@@ -12,9 +12,6 @@ import workersList from "@/components/workers/workers-list.vue";
 import loginWorker from "@/components/workers/login-worker.vue";
 import newWorker from "@/components/workers/new-worker.vue";
 import worker from "@/components/workers/worker.vue";
-import receivedList from "@/components/workers/received-list.vue";
-import deliveriesList from "@/components/workers/deliveries-list.vue";
-import repairsList from "@/components/workers/repairs-list.vue";
 
 const routes = [
   {
@@ -50,22 +47,7 @@ const routes = [
       },
       {
         path: "worker",
-        component: worker,
-        redirect: "/workers/worker/received-list",
-        children:[
-          {
-            path: "received-list",
-            component: receivedList
-          },
-          {
-            path: "repairs-list",
-            component: repairsList
-          },
-          {
-            path: "deliveries-list",
-            component: deliveriesList
-          }
-        ]
+        component: worker
       }
     ]
   },

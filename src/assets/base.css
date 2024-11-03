@@ -8,6 +8,7 @@
   --baseFont:"SUSE", sans-serif;
   --titleFont:'Poppins', sans-serif;
   --secFont: 'Roboto', sans-serif;
+  --phoneMedia: 600px;
 }
 
 /* semantic color variables for this project */

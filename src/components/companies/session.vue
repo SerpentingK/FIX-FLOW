@@ -150,4 +150,21 @@ const closeCompany = () => {
 .op-router:hover{
     color: var(--baseGray);
 }
+@media (max-width: 600px){
+    .container h2{
+        font-size: 20px;
+    }
+    .company-container ion-icon{
+        font-size: 150px;
+    }
+    .op-container{
+        flex-direction: column;
+    }
+    .op-container div{
+        display: none;
+    }
+    .op-router{
+        text-align: center;
+    }
+}
 </style>
