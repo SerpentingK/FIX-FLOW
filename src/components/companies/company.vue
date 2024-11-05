@@ -1,7 +1,6 @@
 <script setup>
 import {inject, ref} from 'vue';
 import { useRoute } from 'vue-router'; // Importado para obtener la ruta actual
-
 const route = useRoute(); // Obtiene la ruta actual
 const isActive = (path) => route.path === path;// Función para verificar si el enlace es el activo
 const loggedCompany = inject("loggedCompany", ref(null))
