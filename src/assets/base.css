@@ -1,6 +1,6 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --baseOrange: #d84b17;
+  --baseOrange: rgb(216, 75, 23);
   --baseGray: #363636;
   --secGray: #adadad;
   --baseShadow: 0 0 10px 4px rgba(0, 0, 0, 0.676);
