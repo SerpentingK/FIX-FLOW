@@ -195,26 +195,23 @@ const putCompanyImg = async () => {
 .op-router:hover {
   color: var(--baseGray);
 }
-.img-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 20px;
-}
-.img-form button {
-  all: unset;
-  background-color: var(--baseOrange);
-  text-align: center;
-  font-size: 15px;
-  width: 70%;
-  border-radius: 20px;
-  padding: 10px;
-  cursor: pointer;
-  color: white;
-}
-.company-img{
-    filter: drop-shadow(10px 10px 5px rgba(0, 0, 0, 0.46));
+
+@media (max-width: 600px){
+    .container h2{
+        font-size: 20px;
+    }
+    .company-container ion-icon{
+        font-size: 150px;
+    }
+    .op-container{
+        flex-direction: column;
+    }
+    .op-container div{
+        display: none;
+    }
+    .op-router{
+        text-align: center;
+    }
 }
 </style>
+

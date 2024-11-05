@@ -1,9 +1,9 @@
 <script setup>
 import { inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-const route = useRoute(); // Obtiene la ruta actual
-const isActive = (path) => route.path === path;
+import workerBillList from './worker-bill-list.vue';
+// Obtiene la ruta actual
+const isActive = (state) => state == list_state.value;
 const router = useRouter()
 
 const workerRole = inject("workerRole", ref(null))
@@ -15,6 +15,12 @@ const closeSession = () => {
     router.push("/workers/login-worker")
 }
 
+
+const list_state = ref("received")
+
+const change_ls = (new_state) =>{
+    list_state.value = new_state
+}
 </script>
 
 <template>
@@ -31,23 +37,17 @@ const closeSession = () => {
             </div>
         </div>
         <nav class="list-options">
-            <router-link to="/workers/worker/received-list" class="router"
-                :class="{ 'active': isActive('/workers/worker/received-list') }">
+            <button class="list-router" :class="{'active' : isActive('received')}" @click="change_ls('received')">
                 <ion-icon name="enter-outline"></ion-icon>
-            </router-link>
-            <router-link to="/workers/worker/repairs-list" class="router"
-                :class="{ 'active': isActive('/workers/worker/repairs-list') }">
+            </button>
+            <button class="list-router" :class="{'active' : isActive('repaired')}" @click="change_ls('repaired')">
                 <ion-icon name="construct-outline"></ion-icon>
-            </router-link>
-            <router-link to="/workers/worker/deliveries-list" class="router"
-                :class="{ 'active': isActive('/workers/worker/deliveries-list') }">
+            </button>
+            <button class="list-router" :class="{'active' : isActive('delivered')}" @click="change_ls('delivered')">
                 <ion-icon name="exit-outline"></ion-icon>
-            </router-link>
-
+            </button>
         </nav>
-        <section class="list-container">
-            <router-view></router-view>
-        </section>
+        <workerBillList></workerBillList>
 
         <router-link to="/workers/workers-list" v-if="workerRole == 'Gerente'" class="router edit-btn">
             <ion-icon name="create-outline"></ion-icon>
@@ -61,112 +61,64 @@ const closeSession = () => {
 <style scoped>
 .container {
     background-color: var(--baseGray);
-    border: 4px solid var(--baseOrange);
-    padding: 20px 40px;
-    box-shadow: var(--baseShadow);
+    padding: 10px 20px;
     border-radius: 20px;
+    box-shadow: var(--baseShadow);
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    position: relative;
+    justify-content: center;
+    gap: 15px;
 }
 
-.container h2 {
-    font-size: 30px;
+h2 {
+    font-size: 20px;
+    text-align: center;
+    color: white;
     font-weight: bolder;
-    text-shadow: var(--baseShadow);
-    font-family: var(--titleFont);
-    background: linear-gradient(90deg,
-            var(--baseOrange), white);
-    background-clip: text;
-    letter-spacing: 1.5px;
-    -webkit-text-fill-color: transparent;
-    /* Sombra arriba a la izquierda */
+    letter-spacing: 2px;
 }
 
 .worker-cont {
     display: flex;
-    gap: 20px;
-    padding: 10px 20px;
-}
-
-.info-cont {
-    background-color: white;
-    color: var(--baseGray);
-    padding: 10px 20px;
-    border-radius: 15px;
-    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    box-shadow: var(--secShadow);
-    width: 300px;
+    justify-content: center;
 }
-.info-cont span{
-    font-weight: bolder;
-    font-size: 20px;
-}
-
-.list-container {
+.info-cont{
     background-color: white;
-    padding: 20px 30px;
-    width: 100%;
+    padding: 10px 20px;
     border-radius: 20px;
     box-shadow: var(--secShadow);
-    margin-top: 30px;
-    position: relative;
-    min-height: 100px;
 }
-
-.list-options {
-    position: absolute;
-    top: 0;
+.list-options{
+    background-color: var(--baseGray);
+    padding: 10px 20px;
+    bottom: 0;
+    left: 0;
     display: flex;
-    flex-direction: column;
-    align-items: start;
-    left: -70px;
-    gap:20px;
+    width: 100%;
+    justify-content: space-around;
 }
-
-.router {
-    background-color: rgb(70, 70, 70);
-    padding: 10px;
+.list-router{
+    all: unset;
     color: white;
-    text-decoration: none;
-    border-radius: 10px 10px;
-    cursor: pointer;
+    scale: 1.5;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--baseShadow);
-    transition: all .4s ease;
-}
-.router ion-icon{
-    font-size: 30px;
-}
+    padding: 4px;
+    transition: .3s;
 
-.router.active {
-    background-color: var(--baseGray);
-    scale: 1.2;
 }
-.edit-btn{
-    position: absolute;
-    top: 0;
-    right: -80px;
-}
-.close-sesion-btn{
-    all: unset;
-    margin: 30px 0 20px;
-    padding: 10px 20px;
+.list-router.active{
     background-color: var(--baseOrange);
-    color: white;
-    border-radius: 20px;
-    border: 2px solid white;
-    box-shadow: var(--secShadow);
-    cursor: pointer;
-    transition: .4s;
+    border-radius: 4px;
 }
-.close-sesion-btn:hover{
-    scale: 1.1;
-    background-color: var(--baseGray);
-    border-color: var(--baseOrange);
+@media (min-width: 600px) {
+    .container{
+        width: 600px;
+        scale: 1.3;
+    }
 }
 </style>
